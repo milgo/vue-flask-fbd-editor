@@ -129,20 +129,21 @@
     </tr>
     </table>
 
-
 </template>
 
 <script setup>
+import axios from "axios";
 import nodesData from "./assets/program.json";
 import varData from "./assets/variables.json";
 import definitions from "./assets/definitions.json";
 import Function from "./components/Function.vue";
 import FunctionList from "./components/FunctionList.vue";
 import FunctionListing from "./components/FunctionListing.vue";
-import { ref, provide, nextTick } from "vue";
-const programdata = ref(nodesData);
-const variablesdata = ref(varData);
+import { ref, provide, nextTick, onMounted } from "vue";
+
+const variablesdata = ref(varData)
 const listing = ref([])
+const programdata = ref([])
 
 const recursiveLoopBasedOnInputs = (data, element, parentElement, parentInput) => {
   if(element){
@@ -208,6 +209,25 @@ const deleteVariable = (id) => {
   });
 }
 
+const getProgramDataFromFlask = () => {
+  const path = "http://localhost:5000/program";
+					axios.get(path).then((res) => {console.log(res.data);programdata.value = res.data.programdata;})
+		.catch((err) => console.error(err));
+}
+
+const putProgramDataToFlask = () => {
+  const path = "http://localhost:5000/program";
+  axios.post(path, programdata.value)
+        .then(() => {
+          axios.get(path).then((res) => {programdata.value = res.data.programdata;})
+            .catch((err) => console.error(err));
+        }).catch((err) => console.error(err));
+}
+
+onMounted(() => {
+  getProgramDataFromFlask();
+})
+
 const addChild = (id, parent, blockJson) => {
   var parentId = null;
   var block = JSON.parse(blockJson);
@@ -248,7 +268,10 @@ const addChild = (id, parent, blockJson) => {
       }
     });
   });
+
+  putProgramDataToFlask();
 };
+
 const addInput = (nodeId, input, idOffset = 0) => {
   var inputJson = JSON.parse(input ? input : '{"name":"", "type":"none"}');
   let found = programdata.value.filter((item) => item.id === nodeId);
@@ -264,6 +287,8 @@ const addInput = (nodeId, input, idOffset = 0) => {
       input_mouse_hover: false
     });
   });
+
+  putProgramDataToFlask();
 };
 
 const connectNodeToInput = (nodeId, inputId) => {
@@ -280,6 +305,8 @@ const connectNodeToInput = (nodeId, inputId) => {
       });
     }
   });
+
+  putProgramDataToFlask();
 };
 
 const disconnectNodeFromInput = (nodeId, inputId) => {
@@ -300,6 +327,8 @@ const disconnectNodeFromInput = (nodeId, inputId) => {
     }
   });
 
+  putProgramDataToFlask();
+
 };
 
 const clearInput = (inputId) => {};
@@ -318,7 +347,10 @@ const deleteInput = (inputId) => {
     //delete input
     n.inputs = n.inputs.filter((input) => input.id !== inputId);
   });
+
+  putProgramDataToFlask();
 };
+
 const deleteChild = (id) => {
   programdata.value.forEach((item) => {
     //reset parent input
@@ -336,6 +368,8 @@ const deleteChild = (id) => {
 
   //delete child
   programdata.value = programdata.value.filter((item) => item.id !== id);
+
+  putProgramDataToFlask();
 };
 const getInputsById = (id) => {
   let obj = programdata.value.filter((n) => n.id === id)[0];
@@ -355,7 +389,6 @@ provide("deleteInput", deleteInput);
 provide("getInputsById", getInputsById);
 provide("disconnectNodeFromInput", disconnectNodeFromInput);
 provide("addNewVarIfNotExisting", addNewVarIfNotExisting);
-
 </script>
 <script>
 export default {

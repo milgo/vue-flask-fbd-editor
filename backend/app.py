@@ -1,5 +1,6 @@
 import json
-from flask import Flask
+import sys
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -10,8 +11,19 @@ def index():
     return 'Hello, World!'
 
 
-@app.route('/program')
-def getProgramData():
-    with open('program.json') as f:
-        response = json.load(f)
-        return response
+@app.route('/program', methods=['GET', 'POST'])
+def programData():
+    response_object = {'status': 'success'}
+    if request.method == 'POST':
+        post_data = request.get_json()
+        print('POST:', post_data)
+        with open('program.json', 'w') as f:
+            f.write(json.dumps(post_data))
+        response_object['message'] = 'Program changed!';
+    else:    
+        with open('program.json') as f:
+            programdata = json.load(f)
+            #print(response, file=sys.stderr)
+            response_object['programdata'] = programdata;
+    return jsonify(response_object)
+
