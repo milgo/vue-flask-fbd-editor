@@ -1,0 +1,9 @@
+[Unit]
+Description=Program Data Server
+After=network.target
+[Service]
+Type=simple
+ExecStart=/home/vue-flask-fbd-editor/backend/app.py
+Restart=always
+[Install]
+WantedBy=multi-user.target
