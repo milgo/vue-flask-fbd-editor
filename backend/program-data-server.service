@@ -3,7 +3,7 @@ Description=Program Data Server
 After=network.target
 [Service]
 Type=simple
-WorkingDirectory=/path/to/directory/containing/hello.py
+WorkingDirectory=/home/vue-flask-fbd-editor/backend/app.py
 ExecStart=/usr/bin/python3 /home/vue-flask-fbd-editor/backend/app.py
 Restart=always
 [Install]
