@@ -210,13 +210,13 @@ const deleteVariable = (id) => {
 }
 
 const getProgramDataFromFlask = () => {
-  const path = "http://localhost:5000/program";
+  const path = "http://localhost:8080/program";
 					axios.get(path).then((res) => {console.log(res.data);programdata.value = res.data.programdata;})
 		.catch((err) => console.error(err));
 }
 
 const putProgramDataToFlask = () => {
-  const path = "http://localhost:5000/program";
+  const path = "http://localhost:8080/program";
   axios.post(path, programdata.value)
         .then(() => {
           axios.get(path).then((res) => {programdata.value = res.data.programdata;})
