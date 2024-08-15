@@ -1,10 +1,11 @@
 import json
 import sys
 from flask import Flask, jsonify, request
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
-CORS(app, origins=["http://localhost:5173","http://localhost:5173"])
+#CORS(app, origins=["http://localhost:80","http://localhost:80"])
+#CORS(app, resources={r"/program": {"origins": "http://localhost:80"}})
 
 @app.route('/')
 def index():
@@ -12,6 +13,7 @@ def index():
 
 
 @app.route('/program', methods=['GET', 'POST'])
+@cross_origin(origin='*')
 def programData():
     response_object = {'status': 'success'}
     if request.method == 'POST':
@@ -29,4 +31,4 @@ def programData():
 
 if __name__ == '__main__':
     from waitress import serve
-    serve(app, host="0.0.0.0", port=8080)
+    serve(app, host="0.0.0.0", port=5000)
