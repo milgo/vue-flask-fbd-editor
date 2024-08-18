@@ -14,6 +14,6 @@ sudo systemctl daemon-reload <br />
 sudo systemctl start program-data-server.service <br />
 sudo systemctl enable program-data-server.service <br />
 sudo nano /etc/nginx/sites-available/default -> in server section add: <br />
-&emsp location /program {<br />
-&emsp&emsp proxy_pass http://localhost:5000/program <br />
+location /program {<br />
+	proxy_pass http://localhost:5000/program <br />
 }<br />
