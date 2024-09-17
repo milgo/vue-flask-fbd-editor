@@ -23,6 +23,6 @@ location /start {<br />
 location /stop {<br />
 	proxy_pass http://localhost:5000/stop <br />
 }<br />
----------------------------------------
-restart nginx: sudo systemctl restart nginx
-status nginx: sudo systemctl status nginx
+---------------------------------------<br />
+restart nginx: sudo systemctl restart nginx<br />
+status nginx: sudo systemctl status nginx<br />
