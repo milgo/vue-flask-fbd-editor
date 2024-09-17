@@ -17,3 +17,12 @@ sudo nano /etc/nginx/sites-available/default -> in server section add: <br />
 location /program {<br />
 	proxy_pass http://localhost:5000/program <br />
 }<br />
+location /start {<br />
+	proxy_pass http://localhost:5000/start <br />
+}<br />
+location /stop {<br />
+	proxy_pass http://localhost:5000/stop <br />
+}<br />
+---------------------------------------
+restart nginx: sudo systemctl restart nginx
+status nginx: sudo systemctl status nginx
