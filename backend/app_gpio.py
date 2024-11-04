@@ -3,6 +3,7 @@ import sys
 import threading
 from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
+from gpiozero import LED
 from time import sleep
 
 app = Flask(__name__)
@@ -26,9 +27,13 @@ class ProgramThread(threading.Thread):
                 self._stop_event.clear()
 
         def run(self):
+                led = LED(17)
                 while True:
-                        continue
-						
+                        if not self._stop_event.is_set():
+                                led.on()
+                                sleep(1)
+                                led.off()
+                                sleep(1)
 programThread = ProgramThread()
 programThread.start()
 
