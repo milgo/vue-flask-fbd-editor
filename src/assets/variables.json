@@ -4,13 +4,15 @@
     "name": "%m3.0",
     "type": "bool",
     "description": "Ważna zmienna",
-    "edit": false
+    "edit": false,
+    "refs": 1
   },
   {
     "id": 1718955140009,
     "name": "%m4.0",
     "type": "bool",
     "description": "",
-    "edit": false
+    "edit": false,
+    "refs": 1
   }
 ]

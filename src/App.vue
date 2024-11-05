@@ -7,10 +7,10 @@
 
    </div>-->
 
-  <div v-for="(node, networkId) in programdata.filter((n) => !n.parent)">
+  <div v-for="(node, networkId) in programdata.filter((n) => !n.parentInput)">
     <table>
       <tr>
-        <td align="left">Network: {{ networkId + 1 }}</td>
+        <td align="left"><!-- Network: {{ networkId + 1 }} --></td>
         <td></td>
         <td></td>
       </tr>
@@ -22,47 +22,33 @@
             :nodes="programdata"
             :node="programdata.filter((n) => n.id === node.id)[0]"
             :variables="variablesdata"
+            :interConnection="interConnection"
+            :interConnectionDetails="interConnectionDetails"
           />
         </td>
         <td width="20px" valign="top">
-            <hr />
+          <hr />
         </td>
         <td valign="top">
-          <select
-            v-model="selected"
-            @change="
-              connectNodeToInput(node.id, parseInt($event.target.value));
-              selected = 'undefined';
+          <button
+            :class="
+              interConnection && interConnectionDetails.nodeId === node.id
+                ? 'button button-red'
+                : 'button button-gray'
+            "
+            @click.stop="
+              interConnection = true;
+              interConnectionDetails.nodeId = node.id;
+              interConnectionDetails.networkId = networkId + 1;
+              interConnectionDetails.outputType = node.output_type;
             "
           >
-            <option disabled="disabled" value="undefined" selected="true">
-              ...
-            </option>
-            <template v-for="n in programdata">
-              <template
-                v-for="(input, inputNum) in n.inputs"
-                v-if="n.networkId !== networkId + 1"
-              >
-                <option
-                  :value="input.id"
-                  v-if="
-                    input.target === -1 &&
-                    (n.dyn_inputs_type === node.output_type ||
-                      input.type === node.output_type)
-                  "
-                >
-                  [{{ n.networkId }}]{{ n.block
-                  }}{{ input.name === "" ? ":" + inputNum : ":" + input.name }}
-                </option>
-              </template>
-
-              <!-- <optgroup :label="node.block" >
-               <template v-for="block in filterBlocksByOutputType(definition,outputType)">
-                <option :value="JSON.stringify(block)">{{ block.name }}</option>
-              </template> 
-            </optgroup> -->
-            </template>
-          </select>
+            [
+          </button>
+          <div
+            v-if="interConnection === true"
+            v-click-outside="diselectInterConnection"
+          ></div>
         </td>
       </tr>
     </table>
@@ -75,7 +61,7 @@
         forceFunctionListRerender();
       "
       :key="functionListKey"
-      outputType="any"
+      :outputType="['any']"
       :alone="true"
     />
   </div>
@@ -93,24 +79,124 @@
 
     <template v-for="variable in variablesdata">
       <tr>
-        <td>{{variable.name}}</td>
-        <td>{{variable.type}}</td>
-        <td>                    
-            <div v-if="variable.edit === false" style="background-color: transparent" @click="
-                variable.edit = true;
+        <td>
+          <div
+            v-if="variable.edit === false || variable.refs > 0"
+            @click="
+              variable.edit = variable.refs === 0;
+              if (variable.refs === 0) {
                 this.$nextTick(() => {
-                  this.$refs['desc_input'][0].focus();
-                  this.$refs['desc_input'][0].select();
+                  this.$refs['mem_input'][0].focus();
+                  this.$refs['mem_input'][0].select();
                 });
-              ">{{variable.description}}&nbsp</div>
-            <input ref="desc_input" v-if="variable.edit === true" :value="variable.description" @input="(event) => {variable.description = event.target.value;}" v-on:blur="variable.edit = false">
-          </td>
-        <td><div v-set="var_refs = programdata.filter((n) => n.mem_id === variable.id).length"></div>{{var_refs}}</td>
-        <td align="center"><button class="button button-red" @click="deleteVariable(variable.id)">x</button></td>
+              }
+            "
+            style="background-color: transparent"
+          >
+            {{ variable.name }}
+          </div>
+          <input
+            ref="mem_input"
+            v-if="variable.edit === true && variable.refs === 0"
+            :value="variable.name"
+            @input="
+              (event) => {
+                variable.name = event.target.value;
+              }
+            "
+            v-on:blur="variable.edit = false"
+            @keyup.enter="
+              {
+                variable.edit = false;
+                if (variable.name === '') {
+                  variable.name = '???';
+                } else {
+                  if (checkIfVariableExists(variable.name)) {
+                    showAlert('Variable ' + variable.name + ' already exists.');
+                    variable.name = '???';
+                  }
+                }
+              }
+            "
+          />
+        </td>
+        <td>{{ variable.type }}</td>
+        <td>
+          <div
+            v-if="variable.edit === false"
+            style="background-color: transparent"
+            @click="
+              variable.edit = true;
+              this.$nextTick(() => {
+                this.$refs['desc_input'][0].focus();
+                this.$refs['desc_input'][0].select();
+              });
+            "
+          >
+            {{ variable.description }}&nbsp
+          </div>
+          <input
+            ref="desc_input"
+            v-if="variable.edit === true"
+            :value="variable.description"
+            @input="
+              (event) => {
+                variable.description = event.target.value;
+              }
+            "
+            v-on:blur="variable.edit = false"
+            @keyup.enter="variable.edit = false"
+          />
+        </td>
+        <td>
+          {{
+            programdata.filter(
+              (n) =>
+                n.mem_loc === variable.name && n.mem_input === variable.type
+            ).length
+          }}
+        </td>
+        <td align="center">
+          <button
+            class="button button-red"
+            @click="deleteVariable(variable.id)"
+          >
+            x
+          </button>
+        </td>
       </tr>
     </template>
-
   </table>
+
+  <div v-set="(varName = '???')"></div>
+  <select
+    v-model="selected"
+    @change="
+      varName = inputDialog('Enter variable name: ');
+      if (
+        varName.match(
+          memDefs.filter((md) => md.type === $event.target.value)[0].valid
+        )
+      ) {
+        addNewVarIfNotExisting(null, varName, $event.target.value);
+      } else {
+        showAlert('Wrong name for that data type!');
+      }
+      selected = 'undefined';
+    "
+  >
+    <option
+      disabled="disabled"
+      value="undefined"
+      selected="true"
+      align="center"
+    >
+      +
+    </option>
+    <template v-for="m in memDefs">
+      <option :value="m.type">{{ m.type }}</option>
+    </template>
+  </select>
 
   <br />
 
@@ -118,17 +204,24 @@
     <tr>
       <td>
         <textarea cols="30" rows="20">{{ programdata }}</textarea>
-    </td>
-    <td>
-      <textarea cols="30" rows="20">{{ listing }}</textarea>
-      <button @click="listing.splice(0);buildListing(programdata)">Compile</button>
-    </td>
-    <td>
-  <textarea cols="30" rows="20">{{ variablesdata }}</textarea>
-    </td>
+      </td>
+      <td>
+        <textarea cols="30" rows="20">{{ listing }}</textarea>
+        <button
+          @click="
+            listing.splice(0);
+            buildListing(programdata);
+          "
+        >
+          Compile
+        </button>
+      </td>
+      <td>
+        <textarea cols="30" rows="20">{{ variablesdata }}</textarea>
+      </td>
     </tr>
-    </table>
-
+  </table>
+  {{ interConnectionDetails }}
 </template>
 
 <script setup>
@@ -136,78 +229,101 @@ import axios from "axios";
 import nodesData from "./assets/program.json";
 import varData from "./assets/variables.json";
 import definitions from "./assets/definitions.json";
+import memDefinitions from "./assets/type-defs.json";
 import Function from "./components/Function.vue";
 import FunctionList from "./components/FunctionList.vue";
 import FunctionListing from "./components/FunctionListing.vue";
 import { ref, provide, nextTick, onMounted } from "vue";
+const programdata = ref(nodesData);
+const variablesdata = ref(varData);
+const memDefs = ref(memDefinitions);
+const interConnection = ref(false);
+const interConnectionDetails = ref({
+  nodeId: 0,
+  networkId: -1,
+  outputType: ["any"],
+});
+const listing = ref([]);
 
-const variablesdata = ref(varData)
-const listing = ref([])
-const programdata = ref([])
-
-const recursiveLoopBasedOnInputs = (data, element, parentElement, parentInput) => {
-  if(element){
-    if(element.input_only === true){
-      if(element.parent !== null){
-        if(parentElement.dyn_inputs === true)
-          listing.value.push(/*parentElement.block + " " + */element.mem_loc);
-        else
-          listing.value.push(/*parentInput.name + " " + */element.mem_loc);
-      }
-    }
-    else {
-      Array.prototype.forEach.call(element.inputs, 
-        (input) => {
-            if(input.name === "") listing.value.push(element.block);
-            else listing.value.push(input.name);
-
-            var nestedElement = data.filter((e) => e.id === input.target)[0];
-            if(nestedElement){
-              if(nestedElement.input_only !== true)
-                listing.value.push("(");
-              recursiveLoopBasedOnInputs(data, nestedElement, element, input);
-              if(nestedElement.input_only !== true)
-                listing.value.push(")");
-            }
-          });
-    }
-  }
+function diselectInterConnection() {
+  interConnection.value = false;
 }
 
+const recursiveLoopBasedOnInputs = (
+  data,
+  element,
+  parentElement,
+  parentInput
+) => {
+  if (element) {
+    if (element.input_only === true) {
+      listing.value.push({
+        function:
+          parentElement.alias != "" ? parentElement.alias : parentElement.block,
+        memory: element.mem_loc,
+        node: element.id,
+        target: parentElement.id,
+      });
+    } else {
+      listing.value.push({
+        function:
+          "pre_" + (element.alias != "" ? element.alias : element.block),
+        target: element.id,
+      });
+
+      Array.prototype.forEach.call(element.inputs, (input) => {
+        var nestedElement = data.filter((e) => e.id === input.target)[0];
+        recursiveLoopBasedOnInputs(data, nestedElement, element, input);
+      });
+
+      listing.value.push({
+        function:
+          "post_" + (element.alias != "" ? element.alias : element.block),
+        memory: element.mem_loc !== "???" ? element.mem_loc : undefined,
+        target: element.id,
+      });
+    }
+  }
+};
+
 const buildListing = (data, level) => {
-  data.forEach(element => {
-    if(element.parent === null){
-        recursiveLoopBasedOnInputs(data, element, null);
+  data.forEach((element) => {
+    if (element.parentInput === null) {
+      listing.value.push({ function: "CANCEL_RLO" });
+      recursiveLoopBasedOnInputs(data, element, null);
     }
   });
 };
 
-const addNewVarIfNotExisting = (name, type) => {
-  var found = variablesdata.value.filter((v) => v.name === name)[0];
-  if(!found){
+const checkIfVariableExists = (name) => {
+  return variablesdata.value.filter((v) => v.name === name)[0];
+};
+
+const addNewVarIfNotExisting = (node, name, type) => {
+  var found = checkIfVariableExists(name);
+  if (!found) {
     var newVar = {
       id: Date.now(),
       name: name,
       type: type,
       description: "",
-      edit: false
+      edit: false,
     };
     variablesdata.value.push(newVar);
     return newVar.id;
   }
   return found.id;
-}
+};
 
 const deleteVariable = (id) => {
+  var varName = variablesdata.value.filter((v) => v.id === id)[0].name;
   variablesdata.value = variablesdata.value.filter((v) => v.id != id);
-  programdata.value.forEach(node => {
-    if(node.mem_id === id)
-    {
-      node.mem_id = 0;
+  programdata.value.forEach((node) => {
+    if (node.mem_loc === varName) {
       node.mem_loc = "???";
     }
   });
-}
+};
 
 const getProgramDataFromFlask = () => {
   const path = "http://localhost:5000/program";//"/program";
@@ -228,84 +344,81 @@ onMounted(() => {
   getProgramDataFromFlask();
 })
 
-const addChild = (id, parent, blockJson) => {
+const addChild = (id, parentInput, blockJson) => {
   var parentId = null;
   var block = JSON.parse(blockJson);
   var inputs = [];
   var inputCounter = 0;
-  if (parent) {
-    parentId = parent.id;
-    parent.target = id;
+  if (parentInput) {
+    parentId = parentInput.id;
+    parentInput.target = id;
   }
 
   programdata.value.push({
-    parent: parentId,
+    parentInput: parentId,
     id: id,
     inputs: inputs,
     block: block.name,
+    alias: block.alias,
     description: "",
     mem_edit: false,
     mem_loc: "???",
-    mem_id: 0,
-    mem_valid: block.mem_valid,
-    mem_required: block.mem_required,
+    //mem_id: 0,
+    mem_input: block.mem_input,
     dyn_inputs: block.dyn_inputs,
     output_type: block.output_type,
     dyn_inputs_type: block.dyn_inputs_type,
-    input_only : block.input_only,
+    input_only: block.input_only,
     networkId: -1,
-    alone: block.alone,
-    header_hover: false
+    header_hover: false,
+    value: 0,
   });
 
   definitions.forEach((group) => {
     group.blocks.forEach((def) => {
       if (def.name === block.name && !def.dyn_inputs && def.inputs) {
-        def.inputs.forEach((input) => {
-          addInput(id, JSON.stringify(input), inputCounter);
+        def.inputs.forEach((inputDef) => {
+          addInput(id, inputDef, inputCounter);
           inputCounter++;
         });
       }
     });
   });
-
   putProgramDataToFlask();
 };
-
-const addInput = (nodeId, input, idOffset = 0) => {
-  var inputJson = JSON.parse(input ? input : '{"name":"", "type":"none"}');
+const addInput = (nodeId, inputDef, idOffset = 0) => {
+  // var inputJson = JSON.parse(input /*? input : '{"name":"", "type":"none"}'*/);
   let found = programdata.value.filter((item) => item.id === nodeId);
 
   found.forEach((element) => {
     element.inputs.push({
       id: Date.now() + idOffset,
       target: -1,
-      name: inputJson.name,
-      type: inputJson.type,
-      inverted: false,
+      name: inputDef.name,
+      type: inputDef.type,
       conn_mouse_hover: false,
-      input_mouse_hover: false
+      input_mouse_hover: false,
+      show_name: inputDef.show_name,
+      value: 0,
     });
   });
-
   putProgramDataToFlask();
 };
 
 const connectNodeToInput = (nodeId, inputId) => {
   //alert(nodeId + ", " + inputId);
   programdata.value.forEach((node) => {
-    if (node.id === nodeId) node.parent = inputId;
+    if (node.id === nodeId) node.parentInput = inputId;
     if (node.inputs) {
       node.inputs.forEach((input) => {
         if (input.id === inputId) {
           input.target = nodeId;
-          input.type = node.output_type;
+          //input.type = node.output_type;
           //alert("input.id=" + input.id + "?=" + inputId);
         }
       });
     }
   });
-
   putProgramDataToFlask();
 };
 
@@ -314,9 +427,11 @@ const disconnectNodeFromInput = (nodeId, inputId) => {
   var isInputOnly = false;
   programdata.value.forEach((node) => {
     if (node.id === nodeId) {
-      node.parent = null;
-      if(node.input_only === true)
-        deleteChild(node.id)
+      node.parentInput = null;
+      if (node.input_only === true) {
+        subRefInVariable(node.mem_loc);
+        deleteChild(node.id);
+      }
     }
     if (node.inputs) {
       node.inputs.forEach((input) => {
@@ -326,9 +441,7 @@ const disconnectNodeFromInput = (nodeId, inputId) => {
       });
     }
   });
-
   putProgramDataToFlask();
-
 };
 
 const clearInput = (inputId) => {};
@@ -347,10 +460,9 @@ const deleteInput = (inputId) => {
     //delete input
     n.inputs = n.inputs.filter((input) => input.id !== inputId);
   });
-
+  
   putProgramDataToFlask();
 };
-
 const deleteChild = (id) => {
   programdata.value.forEach((item) => {
     //reset parent input
@@ -368,12 +480,17 @@ const deleteChild = (id) => {
 
   //delete child
   programdata.value = programdata.value.filter((item) => item.id !== id);
-
   putProgramDataToFlask();
 };
-const getInputsById = (id) => {
-  let obj = programdata.value.filter((n) => n.id === id)[0];
+const getInputsById = (id, programdata) => {
+  let obj = programdata.filter((n) => n.id === id)[0];
   if (obj) return obj.inputs;
+};
+
+const getNodeById = (id, programdata) => {
+  //console.log(id)
+  let obj = programdata.filter((n) => n.id === id)[0];
+  return obj;
 };
 
 const functionListKey = ref(0);
@@ -382,18 +499,44 @@ const forceFunctionListRerender = () => {
   functionListKey.value += 1;
 };
 
+const getMemValidationRules = (memType) => {
+  var res = memDefs.value.filter((d) => d.type === memType);
+  if (res && res[0]) return res[0].valid;
+  return "";
+};
+
+const subRefInVariable = (name) => {
+  var res = variablesdata.value.filter((v) => v.name === name);
+  if (res && res[0] && res[0].refs > 0) res[0].refs--;
+};
+
+const inputDialog = (msg) => {
+  return prompt(msg, "");
+};
+
 provide("addChild", addChild);
 provide("addInput", addInput);
 provide("deleteChild", deleteChild);
 provide("deleteInput", deleteInput);
 provide("getInputsById", getInputsById);
+provide("getNodeById", getNodeById);
 provide("disconnectNodeFromInput", disconnectNodeFromInput);
 provide("addNewVarIfNotExisting", addNewVarIfNotExisting);
+provide("connectNodeToInput", connectNodeToInput);
+provide("getMemValidationRules", getMemValidationRules);
+provide("subRefInVariable", subRefInVariable);
+provide("checkIfVariableExists", checkIfVariableExists);
 </script>
 <script>
 export default {
   components: {
     Function: Function,
+  },
+  props: {
+    programdata: {
+      type: Array,
+      default: () => [],
+    },
   },
   setup() {
     return {};
@@ -413,6 +556,4 @@ export default {
 };
 </script>
 
-<style>
-
-</style>
+<style></style>

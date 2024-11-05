@@ -1,17 +1,32 @@
 [
   {
-    "group" :"Input",
-    "blocks" : [
+    "group": "Input",
+    "blocks": [
       {
-        "name" : "MEM",
-        "input_only" : true,
-        "output_type" : "bool",
-        "dyn_inputs" : false,
-        "dyn_inputs_type" : "bool",
-        "output" : true,
-        "mem_required" : true,
-        "mem_valid": "%[Mm]\\d{1,2}\\.[0-7]",
-        "alone" : false
+        "name": "MARK",
+        "alias": "",
+        "input_only": true,
+        "output_type": "bool",
+        "dyn_inputs": false,
+        "mem_input": ["bool"]
+      },
+      {
+        "name": "CONST",
+        "alias": "",
+        "input_only": true,
+        "show_name": false,
+        "output_type": "int",
+        "dyn_inputs": false,
+        "mem_input": ["int"]
+      },
+      {
+        "name": "TIME",
+        "alias": "",
+        "input_only": true,
+        "show_name": false,
+        "output_type": "time",
+        "dyn_inputs": false,
+        "mem_input": ["time"]
       }
     ]
   },
@@ -19,149 +34,386 @@
     "group": "Logic",
     "blocks": [
       {
-        "name": "AND",
-        "input_only" : false,
-        "show_name" : true,
+        "name": "&",
+        "alias": "AND",
+        "input_only": false,
+        "show_name": true,
         "output_type": "bool",
         "dyn_inputs": true,
-        "dyn_inputs_type" : "bool",
-        "output": true,
-        "mem_required" : false,
-        "mem_valid": "%[Mm]\\d{1,2}\\.[0-7]",
-        "alone" : true
+        "dyn_inputs_type": ["bool"]
       },
       {
-        "name": "OR",
-        "input_only" : false,
+        "name": ">=",
+        "alias": "OR",
+        "input_only": false,
         "output_type": "bool",
         "dyn_inputs": true,
-        "dyn_inputs_type" : "bool",
-        "mem_required" : false,
-        "output": true,
-        "mem_valid": "",
-        "alone" : true
+        "dyn_inputs_type": ["bool"]
       },
       {
         "name": "NOT",
-        "input_only" : false,
+        "alias": "",
+        "input_only": false,
         "output_type": "bool",
         "dyn_inputs": false,
-        "mem_required" : false,
-        "inputs" : [{
-          "name" : "",
-          "type" : "bool"
-        }],
-        "output": true,
-        "mem_valid": "",
-        "alone" : true
+        "inputs": [
+          {
+            "name": "",
+            "type": ["bool"],
+            "show_name": false
+          }
+        ]
       },
       {
         "name": "=",
-        "input_only" : false,
+        "alias": "ASSIGN",
+        "input_only": false,
         "output_type": "bool",
         "dyn_inputs": false,
-        "inputs" : [{
-          "name" : "",
-          "type" : "bool"
-        }],
-        "output": true,
-        "mem_valid": "%[Mm]\\d{1,2}\\.[0-7]",
-        "mem_required" : true,
-        "alone" : true
+        "inputs": [
+          {
+            "name": "",
+            "type": ["bool"],
+            "show_name": false
+          }
+        ],
+        "mem_input": ["bool"]
       },
       {
         "name": "S",
-        "input_only" : false,
+        "alias": "",
+        "input_only": false,
         "output_type": "bool",
         "dyn_inputs": false,
-        "inputs" : [{
-          "name" : "",
-          "type" : "bool"
-        }],
-        "output": true,
-        "mem_valid": "",
-        "mem_required" : true,
-        "alone" : true
+        "inputs": [
+          {
+            "name": "S",
+            "type": ["bool"],
+            "show_name": false
+          }
+        ],
+        "mem_input": ["bool"]
       },
       {
         "name": "R",
-        "input_only" : false,
+        "alias": "",
+        "input_only": false,
         "output_type": "bool",
         "dyn_inputs": false,
-        "inputs" : ["IN"],
-        "output": true,
-        "mem_valid": "",
-        "mem_required" : true,
-        "alone" : true
+        "inputs": [
+          {
+            "name": "",
+            "type": ["bool"],
+            "show_name": false
+          }
+        ],
+        "mem_input": ["bool"]
       },
       {
         "name": "SR",
-        "input_only" : false,
+        "alias": "",
+        "input_only": false,
         "output_type": "bool",
         "dyn_inputs": false,
-        "inputs" : [{
-          "name" : "S",
-          "type" : "bool"
-        }, 
-        {
-          "name" : "R",        
-          "type" : "bool"
-        }],
-        "output": true,
-        "mem_valid": "%[Mm]\\d{1,2}\\.[0-7]",
-        "mem_required" : true,
-        "alone" : true,
-        "input_only" : false
+        "inputs": [
+          {
+            "name": "S",
+            "type": ["bool"],
+            "show_name": true
+          },
+          {
+            "name": "R",
+            "type": ["bool"],
+            "show_name": true
+          }
+        ],
+        "mem_input": ["bool"],
+        "input_only": false
       },
       {
         "name": "RS",
-        "input_only" : false,
+        "alias": "",
+        "input_only": false,
         "output_type": "bool",
         "dyn_inputs": false,
-        "inputs" : ["R", "S"],
-        "output": true,
-        "mem_valid": "%[Mm]\\d{1,2}\\.[0-7]",
-        "mem_required" : true,
-        "alone" : true
+        "inputs": [
+          {
+            "name": "R",
+            "type": ["bool"]
+          },
+          {
+            "name": "S",
+            "type": ["bool"]
+          }
+        ],
+        "mem_input": ["bool"]
       },
       {
         "name": "FP",
-        "input_only" : false,
+        "alias": "",
+        "input_only": false,
         "output_type": "bool",
         "dyn_inputs": false,
-        "inputs" : [{
-          "name" : "",
-          "type" : "bool"
-        }],
-        "output": true,
-        "mem_valid": "",
-        "mem_required" : true,
-        "alone" : true
+        "inputs": [
+          {
+            "name": "FP",
+            "type": ["bool"]
+          }
+        ],
+        "mem_input": ["bool"]
       },
       {
         "name": "FN",
-        "input_only" : false,
+        "alias": "",
+        "input_only": false,
         "output_type": "bool",
         "dyn_inputs": false,
-        "inputs" : ["IN"],
-        "output": true,
-        "mem_valid": "",
-        "mem_required" : true,
-        "alone" : true
+        "inputs": [
+          {
+            "name": "",
+            "type": ["bool"],
+            "show_name": true
+          }
+        ],
+        "mem_input": ["bool"]
+      },
+      {
+        "name": "MOVE",
+        "alias": "",
+        "input_only": false,
+        "output_type": "bool",
+        "dyn_inputs": false,
+        "inputs": [
+          {
+            "name": "",
+            "type": ["byte", "word", "dword", "int"],
+            "show_name": true
+          }
+        ],
+        "mem_input": ["byte", "word", "dword"]
+      }
+    ]
+  },
+  {
+    "group": "Timers",
+    "blocks": [
+      {
+        "name": "SP",
+        "alias": "",
+        "input_only": false,
+        "output_type": "bool",
+        "dyn_inputs": false,
+        "inputs": [
+          {
+            "name": "S",
+            "type": ["bool"],
+            "show_name": true
+          },
+          {
+            "name": "R",
+            "type": ["bool"],
+            "show_name": true
+          },
+          {
+            "name": "T",
+            "type": ["time"],
+            "show_name": true
+          }
+        ],
+        "mem_input": ["timer"]
+      }
+    ]
+  },
+  {
+    "group": "Counters",
+    "blocks": [
+      {
+        "name": "CU",
+        "alias": "",
+        "input_only": false,
+        "output_type": "bool",
+        "dyn_inputs": false,
+        "inputs": [
+          {
+            "name": "INC",
+            "type": ["bool"],
+            "show_name": true
+          },
+          {
+            "name": "R",
+            "type": ["bool"],
+            "show_name": true
+          }
+        ],
+        "mem_input": ["counter"]
+      },
+      {
+        "name": "CD",
+        "alias": "",
+        "input_only": false,
+        "output_type": "bool",
+        "dyn_inputs": false,
+        "inputs": [
+          {
+            "name": "DEC",
+            "type": ["bool"],
+            "show_name": true
+          },
+          {
+            "name": "R",
+            "type": ["bool"],
+            "show_name": true
+          }
+        ],
+        "mem_input": ["counter"]
+      }
+    ]
+  },
+  {
+    "group": "Compare",
+    "blocks": [
+      {
+        "name": "EQ",
+        "alias": "",
+        "input_only": false,
+        "output_type": "bool",
+        "dyn_inputs": false,
+        "inputs": [
+          {
+            "name": "IN1",
+            "type": ["int"]
+          },
+          {
+            "name": "IN2",
+            "type": ["int"]
+          }
+        ]
+      },
+      {
+        "name": "DIFF",
+        "alias": "",
+        "input_only": false,
+        "output_type": "bool",
+        "dyn_inputs": false,
+        "inputs": [
+          {
+            "name": "IN1",
+            "type": ["int"]
+          },
+          {
+            "name": "IN2",
+            "type": ["int"]
+          }
+        ]
+      },
+      {
+        "name": "GT",
+        "alias": "",
+        "input_only": false,
+        "output_type": "bool",
+        "dyn_inputs": false,
+        "inputs": [
+          {
+            "name": "IN1",
+            "type": ["int"]
+          },
+          {
+            "name": "IN2",
+            "type": ["int"]
+          }
+        ]
+      },
+      {
+        "name": "LT",
+        "alias": "",
+        "input_only": false,
+        "output_type": "bool",
+        "dyn_inputs": false,
+        "inputs": [
+          {
+            "name": "IN1",
+            "type": ["int"]
+          },
+          {
+            "name": "IN2",
+            "type": ["int"]
+          }
+        ]
+      },
+      {
+        "name": "GE",
+        "alias": "",
+        "input_only": false,
+        "output_type": "bool",
+        "dyn_inputs": false,
+        "inputs": [
+          {
+            "name": "IN1",
+            "type": ["int"]
+          },
+          {
+            "name": "IN2",
+            "type": ["int"]
+          }
+        ]
+      },
+      {
+        "name": "LE",
+        "alias": "",
+        "input_only": false,
+        "output_type": "bool",
+        "dyn_inputs": false,
+        "inputs": [
+          {
+            "name": "IN1",
+            "type": ["int"]
+          },
+          {
+            "name": "IN2",
+            "type": ["int"]
+          }
+        ]
       }
     ]
   },
   {
     "group": "Aritmetic",
     "blocks": [
-      { 
-        "name": "ADD", 
-        "input_only" : false,
-        "output_type": "int", 
-        "dyn_inputs": true, 
-        "output" : false,
-        "mem_required" : false,
-        "alone" : true
+      {
+        "name": "ADD",
+        "alias": "",
+        "input_only": false,
+        "show_name": true,
+        "output_type": "int",
+        "dyn_inputs_type": ["int"],
+        "dyn_inputs": true
+      },
+      {
+        "name": "SUB",
+        "alias": "",
+        "input_only": false,
+        "show_name": true,
+        "output_type": "int",
+        "dyn_inputs_type": ["int"],
+        "dyn_inputs": true
+      },
+      {
+        "name": "MUL",
+        "alias": "",
+        "input_only": false,
+        "show_name": true,
+        "output_type": "int",
+        "dyn_inputs_type": ["int"],
+        "dyn_inputs": true
+      },
+      {
+        "name": "DIV",
+        "alias": "",
+        "input_only": false,
+        "show_name": true,
+        "output_type": "int",
+        "dyn_inputs_type": ["int"],
+        "dyn_inputs": true
       }
     ]
   }

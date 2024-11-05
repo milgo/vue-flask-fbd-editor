@@ -6,6 +6,12 @@
 {
     color: black;
 }
+
+.select-wrapper {
+  height: 50px;
+  overflow-y: visible;
+}
+
 .button {
     background-color: white; /* Green */
     border: none;
@@ -17,7 +23,7 @@
   }
 
 .button-green { background-color: orange; }
-
+.button-gray { background-color: lightgray; }
 .button-red { background-color: rgb(243, 89, 89); }
 
 table, td, th
@@ -26,6 +32,28 @@ table, td, th
     border-spacing: 0px;
     border-collapse: collapse;
 }
+
+/*table {
+    border-collapse: collapse;
+  }
+  table td, table th {
+    border: 1px solid black;
+  }
+  table tr:first-child th {
+    border-top: 0;
+  }
+  table tr:last-child td {
+    border-bottom: 0;
+  }
+  table tr td:first-child,
+  table tr th:first-child {
+    border-left: 0;
+  }
+  table tr td:last-child,
+  table tr th:last-child {
+    border-right: 0;
+  }
+*/
 
 .mem_table th
 {
@@ -71,6 +99,18 @@ select {
 
 }
 
+.fbd-body-green
+{
+    background-color: limegreen;
+
+}
+
+.fbd-header-green
+{
+    background-color: #229b57;
+    color: #000;
+}
+
 .fbd-empty
 {
     background-color: white;
@@ -86,4 +126,12 @@ html *
    color: #000;
    background-color: #fff;
    font-family: Lucida Console !important;
+}
+
+.hr-normal {
+  border: 1px solid lightgray;
+}
+
+.hr-green {
+  border: 1px solid limegreen;
 }
