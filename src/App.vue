@@ -211,9 +211,17 @@
           @click="
             listing.splice(0);
             buildListing(programdata);
+			putCompileDataToFlask();
           "
         >
           Compile
+        </button>
+		<button
+          @click="
+            axios.get('http://localhost:5000/start')
+          "
+        >
+          Start
         </button>
       </td>
       <td>
@@ -327,7 +335,7 @@ const deleteVariable = (id) => {
 
 const getProgramDataFromFlask = () => {
   const path = "http://localhost:5000/program";//"/program";
-					axios.get(path).then((res) => {console.log(res.data);programdata.value = res.data.programdata;})
+	axios.get(path).then((res) => {console.log(res.data);programdata.value = res.data.programdata;})
 		.catch((err) => console.error(err));
 }
 
@@ -339,6 +347,12 @@ const putProgramDataToFlask = () => {
             .catch((err) => console.error(err));
         }).catch((err) => console.error(err));
 }
+
+const putCompileDataToFlask = () => {
+  const path = "http://localhost:5000/compile";//"/program";
+  axios.post(path, listing.value).catch((err) => console.error(err));
+}
+
 
 onMounted(() => {
   getProgramDataFromFlask();
