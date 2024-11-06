@@ -118,16 +118,16 @@
         </div>
       </td>
     </tr>
-    <div v-set="(inputsById = getInputsById(id, nodes))"></div>
+    <div v-set="(inputsById = getInputsById(id, projectdata))"></div>
     <tr v-for="(inputNode, index) in inputsById">
       <td align="right" valign="top">
-        <template v-if="nodes.some((n) => n.parentInput === inputNode.id)">
+        <template v-if="projectdata.some((n) => n.parentInput === inputNode.id)">
           <Function
             :id="inputNode.target"
             :networkId="networkId"
             :parentId="inputNode.id"
-            :nodes="nodes"
-            :node="nodes.filter((n) => n.id === inputNode.target)[0]"
+            :projectdata="projectdata"
+            :node="projectdata.filter((n) => n.id === inputNode.target)[0]"
             :variables="variables"
             :interConnection="interConnection"
             :interConnectionDetails="interConnectionDetails"
@@ -190,7 +190,7 @@
                 <hr
                   v-if="inputNode.target !== -1"
                   :class="
-                    getNodeById(inputNode.target, nodes).value === 0
+                    getNodeById(inputNode.target, projectdata).value === 0
                       ? 'hr-normal'
                       : 'hr-green'
                   "
@@ -358,7 +358,7 @@ export default {
     "id",
     "networkId",
     "parentId",
-    "nodes",
+    "projectdata",
     "node",
     "variables",
     "interConnection",

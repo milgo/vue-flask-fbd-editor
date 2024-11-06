@@ -1,13 +1,13 @@
 <template>
-  <!--{{programdata.some((n) => n) === true}}
-  <div v-if="programdata.some((n) => n) === true">
-    <Function :id="programdata[0].id" :parentId="programdata[0].parentId" :nodes="nodes" :node="nodes[0]"/>
+  <!--{{projectdata.some((n) => n) === true}}
+  <div v-if="projectdata.some((n) => n) === true">
+    <Function :id="projectdata[0].id" :parentId="projectdata[0].parentId" :nodes="nodes" :node="nodes[0]"/>
   </div>
   <div v-else>
 
    </div>-->
 
-  <div v-for="(node, networkId) in programdata.filter((n) => !n.parentInput)">
+  <div v-for="(node, networkId) in projectdata.filter((n) => !n.parentInput)">
     <table>
       <tr>
         <td align="left"><!-- Network: {{ networkId + 1 }} --></td>
@@ -19,8 +19,8 @@
           <Function
             :id="node.id"
             :networkId="networkId + 1"
-            :nodes="programdata"
-            :node="programdata.filter((n) => n.id === node.id)[0]"
+            :projectdata="projectdata"
+            :node="projectdata.filter((n) => n.id === node.id)[0]"
             :variables="variablesdata"
             :interConnection="interConnection"
             :interConnectionDetails="interConnectionDetails"
@@ -150,7 +150,7 @@
         </td>
         <td>
           {{
-            programdata.filter(
+            projectdata.filter(
               (n) =>
                 n.mem_loc === variable.name && n.mem_input === variable.type
             ).length
@@ -203,14 +203,14 @@
   <table>
     <tr>
       <td>
-        <textarea cols="30" rows="20">{{ programdata }}</textarea>
+        <textarea cols="30" rows="20">{{ projectdata }}</textarea>
       </td>
       <td>
         <textarea cols="30" rows="20">{{ listing }}</textarea>
         <button
           @click="
             listing.splice(0);
-            buildListing(programdata);
+            buildListing(projectdata);
 			putCompileDataToFlask();
           "
         >
@@ -234,7 +234,6 @@
 
 <script setup>
 import axios from "axios";
-import nodesData from "./assets/program.json";
 import varData from "./assets/variables.json";
 import definitions from "./assets/definitions.json";
 import memDefinitions from "./assets/type-defs.json";
@@ -242,7 +241,8 @@ import Function from "./components/Function.vue";
 import FunctionList from "./components/FunctionList.vue";
 import FunctionListing from "./components/FunctionListing.vue";
 import { ref, provide, nextTick, onMounted } from "vue";
-const programdata = ref(nodesData);
+const projectdata = ref([]);
+const listing = ref([]);
 const variablesdata = ref(varData);
 const memDefs = ref(memDefinitions);
 const interConnection = ref(false);
@@ -251,7 +251,6 @@ const interConnectionDetails = ref({
   networkId: -1,
   outputType: ["any"],
 });
-const listing = ref([]);
 
 function diselectInterConnection() {
   interConnection.value = false;
@@ -326,7 +325,7 @@ const addNewVarIfNotExisting = (node, name, type) => {
 const deleteVariable = (id) => {
   var varName = variablesdata.value.filter((v) => v.id === id)[0].name;
   variablesdata.value = variablesdata.value.filter((v) => v.id != id);
-  programdata.value.forEach((node) => {
+  projectdata.value.forEach((node) => {
     if (node.mem_loc === varName) {
       node.mem_loc = "???";
     }
@@ -334,16 +333,16 @@ const deleteVariable = (id) => {
 };
 
 const getProgramDataFromFlask = () => {
-  const path = "http://localhost:5000/program";//"/program";
-	axios.get(path).then((res) => {console.log(res.data);programdata.value = res.data.programdata;})
+  const path = "http://localhost:5000/project";//"/program";
+	axios.get(path).then((res) => {console.log(res.data);projectdata.value = res.data.projectdata;})
 		.catch((err) => console.error(err));
 }
 
 const putProgramDataToFlask = () => {
-  const path = "http://localhost:5000/program";//"/program";
-  axios.post(path, programdata.value)
+  const path = "http://localhost:5000/project";//"/program";
+  axios.post(path, projectdata.value)
         .then(() => {
-          axios.get(path).then((res) => {programdata.value = res.data.programdata;})
+          axios.get(path).then((res) => {projectdata.value = res.data.projectdata;})
             .catch((err) => console.error(err));
         }).catch((err) => console.error(err));
 }
@@ -368,7 +367,7 @@ const addChild = (id, parentInput, blockJson) => {
     parentInput.target = id;
   }
 
-  programdata.value.push({
+  projectdata.value.push({
     parentInput: parentId,
     id: id,
     inputs: inputs,
@@ -402,7 +401,7 @@ const addChild = (id, parentInput, blockJson) => {
 };
 const addInput = (nodeId, inputDef, idOffset = 0) => {
   // var inputJson = JSON.parse(input /*? input : '{"name":"", "type":"none"}'*/);
-  let found = programdata.value.filter((item) => item.id === nodeId);
+  let found = projectdata.value.filter((item) => item.id === nodeId);
 
   found.forEach((element) => {
     element.inputs.push({
@@ -421,7 +420,7 @@ const addInput = (nodeId, inputDef, idOffset = 0) => {
 
 const connectNodeToInput = (nodeId, inputId) => {
   //alert(nodeId + ", " + inputId);
-  programdata.value.forEach((node) => {
+  projectdata.value.forEach((node) => {
     if (node.id === nodeId) node.parentInput = inputId;
     if (node.inputs) {
       node.inputs.forEach((input) => {
@@ -439,7 +438,7 @@ const connectNodeToInput = (nodeId, inputId) => {
 const disconnectNodeFromInput = (nodeId, inputId) => {
   //alert(nodeId + ", " + inputId);
   var isInputOnly = false;
-  programdata.value.forEach((node) => {
+  projectdata.value.forEach((node) => {
     if (node.id === nodeId) {
       node.parentInput = null;
       if (node.input_only === true) {
@@ -461,7 +460,7 @@ const disconnectNodeFromInput = (nodeId, inputId) => {
 const clearInput = (inputId) => {};
 
 const deleteInput = (inputId) => {
-  var found = programdata.value.filter((n) =>
+  var found = projectdata.value.filter((n) =>
     n.inputs.some((i) => i.id == inputId)
   );
 
@@ -478,7 +477,7 @@ const deleteInput = (inputId) => {
   putProgramDataToFlask();
 };
 const deleteChild = (id) => {
-  programdata.value.forEach((item) => {
+  projectdata.value.forEach((item) => {
     //reset parent input
     item.inputs.forEach((input) => {
       if (input.target === id) input.target = -1;
@@ -493,17 +492,17 @@ const deleteChild = (id) => {
   });
 
   //delete child
-  programdata.value = programdata.value.filter((item) => item.id !== id);
+  projectdata.value = projectdata.value.filter((item) => item.id !== id);
   putProgramDataToFlask();
 };
-const getInputsById = (id, programdata) => {
-  let obj = programdata.filter((n) => n.id === id)[0];
+const getInputsById = (id, projectdata) => {
+  let obj = projectdata.filter((n) => n.id === id)[0];
   if (obj) return obj.inputs;
 };
 
-const getNodeById = (id, programdata) => {
+const getNodeById = (id, projectdata) => {
   //console.log(id)
-  let obj = programdata.filter((n) => n.id === id)[0];
+  let obj = projectdata.filter((n) => n.id === id)[0];
   return obj;
 };
 
@@ -547,7 +546,7 @@ export default {
     Function: Function,
   },
   props: {
-    programdata: {
+    projectdata: {
       type: Array,
       default: () => [],
     },
@@ -563,7 +562,6 @@ export default {
   name: "App",
   data() {
     return {
-      nodes: nodesData,
       selected: undefined,
     };
   },
