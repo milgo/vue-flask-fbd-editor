@@ -199,14 +199,15 @@
   </select>
 
   <br />
+  <br />
 
   <table>
     <tr>
       <td>
-        <textarea cols="30" rows="20">{{ projectdata }}</textarea>
+        <!--<textarea cols="30" rows="20">{{ projectdata }}</textarea>-->
       </td>
       <td>
-        <textarea cols="30" rows="20">{{ listing }}</textarea>
+         <!--<textarea cols="30" rows="20">{{ listing }}</textarea>-->
         <button
           @click="
             listing.splice(0);
@@ -217,19 +218,22 @@
           Compile
         </button>
 		<button
-          @click="
-            axios.get('http://localhost:5000/start')
-          "
+          @click="axios.get('http://localhost:5000/stop').catch((err) => console.error(err));"
+        >
+          Stop
+        </button>
+		<button
+          @click="axios.get('http://localhost:5000/start').catch((err) => console.error(err));"
         >
           Start
         </button>
       </td>
       <td>
-        <textarea cols="30" rows="20">{{ variablesdata }}</textarea>
+        <!-- <textarea cols="30" rows="20">{{ variablesdata }}</textarea>-->
       </td>
     </tr>
   </table>
-  {{ interConnectionDetails }}
+ <!--{{ interConnectionDetails }}-->
 </template>
 
 <script setup>
@@ -332,13 +336,23 @@ const deleteVariable = (id) => {
   });
 };
 
-const getProgramDataFromFlask = () => {
+const reloadProgram = () => {
+	axios.get('http://localhost:5000/stop')
+		.then((res) => 
+		{
+			if (res.data['status'] === 'success') {
+				axios.get('http://localhost:5000/start').catch((err) => console.error(err));
+			}
+		}).catch((err) => console.error(err));
+}
+
+const getProjectDataFromFlask = () => {
   const path = "http://localhost:5000/project";//"/program";
 	axios.get(path).then((res) => {console.log(res.data);projectdata.value = res.data.projectdata;})
 		.catch((err) => console.error(err));
 }
 
-const putProgramDataToFlask = () => {
+const putProjectDataToFlask = () => {
   const path = "http://localhost:5000/project";//"/program";
   axios.post(path, projectdata.value)
         .then(() => {
@@ -354,7 +368,7 @@ const putCompileDataToFlask = () => {
 
 
 onMounted(() => {
-  getProgramDataFromFlask();
+  getProjectDataFromFlask();
 })
 
 const addChild = (id, parentInput, blockJson) => {
@@ -397,7 +411,7 @@ const addChild = (id, parentInput, blockJson) => {
       }
     });
   });
-  putProgramDataToFlask();
+  putProjectDataToFlask();
 };
 const addInput = (nodeId, inputDef, idOffset = 0) => {
   // var inputJson = JSON.parse(input /*? input : '{"name":"", "type":"none"}'*/);
@@ -415,7 +429,7 @@ const addInput = (nodeId, inputDef, idOffset = 0) => {
       value: 0,
     });
   });
-  putProgramDataToFlask();
+  putProjectDataToFlask();
 };
 
 const connectNodeToInput = (nodeId, inputId) => {
@@ -432,7 +446,7 @@ const connectNodeToInput = (nodeId, inputId) => {
       });
     }
   });
-  putProgramDataToFlask();
+  putProjectDataToFlask();
 };
 
 const disconnectNodeFromInput = (nodeId, inputId) => {
@@ -454,7 +468,7 @@ const disconnectNodeFromInput = (nodeId, inputId) => {
       });
     }
   });
-  putProgramDataToFlask();
+  putProjectDataToFlask();
 };
 
 const clearInput = (inputId) => {};
@@ -474,7 +488,7 @@ const deleteInput = (inputId) => {
     n.inputs = n.inputs.filter((input) => input.id !== inputId);
   });
   
-  putProgramDataToFlask();
+  putProjectDataToFlask();
 };
 const deleteChild = (id) => {
   projectdata.value.forEach((item) => {
@@ -493,7 +507,7 @@ const deleteChild = (id) => {
 
   //delete child
   projectdata.value = projectdata.value.filter((item) => item.id !== id);
-  putProgramDataToFlask();
+  putProjectDataToFlask();
 };
 const getInputsById = (id, projectdata) => {
   let obj = projectdata.filter((n) => n.id === id)[0];

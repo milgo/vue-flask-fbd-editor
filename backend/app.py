@@ -50,7 +50,8 @@ class ProgramThread(threading.Thread):
 				while not self._stop_event.is_set():
 
 						time.sleep(3)
-						os.system('cls')
+						print("---------------------")
+						#os.system('cls')
 						for func in listingdata:
 							value = func["function"]
 							if value in globals():
