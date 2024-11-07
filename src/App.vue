@@ -96,7 +96,7 @@
 			:value="variable.description"
 			v-on:blur="variable.edit = false"
             @enter="variable.edit = false;"
-			@valueChanged="(value) => variable.description = value"
+			@valueChanged="(value) => {variable.description = value; putVariableDataToFlask();}"
 		  />
           <!--<input
             ref="desc_input"
@@ -233,7 +233,7 @@
 
 <script setup>
 import axios from "axios";
-import varData from "./assets/variables.json";
+//import varData from "./assets/variables.json";
 import definitions from "./assets/definitions.json";
 import memDefinitions from "./assets/type-defs.json";
 import Function from "./components/Function.vue";
@@ -243,7 +243,7 @@ import VarInput from "./components/VarInput.vue";
 import { ref, provide, onMounted } from "vue";
 const projectdata = ref([]);
 const listing = ref([]);
-const variablesdata = ref(varData);
+const variablesdata = ref([]);
 const memDefs = ref(memDefinitions);
 const interConnection = ref(false);
 const interConnectionDetails = ref({
@@ -319,6 +319,7 @@ const addNewVarIfNotExisting = (node, name, type) => {
 	  forcedValue: 0
     };
     variablesdata.value.push(newVar);
+	putVariableDataToFlask();
     return newVar.id;
   }
   return found.id;
@@ -332,6 +333,7 @@ const deleteVariable = (id) => {
       node.mem_loc = "???";
     }
   });
+  putVariableDataToFlask();
 };
 
 const toggleForceVariable = (id) => {
@@ -344,15 +346,19 @@ const setForcedValueOfVariable = (id, val) => {
   variable.forcedValue = val;
 };
 
+const getVariableDataFromFlask = () => {
+  const path = "http://localhost:5000/variables";//"/program";
+	axios.get(path).then((res) => {console.log(res.data);variablesdata.value = res.data.variablesdata;})
+		.catch((err) => console.error(err));
+}
 
-const reloadProgram = () => {
-	axios.get('http://localhost:5000/stop')
-		.then((res) => 
-		{
-			if (res.data['status'] === 'success') {
-				axios.get('http://localhost:5000/start').catch((err) => console.error(err));
-			}
-		}).catch((err) => console.error(err));
+const putVariableDataToFlask = () => {
+  const path = "http://localhost:5000/variables";//"/program";
+  axios.post(path, variablesdata.value)
+        .then(() => {
+          axios.get(path).then((res) => {variablesdata.value = res.data.variablesdata;})
+            .catch((err) => console.error(err));
+        }).catch((err) => console.error(err));
 }
 
 const getProjectDataFromFlask = () => {
@@ -377,6 +383,7 @@ const putCompileDataToFlask = () => {
 
 
 onMounted(() => {
+  getVariableDataFromFlask();
   getProjectDataFromFlask();
 })
 

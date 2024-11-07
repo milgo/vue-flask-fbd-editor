@@ -17,8 +17,6 @@ app = Flask(__name__)
 #CORS(app, origins=["http://localhost:80","http://localhost:80"])
 #CORS(app, resources={r"/project": {"origins": "http://localhost:80"}})
 
-
-
 @app.route('/')
 def index():
     return 'Hello, World!'
@@ -57,7 +55,7 @@ class ProgramThread(threading.Thread):
 							if value in globals():
 								print(value + " " + str(func["target"]))
 								f_name = globals()[value]
-								#self.RLO_obj = f_name(self.RLO_obj, func, self.mem)
+								self.RLO_obj = f_name(self.RLO_obj, func, self.mem)
 								#print(RLO_obj)	
 						
 programThread = ProgramThread()
@@ -90,6 +88,23 @@ def projectData():
 			projectdata = json.load(f)
 			#print(response, file=sys.stderr)
 			response_object['projectdata'] = projectdata;
+	return jsonify(response_object)
+	
+@app.route('/variables', methods=['GET', 'POST'])
+@cross_origin(origin='*')
+def variablesData():
+	response_object = {'status': 'success'}
+	if request.method == 'POST':
+		post_data = request.get_json()
+		print('POST:', post_data)
+		with open('variables.json', 'w') as f:
+			f.write(json.dumps(post_data))
+		response_object['message'] = 'Variables changed!';
+	else:
+		with open('variables.json') as f:
+			variablesdata = json.load(f)
+			#print(response, file=sys.stderr)
+			response_object['variablesdata'] = variablesdata;
 	return jsonify(response_object)
 
 @app.route('/compile', methods=['POST'])

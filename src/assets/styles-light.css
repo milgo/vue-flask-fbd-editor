@@ -22,7 +22,8 @@
     display: inline-block;
   }
 
-.button-green { background-color: orange; }
+.button-orange { background-color: orange; }
+.button-green { background-color: green; }
 .button-gray { background-color: lightgray; }
 .button-red { background-color: rgb(243, 89, 89); }
 
