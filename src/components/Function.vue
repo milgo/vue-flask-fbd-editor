@@ -63,11 +63,6 @@
             v-if="node.mem_edit === false"
             @click="
               node.mem_edit = true;
-              subRefInVariable(node.mem_loc);
-              this.$nextTick(() => {
-                this.$refs.mem_input.focus();
-                this.$refs.mem_input.select();
-              });
             "
           >
             {{ node.mem_loc }}<template v-if="node.input_only">&nbsp</template>
@@ -75,7 +70,7 @@
               v-set="
                 (varDesc = getVariableDescriptionIfVariableExists(
                   variables,
-                  node.mem_id
+                  node.mem_loc
                 ))
               "
             ></div>
@@ -346,7 +341,6 @@ const disconnectNodeFromInput = inject("disconnectNodeFromInput");
 const addNewVarIfNotExisting = inject("addNewVarIfNotExisting");
 const connectNodeToInput = inject("connectNodeToInput");
 const getMemValidationRules = inject("getMemValidationRules");
-const subRefInVariable = inject("subRefInVariable");
 const checkIfVariableExists = inject("checkIfVariableExists");
 </script>
 <script>
@@ -376,8 +370,8 @@ export default {
     showAlert: (msg) => {
       alert(msg);
     },
-    getVariableDescriptionIfVariableExists(variables, id) {
-      var vars = variables.filter((v) => v.id === id);
+    getVariableDescriptionIfVariableExists(variables, mem_loc) {
+      var vars = variables.filter((v) => v.name === mem_loc);
       if (vars && vars[0]) return vars[0].description;
       else return "";
     },

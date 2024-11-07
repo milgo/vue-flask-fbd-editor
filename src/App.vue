@@ -152,7 +152,7 @@
           {{
             projectdata.filter(
               (n) =>
-                n.mem_loc === variable.name && n.mem_input === variable.type
+                n.mem_loc === variable.name && n.mem_input.some((m) => m === variable.type)
             ).length
           }}
         </td>
