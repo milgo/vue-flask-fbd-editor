@@ -89,26 +89,14 @@
             >
           </div>
           <div v-else>
-            <table>
-              <tr>
-                <td>
-                  <input
-                    ref="mem_input"
-                    style="width: 90%; height: 100%"
-                    :value="node.mem_loc"
-                    @input="
-                      (event) => {
-                        node.mem_loc = event.target.value;
-                      }
-                    "
-                    @oro-uwaga="showAlert('teraz')"
-                    @blur="memoryEdit(node)"
-                    @keyup.enter="memoryEdit(node)"
-                  />
-                </td>
-                <td></td>
-              </tr>
-            </table>
+
+				<VarInput 
+				@blur="memoryEdit(node)" 
+				@enter="memoryEdit(node)"
+				:value="node.mem_loc"
+				@valueChanged="(value) => node.mem_loc = value"
+				/>
+
           </div>
         </div>
       </td>
@@ -127,12 +115,14 @@
             :interConnection="interConnection"
             :interConnectionDetails="interConnectionDetails"
             @new-variable="
-              (event) =>
+              (event) => {
                 addNewVarIfNotExisting(
                   event.node,
                   event.node.mem_loc,
                   event.node.output_type
-                )
+                );
+				putProjectDataToFlask();
+				}
             "
           />
         </template>
@@ -267,7 +257,7 @@
                         show_name: 'false',
                       })
                     "
-                    class="button button-green"
+                    class="button button-orange"
                   >
                     +
                   </button>
@@ -308,7 +298,7 @@
                 show_name: 'false',
               })
             "
-            class="button button-green"
+            class="button button-orange"
           >
             +
           </button>
@@ -325,8 +315,9 @@
 <script setup>
 import definitions from "../assets/definitions.json";
 import typeDef from "../assets/type-defs.json";
-import { reactive, computed, nextTick } from "vue";
+import { reactive, computed } from "vue";
 import FunctionList from "./FunctionList.vue";
+import VarInput from "./VarInput.vue";
 //import vClickOutside from 'click-outside-vue3';
 import { inject } from "vue";
 
@@ -342,11 +333,14 @@ const addNewVarIfNotExisting = inject("addNewVarIfNotExisting");
 const connectNodeToInput = inject("connectNodeToInput");
 const getMemValidationRules = inject("getMemValidationRules");
 const checkIfVariableExists = inject("checkIfVariableExists");
+const putProjectDataToFlask = inject("putProjectDataToFlask");
+
 </script>
 <script>
 export default {
   components: {
     FunctionList: FunctionList,
+	VarInput: VarInput
   },
   props: [
     "id",
@@ -388,11 +382,9 @@ export default {
       return false;
     },
     memoryEdit(node) {
-      //TUTAJ
       node.mem_edit = false;
       if (node.mem_loc === "") {
         node.mem_loc = "???";
-        node.mem_id = 0;
       } else {
         if (this.isValid(typeDef, node.mem_loc, node.mem_input)) {
           this.$emit("new-variable", {
@@ -400,8 +392,6 @@ export default {
             mem_loc: node.mem_loc,
             output_type: node.output_type,
           });
-        } else {
-          node.mem_id = 0;
         }
       }
     },

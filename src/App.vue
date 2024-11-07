@@ -79,47 +79,7 @@
 
     <template v-for="variable in variablesdata">
       <tr>
-        <td>
-          <div
-            v-if="variable.edit === false || variable.refs > 0"
-            @click="
-              variable.edit = variable.refs === 0;
-              if (variable.refs === 0) {
-                this.$nextTick(() => {
-                  this.$refs['mem_input'][0].focus();
-                  this.$refs['mem_input'][0].select();
-                });
-              }
-            "
-            style="background-color: transparent"
-          >
-            {{ variable.name }}
-          </div>
-          <input
-            ref="mem_input"
-            v-if="variable.edit === true && variable.refs === 0"
-            :value="variable.name"
-            @input="
-              (event) => {
-                variable.name = event.target.value;
-              }
-            "
-            v-on:blur="variable.edit = false"
-            @keyup.enter="
-              {
-                variable.edit = false;
-                if (variable.name === '') {
-                  variable.name = '???';
-                } else {
-                  if (checkIfVariableExists(variable.name)) {
-                    showAlert('Variable ' + variable.name + ' already exists.');
-                    variable.name = '???';
-                  }
-                }
-              }
-            "
-          />
-        </td>
+        <td>{{ variable.name }}</td>
         <td>{{ variable.type }}</td>
         <td>
           <div
@@ -127,15 +87,18 @@
             style="background-color: transparent"
             @click="
               variable.edit = true;
-              this.$nextTick(() => {
-                this.$refs['desc_input'][0].focus();
-                this.$refs['desc_input'][0].select();
-              });
             "
           >
             {{ variable.description }}&nbsp
           </div>
-          <input
+		  <VarInput 
+			v-if="variable.edit === true"
+			:value="variable.description"
+			v-on:blur="variable.edit = false"
+            @enter="variable.edit = false;"
+			@valueChanged="(value) => variable.description = value"
+		  />
+          <!--<input
             ref="desc_input"
             v-if="variable.edit === true"
             :value="variable.description"
@@ -146,7 +109,7 @@
             "
             v-on:blur="variable.edit = false"
             @keyup.enter="variable.edit = false"
-          />
+          />-->
         </td>
         <td>
           {{
@@ -157,12 +120,44 @@
           }}
         </td>
         <td align="center">
+		  <table>
+		  <tr>
+		  <td>
           <button
             class="button button-red"
             @click="deleteVariable(variable.id)"
           >
-            x
+            X
           </button>
+		  </td>
+		  <td>
+		  <button
+            :class="variable.forced ? 'button button-green' : 'button button-red'"
+            @click="toggleForceVariable(variable.id)"
+          >
+            F
+          </button>
+		  </td>
+		  <td>
+		  <template v-if="variable.forced === true">
+		  <button
+			v-if="variable.forcedValue === 0"
+            class="button button-red"
+            @click="setForcedValueOfVariable(variable.id, 1)"
+          >
+            S
+          </button>
+		  <button
+			v-if="variable.forcedValue === 1"
+            class="button button-green"
+            @click="setForcedValueOfVariable(variable.id, 0)"
+          >
+            R
+          </button>
+		  </template>
+		  </td>
+		  </tr>
+		  </table>
         </td>
       </tr>
     </template>
@@ -229,7 +224,7 @@
         </button>
       </td>
       <td>
-        <!-- <textarea cols="30" rows="20">{{ variablesdata }}</textarea>-->
+         <textarea cols="30" rows="20">{{ variablesdata }}</textarea>
       </td>
     </tr>
   </table>
@@ -244,7 +239,8 @@ import memDefinitions from "./assets/type-defs.json";
 import Function from "./components/Function.vue";
 import FunctionList from "./components/FunctionList.vue";
 import FunctionListing from "./components/FunctionListing.vue";
-import { ref, provide, nextTick, onMounted } from "vue";
+import VarInput from "./components/VarInput.vue";
+import { ref, provide, onMounted } from "vue";
 const projectdata = ref([]);
 const listing = ref([]);
 const variablesdata = ref(varData);
@@ -319,6 +315,8 @@ const addNewVarIfNotExisting = (node, name, type) => {
       type: type,
       description: "",
       edit: false,
+	  forced: false,
+	  forcedValue: 0
     };
     variablesdata.value.push(newVar);
     return newVar.id;
@@ -335,6 +333,17 @@ const deleteVariable = (id) => {
     }
   });
 };
+
+const toggleForceVariable = (id) => {
+  var variable = variablesdata.value.filter((v) => v.id === id)[0];
+  variable.forced = !variable.forced;
+};
+
+const setForcedValueOfVariable = (id, val) => {
+  var variable = variablesdata.value.filter((v) => v.id === id)[0];
+  variable.forcedValue = val;
+};
+
 
 const reloadProgram = () => {
 	axios.get('http://localhost:5000/stop')
@@ -456,7 +465,6 @@ const disconnectNodeFromInput = (nodeId, inputId) => {
     if (node.id === nodeId) {
       node.parentInput = null;
       if (node.input_only === true) {
-        subRefInVariable(node.mem_loc);
         deleteChild(node.id);
       }
     }
@@ -532,11 +540,6 @@ const getMemValidationRules = (memType) => {
   return "";
 };
 
-const subRefInVariable = (name) => {
-  var res = variablesdata.value.filter((v) => v.name === name);
-  if (res && res[0] && res[0].refs > 0) res[0].refs--;
-};
-
 const inputDialog = (msg) => {
   return prompt(msg, "");
 };
@@ -551,13 +554,14 @@ provide("disconnectNodeFromInput", disconnectNodeFromInput);
 provide("addNewVarIfNotExisting", addNewVarIfNotExisting);
 provide("connectNodeToInput", connectNodeToInput);
 provide("getMemValidationRules", getMemValidationRules);
-provide("subRefInVariable", subRefInVariable);
 provide("checkIfVariableExists", checkIfVariableExists);
+provide("putProjectDataToFlask", putProjectDataToFlask);
 </script>
 <script>
 export default {
   components: {
     Function: Function,
+	VarInput: VarInput
   },
   props: {
     projectdata: {
