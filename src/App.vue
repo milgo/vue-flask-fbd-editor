@@ -233,7 +233,6 @@
 
 <script setup>
 import axios from "axios";
-//import varData from "./assets/variables.json";
 import definitions from "./assets/definitions.json";
 import memDefinitions from "./assets/type-defs.json";
 import Function from "./components/Function.vue";
@@ -315,6 +314,7 @@ const addNewVarIfNotExisting = (node, name, type) => {
       type: type,
       description: "",
       edit: false,
+	  value: 0,
 	  forced: false,
 	  forcedValue: 0
     };

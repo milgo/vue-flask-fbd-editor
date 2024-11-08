@@ -24,7 +24,7 @@ def index():
 class ProgramThread(threading.Thread):
 
 	RLO_obj = { "RLO" : 0, "STACK" : []}
-	mem = { "%m4.0" : 1, "%m2.0": 0, "%m3.0": 1}
+	mem = {}
 
 	def __init__(self):
 		super().__init__()
@@ -36,27 +36,39 @@ class ProgramThread(threading.Thread):
 	def restart(self):
 		self._stop_event.clear()
 
+	def forceVariableOnline(self, variable):
+		#Update only forced, forcedValue, 
+		pass
+
 	def run(self):
 		
 		while True:
 		
-			if os.path.isfile('listing.json'):
+			if os.path.isfile('listing.json') and os.path.isfile('variables.json'):
 			
 				with open('listing.json', 'r') as file:
 					listingdata = json.load(file)
-	
+
+				with open('variables.json', 'r') as file:
+					variablesdata = json.load(file)
+
+				for var in variablesdata:
+					self.mem[var["name"]] = var
+
+				print(self.mem)
+
 				while not self._stop_event.is_set():
 
-						time.sleep(3)
-						print("---------------------")
-						#os.system('cls')
-						for func in listingdata:
-							value = func["function"]
-							if value in globals():
-								print(value + " " + str(func["target"]))
-								f_name = globals()[value]
-								self.RLO_obj = f_name(self.RLO_obj, func, self.mem)
-								#print(RLO_obj)	
+					time.sleep(3)
+					print("---------------------")
+					#os.system('cls')
+					for func in listingdata:
+						value = func["function"]
+						if value in globals():
+							print(value + " " + str(func["target"]))
+							f_name = globals()[value]
+							self.RLO_obj = f_name(self.RLO_obj, func, self.mem)
+							#print(RLO_obj)	
 						
 programThread = ProgramThread()
 programThread.start()
@@ -117,6 +129,11 @@ def compileData():
 		f.write(json.dumps(post_data))
 	response_object['message'] = 'Compiled data saved!';
 	return jsonify(response_object)
+	
+@app.route('/monitor', methods=['GET'])
+@cross_origin(origin='*')
+def monitorData():
+	pass;
 	
 if __name__ == '__main__':
         from waitress import serve
