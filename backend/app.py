@@ -23,8 +23,9 @@ def index():
 
 class ProgramThread(threading.Thread):
 
-	RLO_obj = { "RLO" : 0, "STACK" : []}
+	rlo = {}
 	mem = {}
+	changed = False
 
 	def __init__(self):
 		super().__init__()
@@ -33,11 +34,16 @@ class ProgramThread(threading.Thread):
 	def stop(self):
 		self._stop_event.set()
 
+	def isRunning(self):
+		return not self._stop_event.is_set()
+
 	def restart(self):
 		self._stop_event.clear()
 
-	def forceVariableOnline(self, variable):
-		#Update only forced, forcedValue, 
+	def forceEnableOnVariable(self, varName, forceEnable):
+		pass
+
+	def forceSetOnVariable(self, varName, forcedValue):
 		pass
 
 	def run(self):
@@ -46,6 +52,9 @@ class ProgramThread(threading.Thread):
 		
 			if os.path.isfile('listing.json') and os.path.isfile('variables.json'):
 			
+				self.mem = {}
+				self.rlo = { "RLO" : 0, "STACK" : []}
+
 				with open('listing.json', 'r') as file:
 					listingdata = json.load(file)
 
@@ -55,23 +64,40 @@ class ProgramThread(threading.Thread):
 				for var in variablesdata:
 					self.mem[var["name"]] = var
 
-				print(self.mem)
+				#print(self.mem)
 
 				while not self._stop_event.is_set():
-
-					time.sleep(3)
+					time.sleep(1)
 					print("---------------------")
-					#os.system('cls')
-					for func in listingdata:
-						value = func["function"]
-						if value in globals():
-							print(value + " " + str(func["target"]))
-							f_name = globals()[value]
-							self.RLO_obj = f_name(self.RLO_obj, func, self.mem)
+
+					for entry in listingdata:
+						func = entry["function"]
+						if func in globals():
+							#print(func + " " + str(entry["target"]))
+							f_name = globals()[func]
+							self.rlo = f_name(self.rlo, entry, self.mem)
+
+							#overwrite mem if its forced
+							if "memory" in entry and self.mem[entry["memory"]]["forced"] == True:
+								self.mem[entry["memory"]]["value"] = self.mem[entry["memory"]]["forcedValue"]
 							#print(RLO_obj)	
 						
 programThread = ProgramThread()
 programThread.start()
+
+@app.route('/status', methods=['GET'])
+@cross_origin(origin='*')
+def statusData():
+	response_object = {'status': 'success'}
+	if programThread.changed:
+		response_object['changed'] =  'changed'
+	else: 
+		response_object['changed'] =  'not changed'
+	if programThread.isRunning():
+		response_object['state'] = 'running'
+	else:
+		response_object['state'] = 'stopped'
+	return jsonify(response_object)
 
 @app.route('/start', methods=['GET'])
 @cross_origin(origin='*')
@@ -95,6 +121,7 @@ def projectData():
 		with open('project.json', 'w') as f:
 			f.write(json.dumps(post_data))
 		response_object['message'] = 'Project changed!';
+		programThread.changed = True
 	else:
 		with open('project.json') as f:
 			projectdata = json.load(f)
@@ -112,6 +139,7 @@ def variablesData():
 		with open('variables.json', 'w') as f:
 			f.write(json.dumps(post_data))
 		response_object['message'] = 'Variables changed!';
+		programThread.changed = True
 	else:
 		with open('variables.json') as f:
 			variablesdata = json.load(f)
@@ -128,12 +156,16 @@ def compileData():
 	with open('listing.json', 'w') as f:
 		f.write(json.dumps(post_data))
 	response_object['message'] = 'Compiled data saved!';
+	programThread.changed = False
 	return jsonify(response_object)
 	
 @app.route('/monitor', methods=['GET'])
 @cross_origin(origin='*')
 def monitorData():
-	pass;
+	response_object = {'status': 'success'}
+	print(programThread.rlo)
+	response_object['monitordata'] = programThread.rlo;
+	return jsonify(response_object)
 	
 if __name__ == '__main__':
         from waitress import serve

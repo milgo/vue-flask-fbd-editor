@@ -1,4 +1,5 @@
 <template>
+
   <!--{{projectdata.some((n) => n) === true}}
   <div v-if="projectdata.some((n) => n) === true">
     <Function :id="projectdata[0].id" :parentId="projectdata[0].parentId" :nodes="nodes" :node="nodes[0]"/>
@@ -20,6 +21,7 @@
             :id="node.id"
             :networkId="networkId + 1"
             :projectdata="projectdata"
+			:enableEdit="enableEdit[statusdata.state]"
             :node="projectdata.filter((n) => n.id === node.id)[0]"
             :variables="variablesdata"
             :interConnection="interConnection"
@@ -31,6 +33,7 @@
         </td>
         <td valign="top">
           <button
+			v-if="enableEdit[statusdata.state]"
             :class="
               interConnection && interConnectionDetails.nodeId === node.id
                 ? 'button button-red'
@@ -54,7 +57,7 @@
     </table>
   </div>
 
-  <div align="left">
+  <div align="left" v-if="enableEdit[statusdata.state]">
     <FunctionList
       @selected="
         addChild(Date.now(), null, $event);
@@ -86,7 +89,7 @@
             v-if="variable.edit === false"
             style="background-color: transparent"
             @click="
-              variable.edit = true;
+              variable.edit = enableEdit[statusdata.state];
             "
           >
             {{ variable.description }}&nbsp
@@ -123,7 +126,8 @@
 		  <table>
 		  <tr>
 		  <td>
-          <button
+          <button 
+			v-if="enableEdit[statusdata.state]"
             class="button button-red"
             @click="deleteVariable(variable.id)"
           >
@@ -132,6 +136,7 @@
 		  </td>
 		  <td>
 		  <button
+			v-if="enableForce[statusdata.state]"
             :class="variable.forced ? 'button button-green' : 'button button-red'"
             @click="toggleForceVariable(variable.id)"
           >
@@ -141,14 +146,14 @@
 		  <td>
 		  <template v-if="variable.forced === true">
 		  <button
-			v-if="variable.forcedValue === 0"
+			v-if="variable.forcedValue === 0 && enableForce[statusdata.state]"
             class="button button-red"
             @click="setForcedValueOfVariable(variable.id, 1)"
           >
             S
           </button>
 		  <button
-			v-if="variable.forcedValue === 1"
+			v-if="variable.forcedValue === 1 && enableForce[statusdata.state]"
             class="button button-green"
             @click="setForcedValueOfVariable(variable.id, 0)"
           >
@@ -165,6 +170,7 @@
 
   <div v-set="(varName = '???')"></div>
   <select
+	v-if="enableEdit[statusdata.state]"
     v-model="selected"
     @change="
       varName = inputDialog('Enter variable name: ');
@@ -204,6 +210,7 @@
       <td>
          <!--<textarea cols="30" rows="20">{{ listing }}</textarea>-->
         <button
+		  v-if="compileButtonVisible[statusdata.changed]"
           @click="
             listing.splice(0);
             buildListing(projectdata);
@@ -213,18 +220,27 @@
           Compile
         </button>
 		<button
-          @click="axios.get('http://localhost:5000/stop').catch((err) => console.error(err));"
+		  v-if="stopButtonVisible[statusdata.state]"
+          @click="axios.get('http://localhost:5000/stop')
+					.then((res) => {getStatusDataFromFlask();})
+					.catch((err) => console.error(err));"
         >
           Stop
         </button>
 		<button
-          @click="axios.get('http://localhost:5000/start').catch((err) => console.error(err));"
+		  v-if="startButtonVisible[statusdata.state] && !compileButtonVisible[statusdata.changed]"
+          @click="axios.get('http://localhost:5000/start')
+					.then((res) => {getStatusDataFromFlask();})
+					.catch((err) => console.error(err));"
         >
           Start
         </button>
       </td>
+	  <td>
+		<div>&nbspStatus: {{statusdata}} </div>
+	  </td>
       <td>
-         <textarea cols="30" rows="20">{{ variablesdata }}</textarea>
+         <!--<textarea cols="30" rows="20">{{ variablesdata }}</textarea>-->
       </td>
     </tr>
   </table>
@@ -240,10 +256,19 @@ import FunctionList from "./components/FunctionList.vue";
 import FunctionListing from "./components/FunctionListing.vue";
 import VarInput from "./components/VarInput.vue";
 import { ref, provide, onMounted } from "vue";
+
+const statusdata = ref([]);
 const projectdata = ref([]);
 const listing = ref([]);
 const variablesdata = ref([]);
 const memDefs = ref(memDefinitions);
+
+const enableEdit = {"stopped" : true, "running" : false}
+const enableForce = {"stopped" : false, "running" : true}
+const stopButtonVisible = {"stopped" : false, "running" : true}
+const startButtonVisible = {"stopped" : true, "running" : false}
+const compileButtonVisible = {"changed" : true, "not changed" : false}
+
 const interConnection = ref(false);
 const interConnectionDetails = ref({
   nodeId: 0,
@@ -268,13 +293,13 @@ const recursiveLoopBasedOnInputs = (
           parentElement.alias != "" ? parentElement.alias : parentElement.block,
         memory: element.mem_loc,
         node: element.id,
-        target: parentElement.id,
+        target: parentElement.id.toString(),
       });
     } else {
       listing.value.push({
         function:
           "pre_" + (element.alias != "" ? element.alias : element.block),
-        target: element.id,
+        target: element.id.toString(),
       });
 
       Array.prototype.forEach.call(element.inputs, (input) => {
@@ -286,7 +311,7 @@ const recursiveLoopBasedOnInputs = (
         function:
           "post_" + (element.alias != "" ? element.alias : element.block),
         memory: element.mem_loc !== "???" ? element.mem_loc : undefined,
-        target: element.id,
+        target: element.id.toString(),
       });
     }
   }
@@ -339,50 +364,59 @@ const deleteVariable = (id) => {
 const toggleForceVariable = (id) => {
   var variable = variablesdata.value.filter((v) => v.id === id)[0];
   variable.forced = !variable.forced;
+  putVariableDataToFlask();
 };
 
 const setForcedValueOfVariable = (id, val) => {
   var variable = variablesdata.value.filter((v) => v.id === id)[0];
   variable.forcedValue = val;
+  putVariableDataToFlask();
 };
 
+const getStatusDataFromFlask = () => {
+  const path = "http://localhost:5000/status";//"/status";
+	axios.get(path).then((res) => {console.log(res.data);statusdata.value = res.data;})
+		.catch((err) => console.error(err));
+}
+
 const getVariableDataFromFlask = () => {
-  const path = "http://localhost:5000/variables";//"/program";
+  const path = "http://localhost:5000/variables";//"/variables";
 	axios.get(path).then((res) => {console.log(res.data);variablesdata.value = res.data.variablesdata;})
 		.catch((err) => console.error(err));
 }
 
 const putVariableDataToFlask = () => {
-  const path = "http://localhost:5000/variables";//"/program";
+  const path = "http://localhost:5000/variables";//"/variables";
   axios.post(path, variablesdata.value)
         .then(() => {
-          axios.get(path).then((res) => {variablesdata.value = res.data.variablesdata;})
+          axios.get(path).then((res) => {variablesdata.value = res.data.variablesdata;getStatusDataFromFlask();})
             .catch((err) => console.error(err));
         }).catch((err) => console.error(err));
 }
 
 const getProjectDataFromFlask = () => {
-  const path = "http://localhost:5000/project";//"/program";
+  const path = "http://localhost:5000/project";//"/project";
 	axios.get(path).then((res) => {console.log(res.data);projectdata.value = res.data.projectdata;})
 		.catch((err) => console.error(err));
 }
 
 const putProjectDataToFlask = () => {
-  const path = "http://localhost:5000/project";//"/program";
+  const path = "http://localhost:5000/project";//"/project";
   axios.post(path, projectdata.value)
         .then(() => {
-          axios.get(path).then((res) => {projectdata.value = res.data.projectdata;})
+          axios.get(path).then((res) => {projectdata.value = res.data.projectdata;getStatusDataFromFlask();})
             .catch((err) => console.error(err));
         }).catch((err) => console.error(err));
 }
 
 const putCompileDataToFlask = () => {
-  const path = "http://localhost:5000/compile";//"/program";
-  axios.post(path, listing.value).catch((err) => console.error(err));
+  const path = "http://localhost:5000/compile";//"/compile";
+  axios.post(path, listing.value).then((res) => {getStatusDataFromFlask();}).catch((err) => console.error(err));
 }
 
 
 onMounted(() => {
+  getStatusDataFromFlask();
   getVariableDataFromFlask();
   getProjectDataFromFlask();
 })

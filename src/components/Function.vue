@@ -1,4 +1,5 @@
 <template>
+
   <div v-set="(node.networkId = networkId)"></div>
   <table width="100%">
     <tr>
@@ -31,7 +32,7 @@
               >
                 <button
                   @click="deleteChild(id)"
-                  v-if="node.header_hover === true"
+                  v-if="node.header_hover === true && enableEdit"
                   class="button button-red"
                 >
                   x
@@ -62,7 +63,7 @@
             "
             v-if="node.mem_edit === false"
             @click="
-              node.mem_edit = true;
+              node.mem_edit = enableEdit;
             "
           >
             {{ node.mem_loc }}<template v-if="node.input_only">&nbsp</template>
@@ -110,6 +111,7 @@
             :networkId="networkId"
             :parentId="inputNode.id"
             :projectdata="projectdata"
+			:enableEdit="enableEdit"
             :node="projectdata.filter((n) => n.id === inputNode.target)[0]"
             :variables="variables"
             :interConnection="interConnection"
@@ -137,6 +139,7 @@
             "
           >
             <button
+			  v-if="enableEdit"
               class="button button-red"
               @click="
                 connectNodeToInput(interConnectionDetails.nodeId, inputNode.id)
@@ -146,7 +149,7 @@
             </button>
           </template>
           <template v-else>
-            <template v-if="hasDynInputs(node)">
+            <template v-if="hasDynInputs(node) && enableEdit">
               <FunctionList
                 :outputType="node.dyn_inputs_type"
                 :alone="false"
@@ -154,7 +157,8 @@
               />
             </template>
             <template v-else>
-              <FunctionList
+              <FunctionList 
+				v-if="enableEdit"
                 :outputType="node.inputs[index].type"
                 :alone="false"
                 @selected="addChild(Date.now(), inputNode, $event)"
@@ -166,7 +170,7 @@
       <td align="center" valign="top" width="20px">
         <table
           width="100%"
-          @mouseover="inputNode.conn_mouse_hover = true"
+          @mouseover="inputNode.conn_mouse_hover = enableEdit"
           @mouseleave="inputNode.conn_mouse_hover = false"
         >
           <tr>
@@ -192,7 +196,7 @@
                   inputNode.target !== -1 && inputNode.conn_mouse_hover === true
                 "
               >
-                <button
+                <button				  
                   @click="
                     disconnectNodeFromInput(inputNode.target, inputNode.id);
                     inputNode.conn_mouse_hover = false;
@@ -232,7 +236,7 @@
                       deleteInput(inputNode.id);
                       deleteChild(inputNode.target);
                     "
-                    v-if="inputNode.target === -1"
+                    v-if="inputNode.target === -1 && enableEdit"
                     class="button button-red"
                   >
                     x
@@ -248,7 +252,7 @@
             </tr>
             <tr>
               <td :class="node.value ? 'fbd-body-green' : 'fbd-body'">
-                <template v-if="index === inputsById.length - 1">
+                <template v-if="index === inputsById.length - 1 && enableEdit">
                   <button
                     @click="
                       addInput(id, {
@@ -289,7 +293,7 @@
       <td></td>
       <td></td>
       <td :class="node.value ? 'fbd-body-green' : 'fbd-body'" align="left">
-        <template v-if="inputsById.length === 0 && hasDynInputs(node)">
+        <template v-if="inputsById.length === 0 && hasDynInputs(node) && enableEdit">
           <button
             @click="
               addInput(id, {
@@ -347,6 +351,7 @@ export default {
     "networkId",
     "parentId",
     "projectdata",
+	"enableEdit",
     "node",
     "variables",
     "interConnection",
