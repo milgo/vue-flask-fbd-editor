@@ -216,7 +216,9 @@
             buildListing(projectdata);
 			putCompileDataToFlask();
           "
+		  
         >
+		
           Compile
         </button>
 		<button
@@ -245,6 +247,7 @@
     </tr>
   </table>
  <!--{{ interConnectionDetails }}-->
+
 </template>
 
 <script setup>
@@ -255,12 +258,13 @@ import Function from "./components/Function.vue";
 import FunctionList from "./components/FunctionList.vue";
 import FunctionListing from "./components/FunctionListing.vue";
 import VarInput from "./components/VarInput.vue";
-import { ref, provide, onMounted } from "vue";
+import { ref, provide, onMounted, onUpdated } from "vue";
 
 const statusdata = ref([]);
 const projectdata = ref([]);
 const listing = ref([]);
 const variablesdata = ref([]);
+
 const memDefs = ref(memDefinitions);
 
 const enableEdit = {"stopped" : true, "running" : false}
@@ -317,7 +321,18 @@ const recursiveLoopBasedOnInputs = (
   }
 };
 
+/*const verifyProgramDataBeforeCompile = (data) => {
+	compileWarnings.value.splice(0);
+	data.forEach((element) => {
+		if(element.dyn_inputs && element.inputs.length === 0)
+			compileWarnings.value.push(element.block + " has no inputs!");
+		if(element.mem_loc && element.mem_loc === "???")
+			compileWarnings.value.push(element.block + " memory not assigned!");
+	});
+}*/
+
 const buildListing = (data, level) => {
+  //verifyProgramDataBeforeCompile(data);
   data.forEach((element) => {
     if (element.parentInput === null) {
       listing.value.push({ function: "CANCEL_RLO" });
@@ -421,6 +436,9 @@ onMounted(() => {
   getProjectDataFromFlask();
 })
 
+onUpdated(() => {
+});
+
 const addChild = (id, parentInput, blockJson) => {
   var parentId = null;
   var block = JSON.parse(blockJson);
@@ -439,8 +457,7 @@ const addChild = (id, parentInput, blockJson) => {
     alias: block.alias,
     description: "",
     mem_edit: false,
-    mem_loc: "???",
-    //mem_id: 0,
+    mem_loc: block.mem_loc,
     mem_input: block.mem_input,
     dyn_inputs: block.dyn_inputs,
     output_type: block.output_type,
@@ -613,17 +630,19 @@ export default {
   setup() {
     return {};
   },
+  data() {
+    return {
+      selected: undefined,
+	  compileWarnings: []
+    };
+  },
   methods: {
     showAlert: (msg) => {
       alert(msg);
     },
   },
   name: "App",
-  data() {
-    return {
-      selected: undefined,
-    };
-  },
+
 };
 </script>
 

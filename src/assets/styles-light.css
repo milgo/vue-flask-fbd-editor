@@ -12,6 +12,12 @@
   overflow-y: visible;
 }
 
+button[disabled] {
+        border: 1px solid black;
+        color: grey;
+        cursor: not-allowed;
+    }
+
 .button {
     background-color: white; /* Green */
     border: none;
@@ -136,3 +142,40 @@ html *
 .hr-green {
   border: 1px solid limegreen;
 }
+
+img { vertical-align:bottom; background-color: transparent;}
+
+/*Tooltip Begin*/
+.tooltip {
+  position: relative;
+  display: inline-block;
+  background-color: transparent;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: orange;
+  color: #000;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  top: -5px;
+  left: 110%;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent orange transparent transparent;
+}
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+/*Tooltip End*/

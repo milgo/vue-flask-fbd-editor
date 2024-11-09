@@ -67,6 +67,9 @@
             "
           >
             {{ node.mem_loc }}<template v-if="node.input_only">&nbsp</template>
+			<div class="tooltip" v-if="!isMemValid">
+				<img src="../assets/warning.png"/><span class="tooltiptext">Memory not assigned</span>
+			</div>
             <div
               v-set="
                 (varDesc = getVariableDescriptionIfVariableExists(
@@ -149,6 +152,11 @@
             </button>
           </template>
           <template v-else>
+
+			<div class="tooltip"><img src="../assets/warning.png"/>
+			  <span class="tooltiptext">Input not assigned</span>
+			</div>
+
             <template v-if="hasDynInputs(node) && enableEdit">
               <FunctionList
                 :outputType="node.dyn_inputs_type"
@@ -294,6 +302,7 @@
       <td></td>
       <td :class="node.value ? 'fbd-body-green' : 'fbd-body'" align="left">
         <template v-if="inputsById.length === 0 && hasDynInputs(node) && enableEdit">
+
           <button
             @click="
               addInput(id, {
@@ -306,6 +315,9 @@
           >
             +
           </button>
+		  <div class="tooltip" v-if="!isMemValid">
+			<img src="../assets/warning.png"/><span class="tooltiptext">No inputs added</span>
+		  </div>
         </template>
       </td>
     </tr>
