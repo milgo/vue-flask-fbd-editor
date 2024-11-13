@@ -216,7 +216,7 @@
             buildListing(projectdata);
 			putCompileDataToFlask();
           "
-		  
+		  :disabled="verifyProgramDataBeforeCompile(projectdata)"
         >
 		
           Compile
@@ -320,16 +320,6 @@ const recursiveLoopBasedOnInputs = (
     }
   }
 };
-
-/*const verifyProgramDataBeforeCompile = (data) => {
-	compileWarnings.value.splice(0);
-	data.forEach((element) => {
-		if(element.dyn_inputs && element.inputs.length === 0)
-			compileWarnings.value.push(element.block + " has no inputs!");
-		if(element.mem_loc && element.mem_loc === "???")
-			compileWarnings.value.push(element.block + " memory not assigned!");
-	});
-}*/
 
 const buildListing = (data, level) => {
   //verifyProgramDataBeforeCompile(data);
@@ -640,6 +630,13 @@ export default {
     showAlert: (msg) => {
       alert(msg);
     },
+  verifyProgramDataBeforeCompile: (data) => {
+	var res = data.some((n) => (n.dyn_inputs && n.inputs.length === 0)) ||
+		data.some((n) => (n.mem_loc && n.mem_loc === "???")) ||
+		data.some((n) => (n.inputs.some((i) => i.target = -1)))
+
+	return res;
+}
   },
   name: "App",
 
