@@ -224,16 +224,16 @@
 		<button
 		  v-if="stopButtonVisible[statusdata.state]"
           @click="axios.get('http://localhost:5000/stop')
-					.then((res) => {getStatusDataFromFlask();})
-					.catch((err) => console.error(err));"
+					.then((res) => {/*getStatusDataFromFlask();*/})
+					.catch((err) => console.error(err));  getVariableDataFromFlask();getProjectDataFromFlask();"
         >
           Stop
         </button>
 		<button
 		  v-if="startButtonVisible[statusdata.state] && !compileButtonVisible[statusdata.changed]"
           @click="axios.get('http://localhost:5000/start')
-					.then((res) => {getStatusDataFromFlask();})
-					.catch((err) => console.error(err));"
+					.then((res) => {/*getStatusDataFromFlask();*/})
+					.catch((err) => console.error(err));  getVariableDataFromFlask();getProjectDataFromFlask();"
         >
           Start
         </button>
@@ -394,14 +394,14 @@ const putVariableDataToFlask = () => {
   const path = "http://localhost:5000/variables";//"/variables";
   axios.post(path, variablesdata.value)
         .then(() => {
-          axios.get(path).then((res) => {variablesdata.value = res.data.variablesdata;getStatusDataFromFlask();})
-            .catch((err) => console.error(err));
+          /*axios.get(path).then((res) => {variablesdata.value = res.data.variablesdata;})
+            .catch((err) => console.error(err));*/
         }).catch((err) => console.error(err));
 }
 
 const getProjectDataFromFlask = () => {
   const path = "http://localhost:5000/project";//"/project";
-	axios.get(path).then((res) => {console.log(res.data);projectdata.value = res.data.projectdata;})
+	axios.get(path).then((res) => {console.log(res.data);projectdata.value = res.data.projectdata;statusdata.value = res.data.statusdata})
 		.catch((err) => console.error(err));
 }
 
@@ -409,21 +409,24 @@ const putProjectDataToFlask = () => {
   const path = "http://localhost:5000/project";//"/project";
   axios.post(path, projectdata.value)
         .then(() => {
-          axios.get(path).then((res) => {projectdata.value = res.data.projectdata;getStatusDataFromFlask();})
-            .catch((err) => console.error(err));
+          /*axios.get(path).then((res) => {
+			projectdata.value = res.data.projectdata;
+			}).catch((err) => console.error(err));*/
         }).catch((err) => console.error(err));
 }
 
 const putCompileDataToFlask = () => {
   const path = "http://localhost:5000/compile";//"/compile";
-  axios.post(path, listing.value).then((res) => {getStatusDataFromFlask();}).catch((err) => console.error(err));
+  axios.post(path, listing.value).then((res) => {/*getStatusDataFromFlask();*/}).catch((err) => console.error(err));
 }
 
 
 onMounted(() => {
-  getStatusDataFromFlask();
+
   getVariableDataFromFlask();
   getProjectDataFromFlask();
+
+  //getStatusDataFromFlask();
 })
 
 onUpdated(() => {
@@ -475,6 +478,7 @@ const addInput = (nodeId, inputDef, idOffset = 0) => {
   let found = projectdata.value.filter((item) => item.id === nodeId);
 
   found.forEach((element) => {
+	//console.log(element);
     element.inputs.push({
       id: Date.now() + idOffset,
       target: -1,
@@ -485,8 +489,9 @@ const addInput = (nodeId, inputDef, idOffset = 0) => {
       show_name: inputDef.show_name,
       value: 0,
     });
+	putProjectDataToFlask();
   });
-  putProjectDataToFlask();
+  
 };
 
 const connectNodeToInput = (nodeId, inputId) => {
@@ -612,10 +617,6 @@ export default {
 	VarInput: VarInput
   },
   props: {
-    projectdata: {
-      type: Array,
-      default: () => [],
-    },
   },
   setup() {
     return {};

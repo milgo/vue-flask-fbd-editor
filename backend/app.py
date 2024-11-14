@@ -85,19 +85,19 @@ class ProgramThread(threading.Thread):
 programThread = ProgramThread()
 programThread.start()
 
-@app.route('/status', methods=['GET'])
-@cross_origin(origin='*')
-def statusData():
-	response_object = {'status': 'success'}
-	if programThread.changed:
-		response_object['changed'] =  'changed'
-	else: 
-		response_object['changed'] =  'not changed'
-	if programThread.isRunning():
-		response_object['state'] = 'running'
-	else:
-		response_object['state'] = 'stopped'
-	return jsonify(response_object)
+#@app.route('/status', methods=['GET'])
+#@cross_origin(origin='*')
+#def statusData():
+#	response_object = {'status': 'success'}
+#	#if programThread.changed:
+#	#	response_object['changed'] =  'changed'
+#	#else: 
+#	#	response_object['changed'] =  'not changed'
+#	if programThread.isRunning():
+#		response_object['state'] = 'running'
+#	else:
+#		response_object['state'] = 'stopped'
+#	return jsonify(response_object)
 
 @app.route('/start', methods=['GET'])
 @cross_origin(origin='*')
@@ -126,7 +126,17 @@ def projectData():
 		with open('project.json') as f:
 			projectdata = json.load(f)
 			#print(response, file=sys.stderr)
-			response_object['projectdata'] = projectdata;
+			response_object['projectdata'] = projectdata
+		statusdata = {'status': 'success'}
+		if programThread.isRunning():
+			statusdata['state'] = 'running'
+		else:
+			statusdata['state'] = 'stopped'
+		if programThread.changed:
+			statusdata['changed'] =  'changed'
+		else: 
+			statusdata['changed'] =  'not changed'
+	response_object['statusdata'] = statusdata
 	return jsonify(response_object)
 	
 @app.route('/variables', methods=['GET', 'POST'])
