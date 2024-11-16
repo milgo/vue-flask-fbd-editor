@@ -19,6 +19,7 @@
 export default {
   name: 'VarInput',
   props: ['value'],
+  emits: ['valueChanged', 'enter', 'blur'],
   mounted () {
 
     setTimeout(() => {

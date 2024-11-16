@@ -176,7 +176,7 @@
       varName = inputDialog('Enter variable name: ');
       if (
         varName.match(
-          memDefs.filter((md) => md.type === $event.target.value)[0].valid
+          typeDefs.filter((md) => md.type === $event.target.value)[0].valid
         )
       ) {
         addNewVarIfNotExisting(null, varName, $event.target.value);
@@ -194,8 +194,8 @@
     >
       +
     </option>
-    <template v-for="m in memDefs">
-      <option :value="m.type">{{ m.type }}</option>
+    <template v-for="t in typeDefs">
+      <option :value="t.type">{{ t.type }}</option>
     </template>
   </select>
 
@@ -216,7 +216,7 @@
             buildListing(projectdata);
 			putCompileDataToFlask();
           "
-		  :disabled="verifyProgramDataBeforeCompile(projectdata)"
+		  :disabled="!isProgramDataReadyToCompile(projectdata, typeDefs)"
         >
 		
           Compile
@@ -253,7 +253,7 @@
 <script setup>
 import axios from "axios";
 import definitions from "./assets/definitions.json";
-import memDefinitions from "./assets/type-defs.json";
+import typeDefinitions from "./assets/type-defs.json";
 import Function from "./components/Function.vue";
 import FunctionList from "./components/FunctionList.vue";
 import FunctionListing from "./components/FunctionListing.vue";
@@ -265,7 +265,7 @@ const projectdata = ref([]);
 const listing = ref([]);
 const variablesdata = ref([]);
 
-const memDefs = ref(memDefinitions);
+const typeDefs = ref(typeDefinitions);
 
 const enableEdit = {"stopped" : true, "running" : false}
 const enableForce = {"stopped" : false, "running" : true}
@@ -296,7 +296,7 @@ const recursiveLoopBasedOnInputs = (
         function:
           parentElement.alias != "" ? parentElement.alias : parentElement.block,
         memory: element.mem_loc,
-        node: element.id,
+        node: element.id.toString(),
         target: parentElement.id.toString(),
       });
     } else {
@@ -408,16 +408,17 @@ const getProjectDataFromFlask = () => {
 const putProjectDataToFlask = () => {
   const path = "http://localhost:5000/project";//"/project";
   axios.post(path, projectdata.value)
-        .then(() => {
+        .then((res) => {
           /*axios.get(path).then((res) => {
 			projectdata.value = res.data.projectdata;
 			}).catch((err) => console.error(err));*/
+			statusdata.value = res.data.statusdata;
         }).catch((err) => console.error(err));
 }
 
 const putCompileDataToFlask = () => {
   const path = "http://localhost:5000/compile";//"/compile";
-  axios.post(path, listing.value).then((res) => {/*getStatusDataFromFlask();*/}).catch((err) => console.error(err));
+  axios.post(path, listing.value).then((res) => {statusdata.value = res.data.statusdata;}).catch((err) => console.error(err));
 }
 
 
@@ -587,12 +588,6 @@ const forceFunctionListRerender = () => {
   functionListKey.value += 1;
 };
 
-const getMemValidationRules = (memType) => {
-  var res = memDefs.value.filter((d) => d.type === memType);
-  if (res && res[0]) return res[0].valid;
-  return "";
-};
-
 const inputDialog = (msg) => {
   return prompt(msg, "");
 };
@@ -606,7 +601,6 @@ provide("getNodeById", getNodeById);
 provide("disconnectNodeFromInput", disconnectNodeFromInput);
 provide("addNewVarIfNotExisting", addNewVarIfNotExisting);
 provide("connectNodeToInput", connectNodeToInput);
-provide("getMemValidationRules", getMemValidationRules);
 provide("checkIfVariableExists", checkIfVariableExists);
 provide("putProjectDataToFlask", putProjectDataToFlask);
 </script>
@@ -631,12 +625,23 @@ export default {
     showAlert: (msg) => {
       alert(msg);
     },
-  verifyProgramDataBeforeCompile: (data) => {
+  isVarNameTypeValid (rules, name, acceptableTypes){
+      var result = false;
+      acceptableTypes.forEach((t) => {
+        if (name.match(rules.filter((tv) => tv.type === t)[0].valid)) {
+          result = true;
+        }
+      });
+      return result;
+    },
+  isProgramDataReadyToCompile(data, types) {
+	var emptyMem = "???";
 	var res = data.some((n) => (n.dyn_inputs && n.inputs.length === 0)) ||
-		data.some((n) => (n.mem_loc && n.mem_loc === "???")) ||
-		data.some((n) => (n.inputs.some((i) => i.target = -1)))
+		data.some((n) => (n.mem_loc && n.mem_loc === emptyMem)) ||
+		data.some((n) => n.mem_input && !this.isVarNameTypeValid(types, n.mem_loc, n.mem_input)) ||
+		data.some((n) => (n.inputs.some((i) => i.target === -1)));
 
-	return res;
+	return !res;
 }
   },
   name: "App",

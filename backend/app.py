@@ -34,6 +34,18 @@ class ProgramThread(threading.Thread):
 	def stop(self):
 		self._stop_event.set()
 
+	def getStatus(self):
+		statusdata = {'status': 'success'}
+		if programThread.isRunning():
+			statusdata['state'] = 'running'
+		else:
+			statusdata['state'] = 'stopped'
+		if programThread.changed:
+			statusdata['changed'] =  'changed'
+		else: 
+			statusdata['changed'] =  'not changed'
+		return statusdata
+
 	def isRunning(self):
 		return not self._stop_event.is_set()
 
@@ -78,7 +90,7 @@ class ProgramThread(threading.Thread):
 							self.rlo = f_name(self.rlo, entry, self.mem)
 
 							#overwrite mem if its forced
-							if "memory" in entry and self.mem[entry["memory"]]["forced"] == True:
+							if "memory" in entry and entry["memory"] != " " and self.mem[entry["memory"]]["forced"] == True:
 								self.mem[entry["memory"]]["value"] = self.mem[entry["memory"]]["forcedValue"]
 							#print(RLO_obj)	
 						
@@ -122,21 +134,14 @@ def projectData():
 			f.write(json.dumps(post_data))
 		response_object['message'] = 'Project changed!';
 		programThread.changed = True
+
 	else:
 		with open('project.json') as f:
 			projectdata = json.load(f)
 			#print(response, file=sys.stderr)
 			response_object['projectdata'] = projectdata
-		statusdata = {'status': 'success'}
-		if programThread.isRunning():
-			statusdata['state'] = 'running'
-		else:
-			statusdata['state'] = 'stopped'
-		if programThread.changed:
-			statusdata['changed'] =  'changed'
-		else: 
-			statusdata['changed'] =  'not changed'
-	response_object['statusdata'] = statusdata
+
+	response_object['statusdata'] = programThread.getStatus()
 	return jsonify(response_object)
 	
 @app.route('/variables', methods=['GET', 'POST'])
@@ -167,6 +172,7 @@ def compileData():
 		f.write(json.dumps(post_data))
 	response_object['message'] = 'Compiled data saved!';
 	programThread.changed = False
+	response_object['statusdata'] = programThread.getStatus()
 	return jsonify(response_object)
 	
 @app.route('/monitor', methods=['GET'])

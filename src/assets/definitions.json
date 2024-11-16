@@ -8,7 +8,8 @@
         "input_only": true,
         "output_type": "bool",
         "dyn_inputs": false,
-        "mem_input": ["bool"]
+        "mem_input": ["bool"],
+		"mem_loc": "???"
       },
       {
         "name": "CONST",
@@ -17,7 +18,8 @@
         "show_name": false,
         "output_type": "int",
         "dyn_inputs": false,
-        "mem_input": ["int"]
+        "mem_input": ["int"],
+		"mem_loc": "???"
       },
       {
         "name": "TIME",
@@ -26,7 +28,8 @@
         "show_name": false,
         "output_type": "time",
         "dyn_inputs": false,
-        "mem_input": ["time"]
+        "mem_input": ["time"],
+		"mem_loc": "???"
       }
     ]
   },
@@ -40,7 +43,8 @@
         "show_name": true,
         "output_type": "bool",
         "dyn_inputs": true,
-        "dyn_inputs_type": ["bool"]
+        "dyn_inputs_type": ["bool"],
+		"mem_loc": " "
       },
       {
         "name": ">=",
@@ -48,7 +52,8 @@
         "input_only": false,
         "output_type": "bool",
         "dyn_inputs": true,
-        "dyn_inputs_type": ["bool"]
+        "dyn_inputs_type": ["bool"],
+		"mem_loc": " "
       },
       {
         "name": "NOT",
@@ -56,6 +61,7 @@
         "input_only": false,
         "output_type": "bool",
         "dyn_inputs": false,
+		"mem_loc": " ",
         "inputs": [
           {
             "name": "",
@@ -77,7 +83,8 @@
             "show_name": false
           }
         ],
-        "mem_input": ["bool"]
+        "mem_input": ["bool"],
+		"mem_loc": "???"
       },
       {
         "name": "S",
@@ -92,7 +99,8 @@
             "show_name": false
           }
         ],
-        "mem_input": ["bool"]
+        "mem_input": ["bool"],
+		"mem_loc": "???"
       },
       {
         "name": "R",
@@ -107,7 +115,8 @@
             "show_name": false
           }
         ],
-        "mem_input": ["bool"]
+        "mem_input": ["bool"],
+		"mem_loc": "???"
       },
       {
         "name": "SR",
@@ -128,7 +137,7 @@
           }
         ],
         "mem_input": ["bool"],
-        "input_only": false
+		"mem_loc": "???"
       },
       {
         "name": "RS",
@@ -146,7 +155,8 @@
             "type": ["bool"]
           }
         ],
-        "mem_input": ["bool"]
+        "mem_input": ["bool"],
+		"mem_loc": "???"
       },
       {
         "name": "FP",
@@ -160,7 +170,8 @@
             "type": ["bool"]
           }
         ],
-        "mem_input": ["bool"]
+        "mem_input": ["bool"],
+		"mem_loc": "???"
       },
       {
         "name": "FN",
@@ -175,7 +186,8 @@
             "show_name": true
           }
         ],
-        "mem_input": ["bool"]
+        "mem_input": ["bool"],
+		"mem_loc": "???"
       },
       {
         "name": "MOVE",
@@ -190,7 +202,8 @@
             "show_name": true
           }
         ],
-        "mem_input": ["byte", "word", "dword"]
+        "mem_input": ["byte", "word", "dword"],
+		"mem_loc": "???"
       }
     ]
   },
@@ -220,7 +233,8 @@
             "show_name": true
           }
         ],
-        "mem_input": ["timer"]
+        "mem_input": ["timer"],
+		"mem_loc": "???"
       }
     ]
   },
@@ -245,7 +259,8 @@
             "show_name": true
           }
         ],
-        "mem_input": ["counter"]
+        "mem_input": ["counter"],
+		"mem_loc": "???"
       },
       {
         "name": "CD",
@@ -265,7 +280,8 @@
             "show_name": true
           }
         ],
-        "mem_input": ["counter"]
+        "mem_input": ["counter"],
+		"mem_loc": "???"
       }
     ]
   },
@@ -278,6 +294,7 @@
         "input_only": false,
         "output_type": "bool",
         "dyn_inputs": false,
+		"mem_loc": " ",
         "inputs": [
           {
             "name": "IN1",
@@ -295,6 +312,7 @@
         "input_only": false,
         "output_type": "bool",
         "dyn_inputs": false,
+		"mem_loc": " ",
         "inputs": [
           {
             "name": "IN1",
@@ -312,6 +330,7 @@
         "input_only": false,
         "output_type": "bool",
         "dyn_inputs": false,
+        "mem_loc": " ",
         "inputs": [
           {
             "name": "IN1",
@@ -329,6 +348,7 @@
         "input_only": false,
         "output_type": "bool",
         "dyn_inputs": false,
+		"mem_loc": " ",
         "inputs": [
           {
             "name": "IN1",
@@ -346,6 +366,7 @@
         "input_only": false,
         "output_type": "bool",
         "dyn_inputs": false,
+		"mem_loc": " ",
         "inputs": [
           {
             "name": "IN1",
@@ -363,6 +384,7 @@
         "input_only": false,
         "output_type": "bool",
         "dyn_inputs": false,
+		"mem_loc": " ",
         "inputs": [
           {
             "name": "IN1",
@@ -386,7 +408,8 @@
         "show_name": true,
         "output_type": "int",
         "dyn_inputs_type": ["int"],
-        "dyn_inputs": true
+        "dyn_inputs": true,
+		"mem_loc": " "
       },
       {
         "name": "SUB",
@@ -395,7 +418,8 @@
         "show_name": true,
         "output_type": "int",
         "dyn_inputs_type": ["int"],
-        "dyn_inputs": true
+        "dyn_inputs": true,
+		"mem_loc": " "
       },
       {
         "name": "MUL",
@@ -404,7 +428,8 @@
         "show_name": true,
         "output_type": "int",
         "dyn_inputs_type": ["int"],
-        "dyn_inputs": true
+        "dyn_inputs": true,
+		"mem_loc": " "
       },
       {
         "name": "DIV",
@@ -413,7 +438,8 @@
         "show_name": true,
         "output_type": "int",
         "dyn_inputs_type": ["int"],
-        "dyn_inputs": true
+        "dyn_inputs": true,
+		"mem_loc": " "
       }
     ]
   }

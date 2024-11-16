@@ -50,7 +50,7 @@
         <div v-if="node.mem_input">
           <div
             v-set="
-              (isMemValid = isValid(typeDef, node.mem_loc, node.mem_input))
+              (isMemValid = isVarNameTypeValid(typeDefs, node.mem_loc, node.mem_input))
             "
           ></div>
           <div
@@ -330,7 +330,7 @@
 </template>
 <script setup>
 import definitions from "../assets/definitions.json";
-import typeDef from "../assets/type-defs.json";
+import typeDefs from "../assets/type-defs.json";
 import { reactive, computed } from "vue";
 import FunctionList from "./FunctionList.vue";
 import VarInput from "./VarInput.vue";
@@ -347,7 +347,6 @@ const deleteInput = inject("deleteInput");
 const disconnectNodeFromInput = inject("disconnectNodeFromInput");
 const addNewVarIfNotExisting = inject("addNewVarIfNotExisting");
 const connectNodeToInput = inject("connectNodeToInput");
-const getMemValidationRules = inject("getMemValidationRules");
 const checkIfVariableExists = inject("checkIfVariableExists");
 const putProjectDataToFlask = inject("putProjectDataToFlask");
 
@@ -369,6 +368,7 @@ export default {
     "interConnection",
     "interConnectionDetails",
   ],
+  emits: ["new-variable"], 
   setup() {
     return {};
   },
@@ -386,10 +386,10 @@ export default {
       if (vars && vars[0]) return vars[0].description;
       else return "";
     },
-    isValid(rules, v, types) {
+    isVarNameTypeValid (rules, name, acceptableTypes){
       var result = false;
-      types.forEach((t) => {
-        if (v.match(rules.filter((tv) => tv.type === t)[0].valid)) {
+      acceptableTypes.forEach((t) => {
+        if (name.match(rules.filter((tv) => tv.type === t)[0].valid)) {
           result = true;
         }
       });
@@ -403,7 +403,7 @@ export default {
       if (node.mem_loc === "") {
         node.mem_loc = "???";
       } else {
-        if (this.isValid(typeDef, node.mem_loc, node.mem_input)) {
+        if (this.isVarNameTypeValid(typeDefs, node.mem_loc, node.mem_input)) {
           this.$emit("new-variable", {
             node: node,
             mem_loc: node.mem_loc,
