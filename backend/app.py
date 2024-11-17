@@ -30,21 +30,32 @@ class ProgramThread(threading.Thread):
 	def __init__(self):
 		super().__init__()
 		self._stop_event = threading.Event()
+		statusdata = {}
+		with open('status.json') as f:
+			statusdata = json.load(f)
+			if 'state' in statusdata and statusdata['state'] == 'stopped':
+				self.stop()
+			if 'changed' in statusdata and statusdata['changed'] == 'changed':
+				self.changed = True
 
 	def stop(self):
 		self._stop_event.set()
 
 	def getStatus(self):
-		statusdata = {'status': 'success'}
+		statusdata = {}
 		if programThread.isRunning():
 			statusdata['state'] = 'running'
 		else:
 			statusdata['state'] = 'stopped'
 		if programThread.changed:
-			statusdata['changed'] =  'changed'
+			statusdata['changed'] = 'changed'
 		else: 
-			statusdata['changed'] =  'not changed'
+			statusdata['changed'] = 'not changed'
 		return statusdata
+
+	def saveStatusToFile(self):
+		with open('status.json', 'w') as f:
+			f.write(json.dumps(self.getStatus()))
 
 	def isRunning(self):
 		return not self._stop_event.is_set()
@@ -97,36 +108,24 @@ class ProgramThread(threading.Thread):
 programThread = ProgramThread()
 programThread.start()
 
-#@app.route('/status', methods=['GET'])
-#@cross_origin(origin='*')
-#def statusData():
-#	response_object = {'status': 'success'}
-#	#if programThread.changed:
-#	#	response_object['changed'] =  'changed'
-#	#else: 
-#	#	response_object['changed'] =  'not changed'
-#	if programThread.isRunning():
-#		response_object['state'] = 'running'
-#	else:
-#		response_object['state'] = 'stopped'
-#	return jsonify(response_object)
-
 @app.route('/start', methods=['GET'])
 @cross_origin(origin='*')
 def startProgram():
 	programThread.restart()
-	return jsonify({'status':'success'})
+	programThread.saveStatusToFile()
+	return jsonify(programThread.getStatus())
 
 @app.route('/stop', methods=['GET'])
 @cross_origin(origin='*')
 def stopProgram():
 	programThread.stop()
-	return jsonify({'status':'success'})
+	programThread.saveStatusToFile()
+	return jsonify(programThread.getStatus())
 
 @app.route('/project', methods=['GET', 'POST'])
 @cross_origin(origin='*')
 def projectData():
-	response_object = {'status': 'success'}
+	response_object = {}
 	if request.method == 'POST':
 		post_data = request.get_json()
 		print('POST:', post_data)
@@ -134,7 +133,7 @@ def projectData():
 			f.write(json.dumps(post_data))
 		response_object['message'] = 'Project changed!';
 		programThread.changed = True
-
+		programThread.saveStatusToFile()
 	else:
 		with open('project.json') as f:
 			projectdata = json.load(f)
@@ -147,7 +146,7 @@ def projectData():
 @app.route('/variables', methods=['GET', 'POST'])
 @cross_origin(origin='*')
 def variablesData():
-	response_object = {'status': 'success'}
+	response_object = {}
 	if request.method == 'POST':
 		post_data = request.get_json()
 		print('POST:', post_data)
@@ -155,6 +154,7 @@ def variablesData():
 			f.write(json.dumps(post_data))
 		response_object['message'] = 'Variables changed!';
 		programThread.changed = True
+		programThread.saveStatusToFile()
 	else:
 		with open('variables.json') as f:
 			variablesdata = json.load(f)
@@ -165,20 +165,21 @@ def variablesData():
 @app.route('/compile', methods=['POST'])
 @cross_origin(origin='*')
 def compileData():
-	response_object = {'status': 'success'}
+	response_object = {}
 	post_data = request.get_json()
 	print('compile data:', post_data)
 	with open('listing.json', 'w') as f:
 		f.write(json.dumps(post_data))
 	response_object['message'] = 'Compiled data saved!';
 	programThread.changed = False
+	programThread.saveStatusToFile();
 	response_object['statusdata'] = programThread.getStatus()
 	return jsonify(response_object)
 	
 @app.route('/monitor', methods=['GET'])
 @cross_origin(origin='*')
 def monitorData():
-	response_object = {'status': 'success'}
+	response_object = {}
 	print(programThread.rlo)
 	response_object['monitordata'] = programThread.rlo;
 	return jsonify(response_object)
