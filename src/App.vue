@@ -238,7 +238,7 @@
           Start
         </button>
 		<div v-if="monitorCheckboxVisible[statusdata.state]">
-			<input type="checkbox" id="monitor" :checked="statusdata['monitor'] == 'on'" v-on:input="toggleMonitorFromFlask()"/>
+			<input type="checkbox" id="monitor" :checked="statusdata['monitor'] == 'on'" v-on:input="toggleMonitorFromFlask();"/>
 			<label for="monitor">Monitor</label>
 		</div>
       </td>
@@ -262,7 +262,7 @@ import Function from "./components/Function.vue";
 import FunctionList from "./components/FunctionList.vue";
 import FunctionListing from "./components/FunctionListing.vue";
 import VarInput from "./components/VarInput.vue";
-import { ref, provide, onMounted, onUpdated } from "vue";
+import { ref, provide, onMounted, onUpdated, onUnmounted } from "vue";
 
 const statusdata = ref([]);
 const projectdata = ref([]);
@@ -277,6 +277,9 @@ const stopButtonVisible = {"stopped" : false, "running" : true}
 const startButtonVisible = {"stopped" : true, "running" : false}
 const compileButtonVisible = {"changed" : true, "not changed" : false}
 const monitorCheckboxVisible = {"stopped" : false, "running" : true}
+const monitorTaskStart = {"on" : true, "off" : false}
+
+var monitorTimer = null
 
 const interConnection = ref(false);
 const interConnectionDetails = ref({
@@ -391,7 +394,20 @@ const getStatusDataFromFlask = () => {
 
 const toggleMonitorFromFlask = () => {
   const path = "http://localhost:5000/monitor";//"/status";
-	axios.get(path).then((res) => {console.log(res.data);statusdata.value = res.data;})
+	axios.get(path).then((res) => {
+			console.log(res.data);
+			statusdata.value = res.data;
+			if(monitorTaskStart[statusdata.value.monitor]){
+				console.log("ok");
+				monitorTimer = setInterval(() => {
+					getProjectDataFromFlask();
+					getVariableDataFromFlask();
+				  }, 500)
+			}
+			else{
+				clearInterval(monitorTimer)
+			}
+		})
 		.catch((err) => console.error(err));
 }
 
@@ -443,6 +459,10 @@ onMounted(() => {
 })
 
 onUpdated(() => {
+});
+
+onUnmounted(() => {
+	clearInterval(monitorTimer)
 });
 
 const addChild = (id, parentInput, blockJson) => {
