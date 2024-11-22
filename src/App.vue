@@ -237,6 +237,10 @@
         >
           Start
         </button>
+		<div v-if="monitorCheckboxVisible[statusdata.state]">
+			<input type="checkbox" id="monitor" :checked="statusdata['monitor'] == 'on'" v-on:input="toggleMonitorFromFlask()"/>
+			<label for="monitor">Monitor</label>
+		</div>
       </td>
 	  <td>
 		<div>&nbspStatus: {{statusdata}} </div>
@@ -272,6 +276,7 @@ const enableForce = {"stopped" : false, "running" : true}
 const stopButtonVisible = {"stopped" : false, "running" : true}
 const startButtonVisible = {"stopped" : true, "running" : false}
 const compileButtonVisible = {"changed" : true, "not changed" : false}
+const monitorCheckboxVisible = {"stopped" : false, "running" : true}
 
 const interConnection = ref(false);
 const interConnectionDetails = ref({
@@ -380,6 +385,12 @@ const setForcedValueOfVariable = (id, val) => {
 
 const getStatusDataFromFlask = () => {
   const path = "http://localhost:5000/status";//"/status";
+	axios.get(path).then((res) => {console.log(res.data);statusdata.value = res.data;})
+		.catch((err) => console.error(err));
+}
+
+const toggleMonitorFromFlask = () => {
+  const path = "http://localhost:5000/monitor";//"/status";
 	axios.get(path).then((res) => {console.log(res.data);statusdata.value = res.data;})
 		.catch((err) => console.error(err));
 }

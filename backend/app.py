@@ -26,6 +26,7 @@ class ProgramThread(threading.Thread):
 	rlo = {}
 	mem = {}
 	changed = False
+	monitor = False
 
 	def __init__(self):
 		super().__init__()
@@ -37,9 +38,12 @@ class ProgramThread(threading.Thread):
 				self.stop()
 			if 'changed' in statusdata and statusdata['changed'] == 'changed':
 				self.changed = True
+			if 'monitor' in statusdata and statusdata['monitor'] == 'on':
+				self.monitor = True
 
 	def stop(self):
 		self._stop_event.set()
+		self.monitor = False
 
 	def getStatus(self):
 		statusdata = {}
@@ -51,6 +55,10 @@ class ProgramThread(threading.Thread):
 			statusdata['changed'] = 'changed'
 		else: 
 			statusdata['changed'] = 'not changed'
+		if programThread.monitor:
+			statusdata['monitor'] = 'on'
+		else: 
+			statusdata['monitor'] = 'off'
 		return statusdata
 
 	def saveStatusToFile(self):
@@ -62,6 +70,9 @@ class ProgramThread(threading.Thread):
 
 	def restart(self):
 		self._stop_event.clear()
+
+	def toggleMonitor(self):
+		self.monitor = not self.monitor
 
 	def forceEnableOnVariable(self, varName, forceEnable):
 		pass
@@ -107,6 +118,14 @@ class ProgramThread(threading.Thread):
 						
 programThread = ProgramThread()
 programThread.start()
+
+@app.route('/monitor', methods=['GET'])
+@cross_origin(origin='*')
+def monitorProgram():
+	if request.method == 'GET':
+		programThread.toggleMonitor()
+		programThread.saveStatusToFile()
+	return jsonify(programThread.getStatus())
 
 @app.route('/start', methods=['GET'])
 @cross_origin(origin='*')
