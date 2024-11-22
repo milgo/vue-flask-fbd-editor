@@ -397,16 +397,17 @@ const toggleMonitorFromFlask = () => {
 
 const getVariableDataFromFlask = () => {
   const path = "http://localhost:5000/variables";//"/variables";
-	axios.get(path).then((res) => {console.log(res.data);variablesdata.value = res.data.variablesdata;})
+	axios.get(path).then((res) => {console.log(res.data);variablesdata.value = res.data.variablesdata;statusdata.value = res.data.statusdata})
 		.catch((err) => console.error(err));
 }
 
 const putVariableDataToFlask = () => {
   const path = "http://localhost:5000/variables";//"/variables";
   axios.post(path, variablesdata.value)
-        .then(() => {
+        .then((res) => {
           /*axios.get(path).then((res) => {variablesdata.value = res.data.variablesdata;})
             .catch((err) => console.error(err));*/
+			statusdata.value = res.data.statusdata
         }).catch((err) => console.error(err));
 }
 

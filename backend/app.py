@@ -179,6 +179,7 @@ def variablesData():
 			variablesdata = json.load(f)
 			#print(response, file=sys.stderr)
 			response_object['variablesdata'] = variablesdata;
+	response_object['statusdata'] = programThread.getStatus()
 	return jsonify(response_object)
 
 @app.route('/compile', methods=['POST'])
