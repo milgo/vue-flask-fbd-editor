@@ -74,6 +74,12 @@ class ProgramThread(threading.Thread):
 	def toggleMonitor(self):
 		self.monitor = not self.monitor
 
+	#Not tested yet
+	def incorporateMonitorDataToProjectData(self, projectData)
+		for node in projectData
+			node.value = rlo[str(node.id)]
+		return projectData
+
 	def forceEnableOnVariable(self, varName, forceEnable):
 		pass
 
@@ -157,6 +163,8 @@ def projectData():
 		with open('project.json') as f:
 			projectdata = json.load(f)
 			#print(response, file=sys.stderr)
+			if programThread.monitor:
+				projectdata = incorporateMonitorDataToProjectData(projectdata)
 			response_object['projectdata'] = projectdata
 
 	response_object['statusdata'] = programThread.getStatus()
