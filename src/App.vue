@@ -136,7 +136,7 @@
 		  </td>
 		  <td>
 		  <button
-			v-if="enableForce[statusdata.state]"
+			v-if="monitorTaskStart[statusdata.monitor]"
             :class="variable.forced ? 'button button-green' : 'button button-red'"
             @click="toggleForceVariable(variable.id)"
           >
@@ -146,14 +146,14 @@
 		  <td>
 		  <template v-if="variable.forced === true">
 		  <button
-			v-if="variable.forcedValue === 0 && enableForce[statusdata.state]"
+			v-if="variable.forcedValue === 0 && monitorTaskStart[statusdata.monitor]"
             class="button button-red"
             @click="setForcedValueOfVariable(variable.id, 1)"
           >
             S
           </button>
 		  <button
-			v-if="variable.forcedValue === 1 && enableForce[statusdata.state]"
+			v-if="variable.forcedValue === 1 && monitorTaskStart[statusdata.monitor]"
             class="button button-green"
             @click="setForcedValueOfVariable(variable.id, 0)"
           >
@@ -272,7 +272,6 @@ const variablesdata = ref([]);
 const typeDefs = ref(typeDefinitions);
 
 const enableEdit = {"stopped" : true, "running" : false}
-const enableForce = {"stopped" : false, "running" : true}
 const stopButtonVisible = {"stopped" : false, "running" : true}
 const startButtonVisible = {"stopped" : true, "running" : false}
 const compileButtonVisible = {"changed" : true, "not changed" : false}
@@ -304,7 +303,7 @@ const recursiveLoopBasedOnInputs = (
         function:
           parentElement.alias != "" ? parentElement.alias : parentElement.block,
         memory: element.mem_loc,
-        node: element.id.toString(),
+        input: parentInput.id.toString(),
         target: parentElement.id.toString(),
       });
     } else {

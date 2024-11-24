@@ -75,10 +75,25 @@ class ProgramThread(threading.Thread):
 		self.monitor = not self.monitor
 
 	#Not tested yet
-	def incorporateMonitorDataToProjectData(self, projectData)
-		for node in projectData
-			node.value = rlo[str(node.id)]
+	def incorporateRuntimeToMonitorData(self, projectData):
+		for node in projectData:
+			#print(node)
+			idStr = str(node["id"])
+			if idStr in self.rlo:
+				node["value"] = self.rlo[idStr]
+
+			for input in node["inputs"]:
+				idStr = str(input["id"])
+				if idStr in self.rlo:
+					input["value"] = self.rlo[idStr]
+			#print(node)
+
 		return projectData
+
+	def incorporateMonitorDataToRuntime(self, variablesdata):
+		for variable in variablesdata:
+			self.mem[variable["name"]]["forced"] = variable["forced"]
+			self.mem[variable["name"]]["forcedValue"] = variable["forcedValue"]
 
 	def forceEnableOnVariable(self, varName, forceEnable):
 		pass
@@ -120,7 +135,9 @@ class ProgramThread(threading.Thread):
 							#overwrite mem if its forced
 							if "memory" in entry and entry["memory"] != " " and self.mem[entry["memory"]]["forced"] == True:
 								self.mem[entry["memory"]]["value"] = self.mem[entry["memory"]]["forcedValue"]
-							#print(RLO_obj)	
+								print("forcing value " + str(self.mem[entry["memory"]]["forcedValue"]) + " on variable " + entry["memory"])
+								#print(self.mem)
+							#print(self.rlo)	
 						
 programThread = ProgramThread()
 programThread.start()
@@ -164,7 +181,7 @@ def projectData():
 			projectdata = json.load(f)
 			#print(response, file=sys.stderr)
 			if programThread.monitor:
-				projectdata = incorporateMonitorDataToProjectData(projectdata)
+				projectdata = programThread.incorporateRuntimeToMonitorData(projectdata)
 			response_object['projectdata'] = projectdata
 
 	response_object['statusdata'] = programThread.getStatus()
@@ -180,8 +197,11 @@ def variablesData():
 		with open('variables.json', 'w') as f:
 			f.write(json.dumps(post_data))
 		response_object['message'] = 'Variables changed!';
-		programThread.changed = True
-		programThread.saveStatusToFile()
+		if not programThread.monitor:
+			programThread.changed = True
+			programThread.saveStatusToFile()
+		else:
+			programThread.incorporateMonitorDataToRuntime(post_data)
 	else:
 		with open('variables.json') as f:
 			variablesdata = json.load(f)
@@ -208,7 +228,7 @@ def compileData():
 @cross_origin(origin='*')
 def monitorData():
 	response_object = {}
-	print(programThread.rlo)
+	#print(programThread.rlo)
 	response_object['monitordata'] = programThread.rlo;
 	return jsonify(response_object)
 	

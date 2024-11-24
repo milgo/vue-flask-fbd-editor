@@ -8,15 +8,19 @@ def AND(RLO_obj, BLOCK_obj, MEM_obj):
 	#print("{" )
 	RLO = RLO_obj["RLO"]
 	#print("\tRLO (before) = " + str(RLO))
+
+	RLO_obj[BLOCK_obj["input"]] = MEM_obj[BLOCK_obj["memory"]]["value"] #should this be moved to thread loop?
 	RLO = RLO & MEM_obj[BLOCK_obj["memory"]]["value"]
-	RLO_obj[BLOCK_obj["target"]] = RLO
+
+	RLO_obj[BLOCK_obj["target"]] = 0#RLO
+
 	#print("\tRLO (after) = " + str(RLO))
 	RLO_obj["RLO"] = RLO
 	#print("}")
 	return RLO_obj
 
 def post_AND(RLO_obj, BLOCK_obj, MEM_obj):
-	print("\ttarget = " + str(RLO_obj[BLOCK_obj["target"]]))
+	#print("\ttarget = " + str(RLO_obj[BLOCK_obj["target"]]))
 	RLO_obj["RLO"] = RLO_obj[BLOCK_obj["target"]] & RLO_obj["STACK"].pop()
 	return RLO_obj
 	
