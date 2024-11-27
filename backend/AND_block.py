@@ -1,26 +1,25 @@
-def pre_AND(RLO_obj, BLOCK_obj, MEM_obj):
-	RLO_obj["STACK"].append(RLO_obj["RLO"])
-	RLO_obj["RLO"] = 1
+def before_AND(RLO_obj, BLOCK_obj, MEM_obj):
+
 	RLO_obj[BLOCK_obj["target"]] = 1
+	return RLO_obj
+
+def before_AND_INPUT(RLO_obj, BLOCK_obj, MEM_obj):
 	return RLO_obj
 	
 def AND(RLO_obj, BLOCK_obj, MEM_obj):
-	#print("{" )
-	RLO = RLO_obj["RLO"]
-	#print("\tRLO (before) = " + str(RLO))
 
-	RLO_obj[BLOCK_obj["input"]] = MEM_obj[BLOCK_obj["memory"]]["value"] #should this be moved to thread loop?
-	RLO = RLO & MEM_obj[BLOCK_obj["memory"]]["value"]
-
-	RLO_obj[BLOCK_obj["target"]] = 0#RLO
-
-	#print("\tRLO (after) = " + str(RLO))
-	RLO_obj["RLO"] = RLO
-	#print("}")
+	#RLO_obj[BLOCK_obj["target"]] = RLO_obj[BLOCK_obj["target"]] & MEM_obj[BLOCK_obj["memory"]]["value"]
 	return RLO_obj
 
-def post_AND(RLO_obj, BLOCK_obj, MEM_obj):
-	#print("\ttarget = " + str(RLO_obj[BLOCK_obj["target"]]))
-	RLO_obj["RLO"] = RLO_obj[BLOCK_obj["target"]] & RLO_obj["STACK"].pop()
+def after_AND_INPUT(RLO_obj, BLOCK_obj, MEM_obj):
+
+	if "inputNode" in BLOCK_obj:
+		RLO_obj[BLOCK_obj["target"]] = RLO_obj[BLOCK_obj["target"]] & RLO_obj[BLOCK_obj["inputNode"]]
+	return RLO_obj
+
+def after_AND(RLO_obj, BLOCK_obj, MEM_obj):
+
+	if "input" in BLOCK_obj:
+		RLO_obj[BLOCK_obj["input"]] = RLO_obj[BLOCK_obj["target"]] 
 	return RLO_obj
 	

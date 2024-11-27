@@ -298,33 +298,55 @@ const recursiveLoopBasedOnInputs = (
   parentInput
 ) => {
   if (element) {
-    if (element.input_only === true) {
+
+	if (parentInput != null) {
+	  var funcName = parentElement.alias != "" ? parentElement.alias : parentElement.block
       listing.value.push({
-        function:
-          parentElement.alias != "" ? parentElement.alias : parentElement.block,
-        memory: element.mem_loc,
+        function: "before_"+funcName+"_INPUT",
         input: parentInput.id.toString(),
+		inputNode: element.id.toString(),
         target: parentElement.id.toString(),
       });
-    } else {
-      listing.value.push({
-        function:
-          "pre_" + (element.alias != "" ? element.alias : element.block),
+    }
+
+    listing.value.push({
+      function:
+        "before_" + (element.alias != "" ? element.alias : element.block),
+		input: parentInput !== undefined ? parentInput.id.toString() : undefined,
         target: element.id.toString(),
-      });
+    });
 
-      Array.prototype.forEach.call(element.inputs, (input) => {
-        var nestedElement = data.filter((e) => e.id === input.target)[0];
-        recursiveLoopBasedOnInputs(data, nestedElement, element, input);
-      });
+	if (element.input_only === true) {
+		listing.value.push({
+			function: (element.alias != "" ? element.alias : element.block),
+			memory: element.mem_loc,
+			input: parentInput !== undefined ? parentInput.id.toString() : undefined,
+			target: element.id.toString(),
+		});
+    }else{
+		Array.prototype.forEach.call(element.inputs, (input) => {
+			var nestedElement = data.filter((e) => e.id === input.target)[0];
+			recursiveLoopBasedOnInputs(data, nestedElement, element, input);
+		});
+	}
 
-      listing.value.push({
-        function:
-          "post_" + (element.alias != "" ? element.alias : element.block),
+    listing.value.push({
+		function:
+          "after_" + (element.alias != "" ? element.alias : element.block),
+		input: parentInput !== undefined ? parentInput.id.toString() : undefined,
         memory: element.mem_loc !== "???" ? element.mem_loc : undefined,
         target: element.id.toString(),
-      });
-    }
+    });
+
+	if (parentInput != null) {
+		var funcName = parentElement.alias != "" ? parentElement.alias : parentElement.block
+		listing.value.push({
+			function: "after_"+funcName+"_INPUT",
+			input: parentInput.id.toString(),
+			inputNode: element.id.toString(),
+			target: parentElement.id.toString(),
+		});
+	}
   }
 };
 

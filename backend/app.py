@@ -9,6 +9,7 @@ from flask_cors import CORS, cross_origin
 from time import sleep
 from os import path
 
+from MARK_block import *
 from AND_block import *
 from OR_block import *
 from ASSIGN_block import *
@@ -108,7 +109,7 @@ class ProgramThread(threading.Thread):
 			if os.path.isfile('listing.json') and os.path.isfile('variables.json'):
 			
 				self.mem = {}
-				self.rlo = { "RLO" : 0, "STACK" : []}
+				self.rlo = {}
 
 				with open('listing.json', 'r') as file:
 					listingdata = json.load(file)
@@ -126,18 +127,19 @@ class ProgramThread(threading.Thread):
 					print("---------------------")
 
 					for entry in listingdata:
+
+						#overwrite mem if its forced
+						if "memory" in entry and entry["memory"] != " " and self.mem[entry["memory"]]["forced"] == True:
+							self.mem[entry["memory"]]["value"] = self.mem[entry["memory"]]["forcedValue"]
+							print("forcing value " + str(self.mem[entry["memory"]]["forcedValue"]) + " on variable " + entry["memory"])
+							#print(self.mem)
+
 						func = entry["function"]
 						if func in globals():
-							#print(func + " " + str(entry["target"]))
+							print(func + " " + str(entry["target"]))
 							f_name = globals()[func]
 							self.rlo = f_name(self.rlo, entry, self.mem)
-
-							#overwrite mem if its forced
-							if "memory" in entry and entry["memory"] != " " and self.mem[entry["memory"]]["forced"] == True:
-								self.mem[entry["memory"]]["value"] = self.mem[entry["memory"]]["forcedValue"]
-								print("forcing value " + str(self.mem[entry["memory"]]["forcedValue"]) + " on variable " + entry["memory"])
-								#print(self.mem)
-							#print(self.rlo)	
+							print(self.rlo)	
 						
 programThread = ProgramThread()
 programThread.start()
