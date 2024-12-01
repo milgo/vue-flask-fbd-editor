@@ -112,7 +112,7 @@ class ProgramThread(threading.Thread):
 				self.rlo = {}
 
 				with open('listing.json', 'r') as file:
-					listingdata = json.load(file)
+					listingdata = json.load(file) #parsing error accures sometimes
 
 				with open('variables.json', 'r') as file:
 					variablesdata = json.load(file)

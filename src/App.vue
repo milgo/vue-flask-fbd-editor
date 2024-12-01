@@ -77,7 +77,9 @@
       <th>Type</th>
       <th>Description</th>
       <th>References</th>
-      <th>Action</th>
+	  <th v-if="enableEdit[statusdata.state]">Action</th>
+      <th v-if="monitorTaskStart[statusdata.monitor]">Forced</th>
+	  <th v-if="monitorTaskStart[statusdata.monitor]">Force value</th>
     </tr>
 
     <template v-for="variable in variablesdata">
@@ -122,7 +124,7 @@
             ).length
           }}
         </td>
-        <td align="center">
+        <td align="center" v-if="enableEdit[statusdata.state]">
 		  <table>
 		  <tr>
 		  <td>
@@ -134,36 +136,15 @@
             X
           </button>
 		  </td>
-		  <td>
-		  <button
-			v-if="monitorTaskStart[statusdata.monitor]"
-            :class="variable.forced ? 'button button-green' : 'button button-red'"
-            @click="toggleForceVariable(variable.id)"
-          >
-            F
-          </button>
-		  </td>
-		  <td>
-		  <template v-if="variable.forced === true">
-		  <button
-			v-if="variable.forcedValue === 0 && monitorTaskStart[statusdata.monitor]"
-            class="button button-red"
-            @click="setForcedValueOfVariable(variable.id, 1)"
-          >
-            S
-          </button>
-		  <button
-			v-if="variable.forcedValue === 1 && monitorTaskStart[statusdata.monitor]"
-            class="button button-green"
-            @click="setForcedValueOfVariable(variable.id, 0)"
-          >
-            R
-          </button>
-		  </template>
-		  </td>
 		  </tr>
 		  </table>
         </td>
+		<td v-if="monitorTaskStart[statusdata.monitor]">
+			<input type="checkbox" id="forced" :checked="variable.forced === true" v-on:input="toggleForceVariable(variable.id);"/>
+		</td>
+		<td v-if="monitorTaskStart[statusdata.monitor]">
+			<input type="checkbox" id="forcedValue" :checked="variable.forcedValue === 1" v-on:input="toggleForceVariableValueBool(variable.id);"/>
+		</td>
       </tr>
     </template>
   </table>
@@ -224,7 +205,7 @@
 		<button
 		  v-if="stopButtonVisible[statusdata.state]"
           @click="axios.get('http://localhost:5000/stop')
-					.then((res) => {/*getStatusDataFromFlask();*/})
+					.then((res) => {})
 					.catch((err) => console.error(err));  getVariableDataFromFlask();getProjectDataFromFlask();"
         >
           Stop
@@ -233,7 +214,7 @@
 		  v-if="startButtonVisible[statusdata.state] && !compileButtonVisible[statusdata.changed]"
           @click="axios.get('http://localhost:5000/start')
 					.then((res) => {/*getStatusDataFromFlask();*/})
-					.catch((err) => console.error(err));  getVariableDataFromFlask();getProjectDataFromFlask();"
+					.catch((err) => console.error(err)); getVariableDataFromFlask();getProjectDataFromFlask();"
         >
           Start
         </button>
@@ -278,7 +259,7 @@ const compileButtonVisible = {"changed" : true, "not changed" : false}
 const monitorCheckboxVisible = {"stopped" : false, "running" : true}
 const monitorTaskStart = {"on" : true, "off" : false}
 
-var monitorTimer = null
+var monitorInterval = null
 
 const interConnection = ref(false);
 const interConnectionDetails = ref({
@@ -398,10 +379,27 @@ const deleteVariable = (id) => {
 const toggleForceVariable = (id) => {
   var variable = variablesdata.value.filter((v) => v.id === id)[0];
   variable.forced = !variable.forced;
+  if(variable.forced === true) variable.forcedValue = 0;
+  putVariableDataToFlask();
+};
+
+const toggleForceVariableValueBool = (id) => {
+  var variable = variablesdata.value.filter((v) => v.id === id)[0];
+  if(variable.forcedValue === 1){
+	variable.forcedValue = 0; 
+  }else{
+    variable.forcedValue = 1;
+  }
   putVariableDataToFlask();
 };
 
 const setForcedValueOfVariable = (id, val) => {
+  var variable = variablesdata.value.filter((v) => v.id === id)[0];
+  variable.forcedValue = val;
+  putVariableDataToFlask();
+};
+
+const toggleForcedValueOfVariable = (id, val) => {
   var variable = variablesdata.value.filter((v) => v.id === id)[0];
   variable.forcedValue = val;
   putVariableDataToFlask();
@@ -418,16 +416,13 @@ const toggleMonitorFromFlask = () => {
 	axios.get(path).then((res) => {
 			console.log(res.data);
 			statusdata.value = res.data;
-			if(monitorTaskStart[statusdata.value.monitor]){
+			/*if(monitorTaskStart[statusdata.value.monitor]){
 				console.log("ok");
-				monitorTimer = setInterval(() => {
-					getProjectDataFromFlask();
-					getVariableDataFromFlask();
-				  }, 500)
+				
 			}
 			else{
 				clearInterval(monitorTimer)
-			}
+			}*/
 		})
 		.catch((err) => console.error(err));
 }
@@ -450,7 +445,17 @@ const putVariableDataToFlask = () => {
 
 const getProjectDataFromFlask = () => {
   const path = "http://localhost:5000/project";//"/project";
-	axios.get(path).then((res) => {console.log(res.data);projectdata.value = res.data.projectdata;statusdata.value = res.data.statusdata})
+	axios.get(path).then((res) => {
+			console.log(res.data);
+			projectdata.value = res.data.projectdata;
+			statusdata.value = res.data.statusdata;
+			/*if(monitorTaskStart[statusdata.value.monitor] && monitorTimer == null){
+				monitorTimer = setInterval(() => {
+					getProjectDataFromFlask();
+					getVariableDataFromFlask();
+				  }, 500)
+			}*/
+		})
 		.catch((err) => console.error(err));
 }
 
@@ -476,6 +481,13 @@ onMounted(() => {
   getVariableDataFromFlask();
   getProjectDataFromFlask();
 
+  monitorInterval = setInterval(() => {
+	if(monitorTaskStart[statusdata.value.monitor]){
+		getProjectDataFromFlask();
+		getVariableDataFromFlask();
+	}
+  }, 500);
+
   //getStatusDataFromFlask();
 })
 
@@ -483,7 +495,7 @@ onUpdated(() => {
 });
 
 onUnmounted(() => {
-	clearInterval(monitorTimer)
+	clearInterval(monitorInterval)
 });
 
 const addChild = (id, parentInput, blockJson) => {
