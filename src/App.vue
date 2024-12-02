@@ -412,17 +412,18 @@ const getStatusDataFromFlask = () => {
 }
 
 const toggleMonitorFromFlask = () => {
+  projectdata.value.forEach((node) => {
+    node.value = 0
+    if (node.inputs) {
+      node.inputs.forEach((input) => {
+          input.value = 0;
+      });
+    }
+  });
   const path = "http://localhost:5000/monitor";//"/status";
 	axios.get(path).then((res) => {
 			console.log(res.data);
 			statusdata.value = res.data;
-			/*if(monitorTaskStart[statusdata.value.monitor]){
-				console.log("ok");
-				
-			}
-			else{
-				clearInterval(monitorTimer)
-			}*/
 		})
 		.catch((err) => console.error(err));
 }
