@@ -205,16 +205,16 @@
 		<button
 		  v-if="stopButtonVisible[statusdata.state]"
           @click="axios.get('http://localhost:5000/stop')
-					.then((res) => {})
-					.catch((err) => console.error(err));  getVariableDataFromFlask();getProjectDataFromFlask();"
+					.then((res) => {statusdata = res.data;})
+					.catch((err) => console.error(err)); /* getVariableDataFromFlask();getProjectDataFromFlask();*/"
         >
           Stop
         </button>
 		<button
 		  v-if="startButtonVisible[statusdata.state] && !compileButtonVisible[statusdata.changed]"
           @click="axios.get('http://localhost:5000/start')
-					.then((res) => {/*getStatusDataFromFlask();*/})
-					.catch((err) => console.error(err)); getVariableDataFromFlask();getProjectDataFromFlask();"
+					.then((res) => {statusdata = res.data;})
+					.catch((err) => console.error(err)); /*getVariableDataFromFlask();getProjectDataFromFlask();*/"
         >
           Start
         </button>
