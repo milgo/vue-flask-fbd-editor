@@ -226,14 +226,6 @@ def compileData():
 	response_object['statusdata'] = programThread.getStatus()
 	return jsonify(response_object)
 	
-@app.route('/monitor', methods=['GET'])
-@cross_origin(origin='*')
-def monitorData():
-	response_object = {}
-	#print(programThread.rlo)
-	response_object['monitordata'] = programThread.rlo;
-	return jsonify(response_object)
-	
 if __name__ == '__main__':
         from waitress import serve
         serve(app, host="0.0.0.0", port=5000)

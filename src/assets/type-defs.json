@@ -1,7 +1,15 @@
 [
   {
+    "type": "di",
+    "valid": "^%[Ii]\\d{1,2}$"
+  },
+  {
+    "type": "do",
+    "valid": "^%[Oo]\\d{1,2}$"
+  },
+  {
     "type": "bool",
-    "valid": "^%[Mm]\\d{1,2}\\.[0-7]$"
+    "valid": "^%[Mm]\\d{1,2}$"
   },
   {
     "type": "time",

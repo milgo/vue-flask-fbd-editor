@@ -3,12 +3,12 @@
     "group": "Input",
     "blocks": [
       {
-        "name": "MARK",
+        "name": "DIN",
         "alias": "",
         "input_only": true,
         "output_type": "bool",
         "dyn_inputs": false,
-        "mem_input": ["bool"],
+        "mem_input": ["bool", "di"],
 		"mem_loc": "???"
       },
       {
@@ -83,7 +83,7 @@
             "show_name": false
           }
         ],
-        "mem_input": ["bool"],
+        "mem_input": ["bool", "do"],
 		"mem_loc": "???"
       },
       {

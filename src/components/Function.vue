@@ -126,7 +126,6 @@
                   event.node.mem_loc,
                   event.node.output_type
                 );
-				putProjectDataToFlask();
 				}
             "
           />
@@ -356,7 +355,6 @@ const disconnectNodeFromInput = inject("disconnectNodeFromInput");
 const addNewVarIfNotExisting = inject("addNewVarIfNotExisting");
 const connectNodeToInput = inject("connectNodeToInput");
 const checkIfVariableExists = inject("checkIfVariableExists");
-const putProjectDataToFlask = inject("putProjectDataToFlask");
 
 </script>
 <script>

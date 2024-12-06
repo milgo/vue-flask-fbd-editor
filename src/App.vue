@@ -26,6 +26,15 @@
             :variables="variablesdata"
             :interConnection="interConnection"
             :interConnectionDetails="interConnectionDetails"
+            @new-variable="
+              (event) => {
+                addNewVarIfNotExisting(
+                  event.node,
+                  event.node.mem_loc,
+                  event.node.output_type
+                );
+				//putProjectDataToFlask();
+			}"
           />
         </td>
         <td width="20px" valign="top">
