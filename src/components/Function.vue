@@ -50,7 +50,7 @@
         <div v-if="node.mem_input">
           <div
             v-set="
-              (isMemValid = isVarNameTypeValid(typeDefs, node.mem_loc, node.mem_input))
+              (isMemValid = isVarNameTypeValid(varTypes, node.mem_loc, node.mem_input))
             "
           ></div>
           <div
@@ -123,9 +123,10 @@
               (event) => {
                 addNewVarIfNotExisting(
                   event.node,
-                  event.node.mem_loc,
-                  event.node.output_type
+                  event.mem_loc,
+                  event.output_type
                 );
+				putProjectDataToFlask();
 				}
             "
           />
@@ -337,7 +338,7 @@
 </template>
 <script setup>
 import definitions from "../assets/definitions.json";
-import typeDefs from "../assets/type-defs.json";
+import varTypes from "../assets/var-types.json";
 import { reactive, computed } from "vue";
 import FunctionList from "./FunctionList.vue";
 import VarInput from "./VarInput.vue";
@@ -355,6 +356,7 @@ const disconnectNodeFromInput = inject("disconnectNodeFromInput");
 const addNewVarIfNotExisting = inject("addNewVarIfNotExisting");
 const connectNodeToInput = inject("connectNodeToInput");
 const checkIfVariableExists = inject("checkIfVariableExists");
+const putProjectDataToFlask = inject("putProjectDataToFlask");
 
 </script>
 <script>
@@ -409,11 +411,11 @@ export default {
       if (node.mem_loc === "") {
         node.mem_loc = "???";
       } else {
-        if (this.isVarNameTypeValid(typeDefs, node.mem_loc, node.mem_input)) {
+        if (this.isVarNameTypeValid(varTypes, node.mem_loc, node.mem_input)) {
           this.$emit("new-variable", {
             node: node,
             mem_loc: node.mem_loc,
-            output_type: node.output_type,
+            output_type: varTypes.filter((t) => node.mem_loc.match(t.valid))[0].type//node.output_type,
           });
         }
       }

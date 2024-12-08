@@ -9,7 +9,7 @@ from flask_cors import CORS, cross_origin
 from time import sleep
 from os import path
 
-from MARK_block import *
+from DIN_block import *
 from AND_block import *
 from OR_block import *
 from ASSIGN_block import *

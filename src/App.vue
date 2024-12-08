@@ -166,7 +166,7 @@
       varName = inputDialog('Enter variable name: ');
       if (
         varName.match(
-          typeDefs.filter((md) => md.type === $event.target.value)[0].valid
+          varTypes.filter((md) => md.type === $event.target.value)[0].valid
         )
       ) {
         addNewVarIfNotExisting(null, varName, $event.target.value);
@@ -184,7 +184,7 @@
     >
       +
     </option>
-    <template v-for="t in typeDefs">
+    <template v-for="t in varTypes">
       <option :value="t.type">{{ t.type }}</option>
     </template>
   </select>
@@ -206,7 +206,7 @@
             buildListing(projectdata);
 			putCompileDataToFlask();
           "
-		  :disabled="!isProgramDataReadyToCompile(projectdata, typeDefs)"
+		  :disabled="!isProgramDataReadyToCompile(projectdata, varTypes)"
         >
 		
           Compile
@@ -247,7 +247,7 @@
 <script setup>
 import axios from "axios";
 import definitions from "./assets/definitions.json";
-import typeDefinitions from "./assets/type-defs.json";
+import varTypes from "./assets/var-types.json";
 import Function from "./components/Function.vue";
 import FunctionList from "./components/FunctionList.vue";
 import FunctionListing from "./components/FunctionListing.vue";
@@ -259,7 +259,7 @@ const projectdata = ref([]);
 const listing = ref([]);
 const variablesdata = ref([]);
 
-const typeDefs = ref(typeDefinitions);
+//const varTypes = ref(variableTypes);
 
 const enableEdit = {"stopped" : true, "running" : false}
 const stopButtonVisible = {"stopped" : false, "running" : true}
@@ -340,12 +340,12 @@ const recursiveLoopBasedOnInputs = (
   }
 };
 
-const buildListing = (data, level) => {
+const buildListing = (data) => {
   //verifyProgramDataBeforeCompile(data);
   data.forEach((element) => {
     if (element.parentInput === null) {
-      listing.value.push({ function: "CANCEL_RLO" });
-      recursiveLoopBasedOnInputs(data, element, null);
+      //listing.value.push({ function: "CANCEL_RLO" });
+      recursiveLoopBasedOnInputs(data, element, null, undefined);
     }
   });
 };
