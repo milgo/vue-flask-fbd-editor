@@ -415,7 +415,8 @@ const toggleForcedValueOfVariable = (id, val) => {
 };
 
 const getStatusDataFromFlask = () => {
-  const path = "http://localhost:5000/status";//"/status";
+  const path = "http://localhost/status";
+  //const path = "http://localhost:5000/status";
 	axios.get(path).then((res) => {console.log(res.data);statusdata.value = res.data;})
 		.catch((err) => console.error(err));
 }
@@ -429,7 +430,8 @@ const toggleMonitorFromFlask = () => {
       });
     }
   });
-  const path = "http://localhost:5000/monitor";//"/status";
+  const path = "http://localhost/monitor";
+  //const path = "http://localhost:5000/monitor";
 	axios.get(path).then((res) => {
 			console.log(res.data);
 			statusdata.value = res.data;
@@ -438,13 +440,15 @@ const toggleMonitorFromFlask = () => {
 }
 
 const getVariableDataFromFlask = () => {
-  const path = "http://localhost:5000/variables";//"/variables";
+  const path = "http://localhost/variables";
+  //const path = "http://localhost:5000/variables";
 	axios.get(path).then((res) => {console.log(res.data);variablesdata.value = res.data.variablesdata;statusdata.value = res.data.statusdata})
 		.catch((err) => console.error(err));
 }
 
 const putVariableDataToFlask = () => {
-  const path = "http://localhost:5000/variables";//"/variables";
+  const path = "http://localhost/variables";
+  //const path = "http://localhost:5000/variables";
   axios.post(path, variablesdata.value)
         .then((res) => {
           /*axios.get(path).then((res) => {variablesdata.value = res.data.variablesdata;})
@@ -454,7 +458,8 @@ const putVariableDataToFlask = () => {
 }
 
 const getProjectDataFromFlask = () => {
-  const path = "http://localhost:5000/project";//"/project";
+  const path = "http://localhost/project";
+  //const path = "http://localhost:5000/project";
 	axios.get(path).then((res) => {
 			console.log(res.data);
 			projectdata.value = res.data.projectdata;
@@ -470,7 +475,8 @@ const getProjectDataFromFlask = () => {
 }
 
 const putProjectDataToFlask = () => {
-  const path = "http://localhost:5000/project";//"/project";
+  const path = "http://localhost/project";
+  //const path = "http://localhost:5000/project";
   axios.post(path, projectdata.value)
         .then((res) => {
           /*axios.get(path).then((res) => {
@@ -481,7 +487,8 @@ const putProjectDataToFlask = () => {
 }
 
 const putCompileDataToFlask = () => {
-  const path = "http://localhost:5000/compile";//"/compile";
+  const path = "http://localhost/compile";
+  //const path = "http://localhost:5000/compile";
   axios.post(path, listing.value).then((res) => {statusdata.value = res.data.statusdata;}).catch((err) => console.error(err));
 }
 
