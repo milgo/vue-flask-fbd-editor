@@ -8,7 +8,7 @@
         "input_only": true,
         "output_type": "bool",
         "dyn_inputs": false,
-        "mem_input": ["bool", "di"],
+        "mem_input": ["marker", "di"],
 		"mem_loc": "???"
       },
       {
@@ -83,7 +83,7 @@
             "show_name": false
           }
         ],
-        "mem_input": ["bool", "do"],
+        "mem_input": ["marker", "do"],
 		"mem_loc": "???"
       },
       {
@@ -99,7 +99,7 @@
             "show_name": false
           }
         ],
-        "mem_input": ["bool"],
+        "mem_input": ["marker"],
 		"mem_loc": "???"
       },
       {
@@ -115,7 +115,7 @@
             "show_name": false
           }
         ],
-        "mem_input": ["bool"],
+        "mem_input": ["marker"],
 		"mem_loc": "???"
       },
       {
@@ -136,7 +136,7 @@
             "show_name": true
           }
         ],
-        "mem_input": ["bool"],
+        "mem_input": ["marker"],
 		"mem_loc": "???"
       },
       {
@@ -155,7 +155,7 @@
             "type": ["bool"]
           }
         ],
-        "mem_input": ["bool"],
+        "mem_input": ["marker"],
 		"mem_loc": "???"
       },
       {
@@ -170,7 +170,7 @@
             "type": ["bool"]
           }
         ],
-        "mem_input": ["bool"],
+        "mem_input": ["marker"],
 		"mem_loc": "???"
       },
       {
@@ -186,7 +186,7 @@
             "show_name": true
           }
         ],
-        "mem_input": ["bool"],
+        "mem_input": ["marker"],
 		"mem_loc": "???"
       },
       {
