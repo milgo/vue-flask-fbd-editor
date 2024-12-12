@@ -4,6 +4,8 @@ import os
 import threading
 import time
 import os
+import re
+from gpiozero import Button 
 from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
 from time import sleep
@@ -128,10 +130,17 @@ class ProgramThread(threading.Thread):
 
 					for entry in listingdata:
 
-						#overwrite mem if its forced
-						if "memory" in entry and entry["memory"] != " " and self.mem[entry["memory"]]["forced"] == True:
-							self.mem[entry["memory"]]["value"] = self.mem[entry["memory"]]["forcedValue"]
-							print("forcing value " + str(self.mem[entry["memory"]]["forcedValue"]) + " on variable " + entry["memory"])
+						if "memory" in entry and entry["memory"] != " ":
+
+							#physical inputs
+							if self.mem[entry["memory"]]["type"] in ["di"]:
+								pinNum = int(re.findall(r'\d+', entry["memory"])[0])
+								self.mem[entry["memory"]]["value"] = Button(pinNum)
+
+							#overwrite mem if its forced
+							if self.mem[entry["memory"]]["forced"] == True:
+								self.mem[entry["memory"]]["value"] = self.mem[entry["memory"]]["forcedValue"]
+								print("forcing value " + str(self.mem[entry["memory"]]["forcedValue"]) + " on variable " + entry["memory"])
 							#print(self.mem)
 
 						func = entry["function"]
