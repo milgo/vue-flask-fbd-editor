@@ -1,3 +1,6 @@
-def Button(num):
-	print("checking button state for pin: " + str(num))
-	return num
+class Button:
+
+	is_pressed = True
+
+	def __init__(self, num):
+		pass

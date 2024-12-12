@@ -135,7 +135,9 @@ class ProgramThread(threading.Thread):
 							#physical inputs
 							if self.mem[entry["memory"]]["type"] in ["di"]:
 								pinNum = int(re.findall(r'\d+', entry["memory"])[0])
-								self.mem[entry["memory"]]["value"] = Button(pinNum)
+								self.mem[entry["memory"]]["value"] = 0
+								if Button(pinNum).is_pressed == True:
+									self.mem[entry["memory"]]["value"] = 1
 
 							#overwrite mem if its forced
 							if self.mem[entry["memory"]]["forced"] == True:
