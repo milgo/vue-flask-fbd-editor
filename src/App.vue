@@ -30,10 +30,10 @@
               (event) => {
                 addNewVarIfNotExisting(
                   event.node,
-                  event.node.mem_loc,
-                  event.node.output_type
+                  event.mem_loc,
+                  event.output_type
                 );
-				//putProjectDataToFlask();
+				putProjectDataToFlask();
 			}"
           />
         </td>
@@ -214,7 +214,7 @@
 		<button
 		  v-if="stopButtonVisible[statusdata.state]"
           @click="axios.get('http://localhost:5000/stop')
-					.then((res) => {statusdata = res.data;})
+					.then((res) => {statusdata = res.data;clearMonitorValues();})
 					.catch((err) => console.error(err)); /* getVariableDataFromFlask();getProjectDataFromFlask();*/"
         >
           Stop
@@ -421,7 +421,7 @@ const getStatusDataFromFlask = () => {
 		.catch((err) => console.error(err));
 }
 
-const toggleMonitorFromFlask = () => {
+const clearMonitorValues = () => {
   projectdata.value.forEach((node) => {
     node.value = 0
     if (node.inputs) {
@@ -430,6 +430,10 @@ const toggleMonitorFromFlask = () => {
       });
     }
   });
+}
+
+const toggleMonitorFromFlask = () => {
+  clearMonitorValues();
   //const path = "http://localhost/monitor";
   const path = "http://localhost:5000/monitor";
 	axios.get(path).then((res) => {
