@@ -5,7 +5,7 @@ import threading
 import time
 import os
 import re
-from gpiozero import Button 
+from gpiozero import Button, LED
 from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
 from time import sleep
@@ -138,6 +138,14 @@ class ProgramThread(threading.Thread):
 								self.mem[entry["memory"]]["value"] = 0
 								if Button(pinNum).is_pressed == True:
 									self.mem[entry["memory"]]["value"] = 1
+
+							if self.mem[entry["memory"]]["type"] in ["do"]:
+								outNum = int(re.findall(r'\d+', entry["memory"])[0])
+								out = LED(outNum)
+								if self.mem[entry["memory"]]["value"] == 1:
+									out.on
+								else:
+									out.off
 
 							#overwrite mem if its forced
 							if self.mem[entry["memory"]]["forced"] == True:
