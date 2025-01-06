@@ -213,7 +213,7 @@
         </button>
 		<button
 		  v-if="stopButtonVisible[statusdata.state]"
-          @click="axios.get('http://localhost:5000/stop')
+          @click="axios.get(flaskURL+'/stop')
 					.then((res) => {statusdata = res.data;clearMonitorValues();})
 					.catch((err) => console.error(err)); /* getVariableDataFromFlask();getProjectDataFromFlask();*/"
         >
@@ -221,7 +221,7 @@
         </button>
 		<button
 		  v-if="startButtonVisible[statusdata.state] && !compileButtonVisible[statusdata.changed]"
-          @click="axios.get('http://localhost:5000/start')
+          @click="axios.get(flaskURL+'/start')
 					.then((res) => {statusdata = res.data;})
 					.catch((err) => console.error(err)); /*getVariableDataFromFlask();getProjectDataFromFlask();*/"
         >
@@ -258,7 +258,7 @@ const statusdata = ref([]);
 const projectdata = ref([]);
 const listing = ref([]);
 const variablesdata = ref([]);
-
+const flaskURL = "http://localhost:5000"
 //const varTypes = ref(variableTypes);
 
 const enableEdit = {"stopped" : true, "running" : false}
@@ -415,8 +415,7 @@ const toggleForcedValueOfVariable = (id, val) => {
 };
 
 const getStatusDataFromFlask = () => {
-  //const path = "http://localhost/status";
-  const path = "http://localhost:5000/status";
+  const path = flaskURL+"/status";
 	axios.get(path).then((res) => {console.log(res.data);statusdata.value = res.data;})
 		.catch((err) => console.error(err));
 }
@@ -434,8 +433,7 @@ const clearMonitorValues = () => {
 
 const toggleMonitorFromFlask = () => {
   clearMonitorValues();
-  //const path = "http://localhost/monitor";
-  const path = "http://localhost:5000/monitor";
+  const path = flaskURL+"/monitor";
 	axios.get(path).then((res) => {
 			console.log(res.data);
 			statusdata.value = res.data;
@@ -444,15 +442,13 @@ const toggleMonitorFromFlask = () => {
 }
 
 const getVariableDataFromFlask = () => {
-  //const path = "http://localhost/variables";
-  const path = "http://localhost:5000/variables";
+  const path = flaskURL+"/variables";
 	axios.get(path).then((res) => {console.log(res.data);variablesdata.value = res.data.variablesdata;statusdata.value = res.data.statusdata})
 		.catch((err) => console.error(err));
 }
 
 const putVariableDataToFlask = () => {
-  //const path = "http://localhost/variables";
-  const path = "http://localhost:5000/variables";
+  const path = flaskURL+"/variables";
   axios.post(path, variablesdata.value)
         .then((res) => {
           /*axios.get(path).then((res) => {variablesdata.value = res.data.variablesdata;})
@@ -462,8 +458,7 @@ const putVariableDataToFlask = () => {
 }
 
 const getProjectDataFromFlask = () => {
-  //const path = "http://localhost/project";
-  const path = "http://localhost:5000/project";
+  const path = flaskURL+"/project";
 	axios.get(path).then((res) => {
 			console.log(res.data);
 			projectdata.value = res.data.projectdata;
@@ -479,8 +474,7 @@ const getProjectDataFromFlask = () => {
 }
 
 const putProjectDataToFlask = () => {
-  //const path = "http://localhost/project";
-  const path = "http://localhost:5000/project";
+  const path = flaskURL+"/project";
   axios.post(path, projectdata.value)
         .then((res) => {
           /*axios.get(path).then((res) => {
@@ -491,8 +485,7 @@ const putProjectDataToFlask = () => {
 }
 
 const putCompileDataToFlask = () => {
-  //const path = "http://localhost/compile";
-  const path = "http://localhost:5000/compile";
+  const path = flaskURL+"/compile";
   axios.post(path, listing.value).then((res) => {statusdata.value = res.data.statusdata;}).catch((err) => console.error(err));
 }
 
