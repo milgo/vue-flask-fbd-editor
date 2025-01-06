@@ -28,6 +28,9 @@ class ProgramThread(threading.Thread):
 
 	rlo = {}
 	mem = {}
+	variablesdata = {}
+	projectdata = {}
+	
 	changed = False
 	monitor = False
 
@@ -78,7 +81,7 @@ class ProgramThread(threading.Thread):
 		self.monitor = not self.monitor
 
 	#Not tested yet
-	def incorporateRuntimeToMonitorData(self, projectData):
+	def getNodesAndInputsValuesInProjectData(self, projectData):
 		for node in projectData:
 			#print(node)
 			idStr = str(node["id"])
@@ -93,7 +96,7 @@ class ProgramThread(threading.Thread):
 
 		return projectData
 
-	def incorporateMonitorDataToRuntime(self, variablesdata):
+	def forceVariables(self, variablesdata):
 		for variable in variablesdata:
 			self.mem[variable["name"]]["forced"] = variable["forced"]
 			self.mem[variable["name"]]["forcedValue"] = variable["forcedValue"]
@@ -105,21 +108,24 @@ class ProgramThread(threading.Thread):
 		pass
 
 	def run(self):
-		
+
 		while True:
 		
-			if os.path.isfile('listing.json') and os.path.isfile('variables.json'):
+			if os.path.isfile('listing.json') and os.path.isfile('variables.json') and os.path.isfile('project.json'):
 			
 				self.mem = {}
 				self.rlo = {}
+
+				with open('project.json') as f:
+					self.projectdata = json.load(f)
 
 				with open('listing.json', 'r') as file:
 					listingdata = json.load(file) #parsing error accures sometimes
 
 				with open('variables.json', 'r') as file:
-					variablesdata = json.load(file)
+					self.variablesdata = json.load(file)
 
-				for var in variablesdata:
+				for var in self.variablesdata:
 					self.mem[var["name"]] = var
 
 				#print(self.mem)
@@ -167,9 +173,32 @@ programThread.start()
 @cross_origin(origin='*')
 def monitorProgram():
 	if request.method == 'GET':
-		programThread.toggleMonitor()
-		programThread.saveStatusToFile()
+		if programThread.isRunning():
+			programThread.toggleMonitor()
+			programThread.saveStatusToFile()
 	return jsonify(programThread.getStatus())
+
+@app.route('/forcevariables', methods=['POST'])
+@cross_origin(origin='*')
+def forceVariables():
+	response_object = {}
+	if request.method == 'POST':
+		if programThread.isRunning():
+			post_data = request.get_json()
+			programThread.forceVariables(post_data)
+			response_object['variablesdata'] = programThread.variablesdata
+	response_object['statusdata'] = programThread.getStatus()
+	return jsonify(response_object)
+
+@app.route('/pullruntimedata', methods=['GET'])
+@cross_origin(origin='*')
+def pullRuntimeData():
+	response_object = {}
+	if request.method == 'GET':
+		if programThread.isRunning():
+			response_object['projectdata'] = programThread.getNodesAndInputsValuesInProjectData(programThread.projectdata)
+	response_object['statusdata'] = programThread.getStatus()
+	return jsonify(response_object)
 
 @app.route('/start', methods=['GET'])
 @cross_origin(origin='*')
@@ -190,21 +219,17 @@ def stopProgram():
 def projectData():
 	response_object = {}
 	if request.method == 'POST':
-		post_data = request.get_json()
-		print('POST:', post_data)
-		with open('project.json', 'w') as f:
-			f.write(json.dumps(post_data))
-		response_object['message'] = 'Project changed!';
-		programThread.changed = True
-		programThread.saveStatusToFile()
+		if not programThread.isRunning():
+			post_data = request.get_json()
+			print('POST:', post_data)
+			with open('project.json', 'w') as f:
+				f.write(json.dumps(post_data))
+			response_object['message'] = 'Project changed!';
+			programThread.projectdata = post_data #!!!
+			programThread.changed = True
+			programThread.saveStatusToFile()
 	else:
-		with open('project.json') as f:
-			projectdata = json.load(f)
-			#print(response, file=sys.stderr)
-			if programThread.monitor:
-				projectdata = programThread.incorporateRuntimeToMonitorData(projectdata)
-			response_object['projectdata'] = projectdata
-
+		response_object['projectdata'] = programThread.projectdata
 	response_object['statusdata'] = programThread.getStatus()
 	return jsonify(response_object)
 	
@@ -213,21 +238,16 @@ def projectData():
 def variablesData():
 	response_object = {}
 	if request.method == 'POST':
-		post_data = request.get_json()
-		print('POST:', post_data)
-		with open('variables.json', 'w') as f:
-			f.write(json.dumps(post_data))
-		response_object['message'] = 'Variables changed!';
-		if not programThread.monitor:
+		if not programThread.isRunning():
+			post_data = request.get_json()
+			print('POST:', post_data)
+			with open('variables.json', 'w') as f:
+				f.write(json.dumps(post_data))
+			response_object['message'] = 'Variables changed!';
 			programThread.changed = True
 			programThread.saveStatusToFile()
-		else:
-			programThread.incorporateMonitorDataToRuntime(post_data)
 	else:
-		with open('variables.json') as f:
-			variablesdata = json.load(f)
-			#print(response, file=sys.stderr)
-			response_object['variablesdata'] = variablesdata;
+		response_object['variablesdata'] = programThread.variablesdata;
 	response_object['statusdata'] = programThread.getStatus()
 	return jsonify(response_object)
 
@@ -235,13 +255,14 @@ def variablesData():
 @cross_origin(origin='*')
 def compileData():
 	response_object = {}
-	post_data = request.get_json()
-	print('compile data:', post_data)
-	with open('listing.json', 'w') as f:
-		f.write(json.dumps(post_data))
-	response_object['message'] = 'Compiled data saved!';
-	programThread.changed = False
-	programThread.saveStatusToFile();
+	if not programThread.isRunning():
+		post_data = request.get_json()
+		print('compile data:', post_data)
+		with open('listing.json', 'w') as f:
+			f.write(json.dumps(post_data))
+		response_object['message'] = 'Compiled data saved!';
+		programThread.changed = False
+		programThread.saveStatusToFile();
 	response_object['statusdata'] = programThread.getStatus()
 	return jsonify(response_object)
 	
