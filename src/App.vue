@@ -262,7 +262,8 @@ const statusdata = ref([]);
 const projectdata = ref([]);
 const listing = ref([]);
 const variablesdata = ref([]);
-const flaskURL = "http://localhost:5000"
+const flaskURL = "http://localhost"
+//const flaskURL = "http://localhost:5000"
 //const varTypes = ref(variableTypes);
 
 const enableEdit = {"stopped" : true, "running" : false}
