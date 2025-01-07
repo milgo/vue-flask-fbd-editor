@@ -39,12 +39,22 @@ location /variables {<br />
 location /compile {<br />
 	proxy_pass http://localhost:5000/compile<br />
 }<br />
+location /pullruntimedata {<br />
+	proxy_pass http://localhost:5000/pullruntimedata<br />
+}<br />
+location /forcevariables {<br />
+	proxy_pass http://localhost:5000/forcevariables<br />
+}<br />
 ---------------------------------------<br />
 <br />
 /* !IMPORTANT 
 	Before running new build on device make sure to clear files project.json, variables.json, listing.json by rewriting them with "[]" value (without quotation marks - python empty array)
 */
 <br /><br />
+Deply new build:
+---------------------------------------<br />
+git pull origin main
+sudo cp -rfa ./vue-flask-fbd-editor/dist/. /var/www/html/ <br />
 restart nginx: sudo systemctl restart nginx<br />
 restart nginx: sudo systemctl restart program-data-server.service<br />
 status nginx: sudo systemctl status nginx<br />
