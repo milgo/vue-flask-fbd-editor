@@ -86,9 +86,10 @@
       <th>Type</th>
       <th>Description</th>
       <th>References</th>
+	  <th v-if="monitorTaskStart[statusdata.monitor]">Process Value</th>
 	  <th v-if="enableEdit[statusdata.state]">Action</th>
       <th v-if="monitorTaskStart[statusdata.monitor]">Forced</th>
-	  <th v-if="monitorTaskStart[statusdata.monitor]">Force value</th>
+	  <th v-if="monitorTaskStart[statusdata.monitor]">Forced value</th>
     </tr>
 
     <template v-for="variable in variablesdata">
@@ -133,6 +134,9 @@
             ).length
           }}
         </td>
+		<td v-if="monitorTaskStart[statusdata.monitor]">
+			{{variable.value}}
+		</td>
         <td align="center" v-if="enableEdit[statusdata.state]">
 		  <table>
 		  <tr>
@@ -443,8 +447,11 @@ const toggleMonitorFromFlask = () => {
 
 const getVariableDataFromFlask = () => {
   const path = flaskURL+"/variables";
-	axios.get(path).then((res) => {console.log(res.data);variablesdata.value = res.data.variablesdata;statusdata.value = res.data.statusdata})
-		.catch((err) => console.error(err));
+	axios.get(path).then((res) => {
+		console.log(res.data);
+		variablesdata.value = res.data.variablesdata;
+		statusdata.value = res.data.statusdata
+	}).catch((err) => console.error(err));
 }
 
 const putVariableDataToFlask = () => {
@@ -482,6 +489,7 @@ const pullRuntimeData = () => {
   const path = flaskURL+"/pullruntimedata";
 	axios.get(path).then((res) => {
 			console.log(res.data);
+			variablesdata.value = res.data.variablesdata;
 			projectdata.value = res.data.projectdata;
 			statusdata.value = res.data.statusdata;
 		})

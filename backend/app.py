@@ -96,6 +96,11 @@ class ProgramThread(threading.Thread):
 
 		return projectData
 
+	def getVariablesValuesInVariablesData(self, variablesData):
+		for variable in variablesData:
+			variable["value"] = self.mem[variable["name"]]["value"]
+		return variablesData
+
 	def forceVariables(self, variablesdata):
 		for variable in variablesdata:
 			self.mem[variable["name"]]["forced"] = variable["forced"]
@@ -196,6 +201,7 @@ def pullRuntimeData():
 	response_object = {}
 	if request.method == 'GET':
 		if programThread.isRunning():
+			response_object['variablesdata'] = programThread.getVariablesValuesInVariablesData(programThread.variablesdata)
 			response_object['projectdata'] = programThread.getNodesAndInputsValuesInProjectData(programThread.projectdata)
 	response_object['statusdata'] = programThread.getStatus()
 	return jsonify(response_object)
@@ -240,6 +246,8 @@ def variablesData():
 	if request.method == 'POST':
 		if not programThread.isRunning():
 			post_data = request.get_json()
+			for var in post_data:
+				var["edit"] = False
 			print('POST:', post_data)
 			with open('variables.json', 'w') as f:
 				f.write(json.dumps(post_data))
