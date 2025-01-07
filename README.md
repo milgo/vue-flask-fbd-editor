@@ -51,9 +51,9 @@ location /forcevariables {<br />
 	Before running new build on device make sure to clear files project.json, variables.json, listing.json by rewriting them with "[]" value (without quotation marks - python empty array)
 */
 <br /><br />
-Deply new build:
+Deply new build:<br />
 ---------------------------------------<br />
-git pull origin main
+git pull origin main<br />
 sudo cp -rfa ./vue-flask-fbd-editor/dist/. /var/www/html/ <br />
 restart nginx: sudo systemctl restart nginx<br />
 restart nginx: sudo systemctl restart program-data-server.service<br />
