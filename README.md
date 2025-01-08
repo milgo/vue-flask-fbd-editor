@@ -54,6 +54,8 @@ location /forcevariables {<br />
 Deply new build:<br />
 ---------------------------------------<br />
 git pull origin main<br />
+/*delete fake gpiozero.py file*/
+sudo rm -r /var/www/html/* <br />
 sudo cp -rfa ./vue-flask-fbd-editor/dist/. /var/www/html/ <br />
 restart nginx: sudo systemctl restart nginx<br />
 restart nginx: sudo systemctl restart program-data-server.service<br />
