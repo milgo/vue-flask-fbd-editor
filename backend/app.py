@@ -30,6 +30,7 @@ class ProgramThread(threading.Thread):
 	mem = {}
 	variablesdata = {}
 	projectdata = {}
+	do = {}
 	
 	changed = False
 	monitor = False
@@ -113,7 +114,9 @@ class ProgramThread(threading.Thread):
 		pass
 
 	def run(self):
-
+        
+		self.do["%o21"] = LED(21)
+        
 		while True:
 		
 			if os.path.isfile('listing.json') and os.path.isfile('variables.json') and os.path.isfile('project.json'):
@@ -136,8 +139,8 @@ class ProgramThread(threading.Thread):
 				#print(self.mem)
 
 				while not self._stop_event.is_set():
-					time.sleep(1)
-					print("---------------------")
+					time.sleep(0.1)
+					#print("---------------------")
 
 					for entry in listingdata:
 
@@ -151,25 +154,25 @@ class ProgramThread(threading.Thread):
 									self.mem[entry["memory"]]["value"] = 1
 
 							if self.mem[entry["memory"]]["type"] in ["do"]:
-								outNum = int(re.findall(r'\d+', entry["memory"])[0])
-								out = LED(outNum)
-								if self.mem[entry["memory"]]["value"] == 1:
-									out.on
-								else:
-									out.off
+								if entry["memory"] in self.do:
+									
+									if self.mem[entry["memory"]]["value"] == 1:
+										self.do[entry["memory"]].on()
+									else:
+										self.do[entry["memory"]].off()
 
 							#overwrite mem if its forced
 							if self.mem[entry["memory"]]["forced"] == True:
 								self.mem[entry["memory"]]["value"] = self.mem[entry["memory"]]["forcedValue"]
-								print("forcing value " + str(self.mem[entry["memory"]]["forcedValue"]) + " on variable " + entry["memory"])
+								#print("forcing value " + str(self.mem[entry["memory"]]["forcedValue"]) + " on variable " + entry["memory"])
 							#print(self.mem)
 
 						func = entry["function"]
 						if func in globals():
-							print(func + " " + str(entry["target"]))
+							#print(func + " " + str(entry["target"]))
 							f_name = globals()[func]
 							self.rlo = f_name(self.rlo, entry, self.mem)
-							print(self.rlo)	
+							#print(self.rlo)	
 						
 programThread = ProgramThread()
 programThread.start()
@@ -227,7 +230,7 @@ def projectData():
 	if request.method == 'POST':
 		if not programThread.isRunning():
 			post_data = request.get_json()
-			print('POST:', post_data)
+			#print('POST:', post_data)
 			with open('project.json', 'w') as f:
 				f.write(json.dumps(post_data))
 			response_object['message'] = 'Project changed!';
@@ -248,10 +251,11 @@ def variablesData():
 			post_data = request.get_json()
 			for var in post_data:
 				var["edit"] = False
-			print('POST:', post_data)
+			#print('POST:', post_data)
 			with open('variables.json', 'w') as f:
 				f.write(json.dumps(post_data))
 			response_object['message'] = 'Variables changed!';
+			programThread.variablesdata = post_data
 			programThread.changed = True
 			programThread.saveStatusToFile()
 	else:
@@ -265,7 +269,7 @@ def compileData():
 	response_object = {}
 	if not programThread.isRunning():
 		post_data = request.get_json()
-		print('compile data:', post_data)
+		#print('compile data:', post_data)
 		with open('listing.json', 'w') as f:
 			f.write(json.dumps(post_data))
 		response_object['message'] = 'Compiled data saved!';
