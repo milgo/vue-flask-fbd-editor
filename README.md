@@ -47,14 +47,13 @@ location /forcevariables {<br />
 }<br />
 ---------------------------------------<br />
 <br />
-/* !IMPORTANT 
+!IMPORTANT 
 	Before running new build on device make sure to clear files project.json, variables.json, listing.json by rewriting them with "[]" value (without quotation marks - python empty array)
-*/
 <br /><br />
 Deply new build:<br />
 ---------------------------------------<br />
 git pull origin main<br />
-/*delete fake gpiozero.py file*/
+(delete fake gpiozero.py file)
 sudo rm -r /var/www/html/* <br />
 sudo cp -rfa ./vue-flask-fbd-editor/dist/. /var/www/html/ <br />
 restart nginx: sudo systemctl restart nginx<br />
