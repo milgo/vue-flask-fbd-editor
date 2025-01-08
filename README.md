@@ -55,7 +55,7 @@ Deply new build:<br />
 git pull origin main<br />
 (delete fake gpiozero.py file)<br />
 sudo rm -r /var/www/html/* <br />
-sudo cp -rfa ./vue-flask-fbd-editor/dist/. /var/www/html/ <br />
+sudo cp -rfa /home/vue-flask-fbd-editor/dist/. /var/www/html/ <br />
 restart nginx: sudo systemctl restart nginx<br />
 restart nginx: sudo systemctl restart program-data-server.service<br />
 status nginx: sudo systemctl status nginx<br />
