@@ -19,31 +19,31 @@ sudo systemctl start program-data-server.service <br />
 sudo systemctl enable program-data-server.service <br />
 sudo nano /etc/nginx/sites-available/default -> in server section add: <br />
 location /status {<br />
-	proxy_pass http://localhost:5000/status <br />
+	proxy_pass http://localhost:5000/status; <br />
 }<br />
 location /project {<br />
-	proxy_pass http://localhost:5000/project <br />
+	proxy_pass http://localhost:5000/project; <br />
 }<br />
 location /start {<br />
-	proxy_pass http://localhost:5000/start <br />
+	proxy_pass http://localhost:5000/start; <br />
 }<br />
 location /stop {<br />
-	proxy_pass http://localhost:5000/stop <br />
+	proxy_pass http://localhost:5000/stop; <br />
 }<br />
 location /monitor {<br />
-	proxy_pass http://localhost:5000/monitor <br />
+	proxy_pass http://localhost:5000/monitor; <br />
 }<br />
 location /variables {<br />
-	proxy_pass http://localhost:5000/variables <br />
+	proxy_pass http://localhost:5000/variables; <br />
 }<br />
 location /compile {<br />
-	proxy_pass http://localhost:5000/compile<br />
+	proxy_pass http://localhost:5000/compile;<br />
 }<br />
 location /pullruntimedata {<br />
-	proxy_pass http://localhost:5000/pullruntimedata<br />
+	proxy_pass http://localhost:5000/pullruntimedata;<br />
 }<br />
 location /forcevariables {<br />
-	proxy_pass http://localhost:5000/forcevariables<br />
+	proxy_pass http://localhost:5000/forcevariables;<br />
 }<br />
 ---------------------------------------<br />
 <br />
