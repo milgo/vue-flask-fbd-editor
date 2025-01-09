@@ -31,6 +31,7 @@ class ProgramThread(threading.Thread):
 	variablesdata = {}
 	projectdata = {}
 	do = {}
+	di = {}
 	
 	changed = False
 	monitor = False
@@ -47,6 +48,10 @@ class ProgramThread(threading.Thread):
 				self.changed = True
 			if 'monitor' in statusdata and statusdata['monitor'] == 'on':
 				self.monitor = True
+		with open('project.json') as f:
+			self.projectdata = json.load(f)
+		with open('variables.json', 'r') as file:
+			self.variablesdata = json.load(file)
 
 	def stop(self):
 		self._stop_event.set()
@@ -116,10 +121,10 @@ class ProgramThread(threading.Thread):
 	def run(self):
         
 		self.do["%o21"] = LED(21)
-        
+		self.di["%i22"] = Button(22)
 		while True:
 		
-			if os.path.isfile('listing.json') and os.path.isfile('variables.json') and os.path.isfile('project.json'):
+			if os.path.isfile('listing.json') and os.path.isfile('variables.json') and os.path.isfile('project.json') and not self._stop_event.is_set():
 			
 				self.mem = {}
 				self.rlo = {}
@@ -127,11 +132,11 @@ class ProgramThread(threading.Thread):
 				with open('project.json') as f:
 					self.projectdata = json.load(f)
 
-				with open('listing.json', 'r') as file:
-					listingdata = json.load(file) #parsing error accures sometimes
-
 				with open('variables.json', 'r') as file:
 					self.variablesdata = json.load(file)
+					
+				with open('listing.json', 'r') as file:
+					listingdata = json.load(file)
 
 				for var in self.variablesdata:
 					self.mem[var["name"]] = var
@@ -148,10 +153,11 @@ class ProgramThread(threading.Thread):
 
 							#physical inputs
 							if self.mem[entry["memory"]]["type"] in ["di"]:
-								pinNum = int(re.findall(r'\d+', entry["memory"])[0])
-								self.mem[entry["memory"]]["value"] = 0
-								if Button(pinNum).is_pressed == True:
+								#pinNum = int(re.findall(r'\d+', entry["memory"])[0])
+								if self.di[entry["memory"]].is_pressed == True:
 									self.mem[entry["memory"]]["value"] = 1
+								else:
+									self.mem[entry["memory"]]["value"] = 0
 
 							if self.mem[entry["memory"]]["type"] in ["do"]:
 								if entry["memory"] in self.do:
@@ -281,4 +287,5 @@ def compileData():
 if __name__ == '__main__':
         from waitress import serve
         serve(app, host="0.0.0.0", port=5000)
+
 
