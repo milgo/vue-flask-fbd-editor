@@ -122,7 +122,6 @@ class ProgramThread(threading.Thread):
         
 		self.do["%o21"] = LED(21)
 		self.di["%i22"] = Button(22)
-		self.di["%i1"] = Button(22)
 		while True:
 		
 			if os.path.isfile('listing.json') and os.path.isfile('variables.json') and os.path.isfile('project.json') and not self._stop_event.is_set():
@@ -155,14 +154,14 @@ class ProgramThread(threading.Thread):
 							#physical inputs
 							if self.mem[entry["memory"]]["type"] in ["di"]:
 								#pinNum = int(re.findall(r'\d+', entry["memory"])[0])
-								if self.di[entry["memory"]].is_pressed == True:
-									self.mem[entry["memory"]]["value"] = 1
-								else:
-									self.mem[entry["memory"]]["value"] = 0
+								if entry["memory"] in self.di:
+									if self.di[entry["memory"]].is_pressed == True:
+										self.mem[entry["memory"]]["value"] = 1
+									else:
+										self.mem[entry["memory"]]["value"] = 0
 
 							if self.mem[entry["memory"]]["type"] in ["do"]:
-								if entry["memory"] in self.do:
-									
+								if entry["memory"] in self.do:									
 									if self.mem[entry["memory"]]["value"] == 1:
 										self.do[entry["memory"]].on()
 									else:
