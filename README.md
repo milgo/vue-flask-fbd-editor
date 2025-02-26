@@ -62,13 +62,13 @@ restart nginx: sudo systemctl restart program-data-server.service<br />
 status nginx: sudo systemctl status nginx<br />
 
 ---------------------------------------<br />
+Runtime data description:<br />
 RLO_obj - runtime data (id -> value) of all function blocks<br />
 {<br />
     "13123322" : "True",<br />
     "32423445" : "243",<br />
     ...<br />
 }<br />
-<br />
 <br />
 BLOCK_obj - current listing block<br />
 {<br />
