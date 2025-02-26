@@ -81,7 +81,7 @@ BLOCK_obj - current listing block<br />
 }<br />
 <br />
 MEM_obj= { <br />
-    "name1" : {  <br />  
+    "name1" : {
         "type": "bool", //variable type<br />
         "value": "1", //variable value<br />
         "forced": "False", //is it forced<br />
