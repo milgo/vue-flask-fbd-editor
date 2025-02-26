@@ -89,4 +89,3 @@ MEM_obj= { <br />
     }, <br />
     "name2" : <br />
         { ... }<br />
-<br />
