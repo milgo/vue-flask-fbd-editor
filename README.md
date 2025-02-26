@@ -75,8 +75,8 @@ BLOCK_obj - current listing block<br />
     "function": "before_AND_INPUT", //function to be executed<br />
     "input": "1736893940672", //input id of parent node to which is connected<br />
     "memory": "%i1", //memory associated to current function<br />
-    "inputName": "name", //input name of parent node to which is connected<br />
-    "inputNode": "1736893945336", //id of parent node to which is connected<br />
+    "inputName": "name", //input name of input node to which is connected<br />
+    "inputNode": "1736893945336", //id of input node to which is connected<br />
     "target": "1736893939333" //id of current node block<br />
 }<br />
 <br />
