@@ -60,3 +60,33 @@ sudo systemctl daemon-reload <br />
 restart nginx: sudo systemctl restart nginx<br />
 restart nginx: sudo systemctl restart program-data-server.service<br />
 status nginx: sudo systemctl status nginx<br />
+
+---------------------------------------<br />
+RLO_obj - runtime data (id -> value) of all function blocks<br />
+{<br />
+    "13123322" : "True",<br />
+    "32423445" : "243",<br />
+    ...<br />
+}<br />
+<br />
+<br />
+BLOCK_obj - current listing block<br />
+{<br />
+    "function": "before_AND_INPUT", //function to be executed<br />
+    "input": "1736893940672", //input id of parent node to which is connected<br />
+    "memory": "%i1", //memory associated to current function<br />
+    "inputName": "name", //input name of parent node to which is connected<br />
+    "inputNode": "1736893945336", //id of parent node to which is connected<br />
+    "target": "1736893939333" //id of current node block<br />
+}<br />
+<br />
+MEM_obj= { <br />
+    "name1" : {  <br />  
+        "type": "bool", //variable type<br />
+        "value": "1", //variable value<br />
+        "forced": "False", //is it forced<br />
+        "forcedValue": "False", //forced value<br />
+    }, <br />
+    "name2" : <br />
+        { ... }<br />
+<br />
