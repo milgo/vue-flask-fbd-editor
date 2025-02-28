@@ -61,10 +61,10 @@ Assuming nodejs is installed with vite and python with flask on desktop computer
 #### Deploy new build on device
 Open terminal or connect using remote ssh session and run commands:
 - git pull origin main
-- delete fake library gpiozero.py file
+- *delete fake library gpiozero.py file (TODO command)
 - run sudo rm -r /var/www/html/*
 - sudo cp -rfa /home/vue-flask-fbd-editor/dist/. /var/www/html/
-- *Before running new build on device make sure to clear files project.json, variables.json, listing.json by rewriting them with "[]" value (without quotation marks - python empty array)
+- *Before running new build on device make sure to clear files project.json, variables.json, listing.json by rewriting them with "[]" value (without quotation marks - python empty array) (TODO command)
 - sudo systemctl daemon-reload
 - sudo systemctl restart nginx
 - sudo systemctl restart program-data-server.service
