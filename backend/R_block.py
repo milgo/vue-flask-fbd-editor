@@ -1,12 +1,24 @@
-def pre_R(RLO_obj, BLOCK_obj):
-	print("-->R pre")
-	return RLO_obj
+def before_R(RLO, THIS, MEM):
+
+	MEM[THIS["id"]] = 0
+	return RLO
+
+def before_R_INPUT(RLO, THIS, MEM):
+	return RLO
+
+def R(RLO, THIS, MEM):
+	return RLO
+
+def after_R_INPUT(RLO, THIS, MEM):
+	if MEM[THIS["childId"]] == 1:
+		MEM[THIS["memoryAddr"]]["value"] = 0
+	return RLO
+
+def after_R(RLO, THIS, MEM):
 	
-def R(RLO_obj, BLOCK_obj):
-	print("-->R exec")
-	return RLO_obj
-	
-def post_R(RLO_obj, BLOCK_obj):
-	print("-->R post")
-	return RLO_obj
-	
+	if MEM[THIS["memoryAddr"]]['forced'] == True:
+		MEM[THIS["memoryAddr"]]["value"] = MEM[THIS["memoryAddr"]]["forcedValue"]
+
+	RLO[THIS["id"]] = MEM[THIS["memoryAddr"]]["value"]
+
+	return RLO

@@ -1,26 +1,25 @@
-def before_ASSIGN(RLO_obj, BLOCK_obj, MEM_obj):
+def before_ASSIGN(RLO, THIS, MEM):
 
-	MEM_obj[BLOCK_obj["target"]] = 0
-	return RLO_obj
+	MEM[THIS["id"]] = 0
+	return RLO
 
-def before_ASSIGN_INPUT(RLO_obj, BLOCK_obj, MEM_obj):
-	return RLO_obj
+def before_ASSIGN_INPUT(RLO, THIS, MEM):
+	return RLO
 
-def ASSIGN(RLO_obj, BLOCK_obj, MEM_obj):
+def ASSIGN(RLO, THIS, MEM):
+	return RLO
 
-	return RLO_obj
+def after_ASSIGN_INPUT(RLO, THIS, MEM):
+	MEM[THIS["id"]] = MEM[THIS["childId"]]
+	return RLO
 
-def after_ASSIGN_INPUT(RLO_obj, BLOCK_obj, MEM_obj):
-	MEM_obj[BLOCK_obj["target"]] = MEM_obj[BLOCK_obj["inputNode"]]
-	return RLO_obj
-
-def after_ASSIGN(RLO_obj, BLOCK_obj, MEM_obj):
+def after_ASSIGN(RLO, THIS, MEM):
 	
-	if MEM_obj[BLOCK_obj["memory"]]['forced'] == True:
-		MEM_obj[BLOCK_obj["memory"]]["value"] = MEM_obj[BLOCK_obj["memory"]]["forcedValue"]
+	if MEM[THIS["memoryAddr"]]['forced'] == True:
+		MEM[THIS["memoryAddr"]]["value"] = MEM[THIS["memoryAddr"]]["forcedValue"]
 	else:
-		MEM_obj[BLOCK_obj["memory"]]["value"] = MEM_obj[BLOCK_obj["target"]]
+		MEM[THIS["memoryAddr"]]["value"] = MEM[THIS["id"]]
 
-	RLO_obj[BLOCK_obj["target"]] = MEM_obj[BLOCK_obj["memory"]]["value"]
+	RLO[THIS["id"]] = MEM[THIS["memoryAddr"]]["value"]
 
-	return RLO_obj
+	return RLO

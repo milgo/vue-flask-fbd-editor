@@ -1,11 +1,24 @@
-def pre_S(RLO_obj, BLOCK_obj):
-	print("-->S pre")
-	return RLO_obj
+def before_S(RLO, THIS, MEM):
+
+	MEM[THIS["id"]] = 0
+	return RLO
+
+def before_S_INPUT(RLO, THIS, MEM):
+	return RLO
+
+def S(RLO, THIS, MEM):
+	return RLO
+
+def after_S_INPUT(RLO, THIS, MEM):
+	if MEM[THIS["childId"]] == 1:
+		MEM[THIS["memoryAddr"]]["value"] = 1
+	return RLO
+
+def after_S(RLO, THIS, MEM):
 	
-def S(RLO_obj, BLOCK_obj):
-	print("-->S exec")
-	return RLO_obj
-	
-def post_S(RLO_obj, BLOCK_obj):
-	print("-->S post")
-	return RLO_obj
+	if MEM[THIS["memoryAddr"]]['forced'] == True:
+		MEM[THIS["memoryAddr"]]["value"] = MEM[THIS["memoryAddr"]]["forcedValue"]
+
+	RLO[THIS["id"]] = MEM[THIS["memoryAddr"]]["value"]
+
+	return RLO

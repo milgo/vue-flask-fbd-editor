@@ -262,8 +262,8 @@ const statusdata = ref([]);
 const projectdata = ref([]);
 const listing = ref([]);
 const variablesdata = ref([]);
-const flaskURL = "http://192.168.1.2"
-//const flaskURL = "http://localhost:5000"
+//const flaskURL = "http://192.168.1.2"
+const flaskURL = "http://localhost:5000"
 //const varTypes = ref(variableTypes);
 
 const enableEdit = {"stopped" : true, "running" : false}
@@ -286,62 +286,46 @@ function diselectInterConnection() {
   interConnection.value = false;
 }
 
-const recursiveLoopBasedOnInputs = (
-  data,
-  element,
-  parentElement,
-  parentInput
-) => {
+const recursiveLoopBasedOnInputs = (data, element, inputId) => {
   if (element) {
-
-	if (parentInput != null) {
-	  var funcName = parentElement.alias != "" ? parentElement.alias : parentElement.block
-      listing.value.push({
-        function: "before_"+funcName+"_INPUT",
-        input: parentInput.id.toString(),
-		inputNode: element.id.toString(),
-        target: parentElement.id.toString(),
-      });
-    }
-
     listing.value.push({
-      function:
+      functionName:
         "before_" + (element.alias != "" ? element.alias : element.block),
-		input: parentInput !== undefined ? parentInput.id.toString() : undefined,
-        target: element.id.toString(),
+      memoryAddr: element.mem_loc !== "???" ? element.mem_loc : undefined,
+      id: element.id.toString(),
+	  parentInputId: inputId !== null ? inputId.toString() : "", 
     });
 
-	if (element.input_only === true) {
-		listing.value.push({
-			function: (element.alias != "" ? element.alias : element.block),
-			memory: element.mem_loc,
-			input: parentInput !== undefined ? parentInput.id.toString() : undefined,
-			target: element.id.toString(),
-		});
-    }else{
-		Array.prototype.forEach.call(element.inputs, (input) => {
-			var nestedElement = data.filter((e) => e.id === input.target)[0];
-			recursiveLoopBasedOnInputs(data, nestedElement, element, input);
-		});
-	}
+    Array.prototype.forEach.call(element.inputs, (input) => {
+      var nestedElement = data.filter((e) => e.id === input.target)[0];
+      var funcName = element.alias != "" ? element.alias : element.block;
+
+      listing.value.push({
+        functionName: "before_" + funcName + "_INPUT",
+        inputName: input.name,
+        memoryAddr: element.mem_loc !== "???" ? element.mem_loc : undefined,
+        id: element.id.toString(),
+        childId: nestedElement.id.toString(),
+      });
+
+      recursiveLoopBasedOnInputs(data, nestedElement, input.id);
+
+      listing.value.push({
+        functionName: "after_" + funcName + "_INPUT",
+        inputName: input.name,
+		memoryAddr: element.mem_loc !== "???" ? element.mem_loc : undefined,
+        id: element.id.toString(),
+        childId: nestedElement.id.toString(),
+      });
+    });
 
     listing.value.push({
-		function:
-          "after_" + (element.alias != "" ? element.alias : element.block),
-		input: parentInput !== undefined ? parentInput.id.toString() : undefined,
-        memory: element.mem_loc !== "???" ? element.mem_loc : undefined,
-        target: element.id.toString(),
+      functionName:
+        "after_" + (element.alias != "" ? element.alias : element.block),
+      memoryAddr: element.mem_loc !== "???" ? element.mem_loc : undefined,
+      id: element.id.toString(),
+	  parentInputId: inputId !== null ? inputId.toString() : ""
     });
-
-	if (parentInput != null) {
-		var funcName = parentElement.alias != "" ? parentElement.alias : parentElement.block
-		listing.value.push({
-			function: "after_"+funcName+"_INPUT",
-			input: parentInput.id.toString(),
-			inputNode: element.id.toString(),
-			target: parentElement.id.toString(),
-		});
-	}
   }
 };
 
@@ -555,7 +539,7 @@ const addChild = (id, parentInput, blockJson) => {
     value: 0,
   });
 
-  definitions.forEach((group) => {
+  /*definitions.forEach((group) => {
     group.blocks.forEach((def) => {
       if (def.name === block.name && !def.dyn_inputs && def.inputs) {
         def.inputs.forEach((inputDef) => {
@@ -564,7 +548,20 @@ const addChild = (id, parentInput, blockJson) => {
         });
       }
     });
+  });*/
+  definitions.forEach((group) => {
+    group.blocks.forEach((def) => {
+      if (def.name === block.name && !def.dyn_inputs && def.inputs) {
+        def.inputs.forEach((inputDef) => {
+          setTimeout(() => {
+            addInput(id, inputDef, inputCounter);
+            inputCounter++;
+          }, 10);
+        });
+      }
+    });
   });
+
   putProjectDataToFlask();
 };
 const addInput = (nodeId, inputDef, idOffset = 0) => {

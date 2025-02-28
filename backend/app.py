@@ -15,6 +15,8 @@ from DIN_block import *
 from AND_block import *
 from OR_block import *
 from ASSIGN_block import *
+from S_block import *
+from R_block import *
 
 app = Flask(__name__)
 #CORS(app, origins=["http://localhost:80","http://localhost:80"])
@@ -149,31 +151,31 @@ class ProgramThread(threading.Thread):
 
 					for entry in listingdata:
 
-						if "memory" in entry and entry["memory"] != " ":
+						if "memoryAddr" in entry and entry["memoryAddr"] != " ":
 
 							#physical inputs
-							if self.mem[entry["memory"]]["type"] in ["di"]:
+							if self.mem[entry["memoryAddr"]]["type"] in ["di"]:
 								#pinNum = int(re.findall(r'\d+', entry["memory"])[0])
-								if entry["memory"] in self.di:
-									if self.di[entry["memory"]].is_pressed == True:
-										self.mem[entry["memory"]]["value"] = 1
+								if entry["memoryAddr"] in self.di:
+									if self.di[entry["memoryAddr"]].is_pressed == True:
+										self.mem[entry["memoryAddr"]]["value"] = 1
 									else:
-										self.mem[entry["memory"]]["value"] = 0
+										self.mem[entry["memoryAddr"]]["value"] = 0
 
-							if self.mem[entry["memory"]]["type"] in ["do"]:
-								if entry["memory"] in self.do:									
-									if self.mem[entry["memory"]]["value"] == 1:
-										self.do[entry["memory"]].on()
+							if self.mem[entry["memoryAddr"]]["type"] in ["do"]:
+								if entry["memoryAddr"] in self.do:									
+									if self.mem[entry["memoryAddr"]]["value"] == 1:
+										self.do[entry["memoryAddr"]].on()
 									else:
-										self.do[entry["memory"]].off()
+										self.do[entry["memoryAddr"]].off()
 
 							#overwrite mem if its forced
-							if self.mem[entry["memory"]]["forced"] == True:
-								self.mem[entry["memory"]]["value"] = self.mem[entry["memory"]]["forcedValue"]
+							if self.mem[entry["memoryAddr"]]["forced"] == True:
+								self.mem[entry["memoryAddr"]]["value"] = self.mem[entry["memoryAddr"]]["forcedValue"]
 								#print("forcing value " + str(self.mem[entry["memory"]]["forcedValue"]) + " on variable " + entry["memory"])
 							#print(self.mem)
 
-						func = entry["function"]
+						func = entry["functionName"]
 						if func in globals():
 							#print(func + " " + str(entry["target"]))
 							f_name = globals()[func]

@@ -1,25 +1,25 @@
-def before_AND(RLO_obj, BLOCK_obj, MEM_obj):
+def before_AND(RLO, THIS, MEM):
 
-	MEM_obj[BLOCK_obj["target"]] = 1
-	return RLO_obj
+	MEM[THIS["id"]] = 1
+	return RLO
 
-def before_AND_INPUT(RLO_obj, BLOCK_obj, MEM_obj):
-	return RLO_obj
+def before_AND_INPUT(RLO, THIS, MEM):
+	return RLO
 	
-def AND(RLO_obj, BLOCK_obj, MEM_obj):
-	return RLO_obj
+def AND(RLO, THIS, MEM):
+	return RLO
 
-def after_AND_INPUT(RLO_obj, BLOCK_obj, MEM_obj):
+def after_AND_INPUT(RLO, THIS, MEM):
 
-	if "inputNode" in BLOCK_obj:
-		MEM_obj[BLOCK_obj["target"]] = MEM_obj[BLOCK_obj["target"]] & MEM_obj[BLOCK_obj["inputNode"]]
-	return RLO_obj
+	if "childId" in THIS:
+		MEM[THIS["id"]] = MEM[THIS["id"]] & MEM[THIS["childId"]]
+	return RLO
 
-def after_AND(RLO_obj, BLOCK_obj, MEM_obj):
+def after_AND(RLO, THIS, MEM):
 
-	if "input" in BLOCK_obj:
-		RLO_obj[BLOCK_obj["input"]] = MEM_obj[BLOCK_obj["target"]] 
+	if "parentInputId" in THIS:
+		RLO[THIS["parentInputId"]] = MEM[THIS["id"]] 
 
-	RLO_obj[BLOCK_obj["target"]] = MEM_obj[BLOCK_obj["target"]]
-	return RLO_obj
+	RLO[THIS["id"]] = MEM[THIS["id"]]
+	return RLO
 	
