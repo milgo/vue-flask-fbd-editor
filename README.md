@@ -1,5 +1,5 @@
 #### Instalation (on Raspberry PI)
-Open terminal or connect using remote ssh seesion and run below commands:
+Open terminal or connect using remote ssh session and run below commands:
 - sudo apt update <br />
 - sudo apt upgrade -y <br />
 - sudo apt install nginx <br />
