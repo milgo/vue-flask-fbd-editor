@@ -19,7 +19,7 @@ sudo systemctl daemon-reload <br />
 sudo systemctl start program-data-server.service <br />
 sudo systemctl enable program-data-server.service <br />
 sudo nano /etc/nginx/sites-available/default -> in server section add: <br />
-''''md
+````md
 location /status {<br />
 	proxy_pass http://localhost:5000/status; <br />
 }<br />
@@ -47,7 +47,7 @@ location /pullruntimedata {<br />
 location /forcevariables {<br />
 	proxy_pass http://localhost:5000/forcevariables;<br />
 }<br />
-''''md
+````md
 
 #### Development:<br />
 Assuming nodejs is installed with vite and python with flask on desktop computer (Windows):
