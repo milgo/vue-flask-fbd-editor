@@ -19,7 +19,7 @@ sudo systemctl daemon-reload <br />
 sudo systemctl start program-data-server.service <br />
 sudo systemctl enable program-data-server.service <br />
 sudo nano /etc/nginx/sites-available/default -> in server section add: <br />
-```json
+```md
 location /status {<br />
 	proxy_pass http://localhost:5000/status; <br />
 }<br />
