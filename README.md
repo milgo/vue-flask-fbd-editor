@@ -48,15 +48,21 @@ location /forcevariables {<br />
 ---------------------------------------<br />
 Development:<br />
 ---------------------------------------<br />
-Assuming nodejs is installed with vite and python with flask on desktop computer:<br />
-Change 
+Assuming nodejs is installed with vite and python with flask on desktop computer (Windows):<br />
+Change line in App.vue: 'const flaskURL = "http://192.168.1.2"' to 'const flaskURL = "http://localhost:5000"'<br />
 Run dev.bat to run vue frontend<br />
 Run backend/run.bat to run flask backend <br />
+---------------------------------------<br />
+Build:<br />
+---------------------------------------<br />
+Change line in App.vue: 'const flaskURL = "http://localhost:5000"' to 'const flaskURL = "http://192.168.1.2"'<br />
+Run build.bat <br />
+Git commit changes with message ""<br />
 ---------------------------------------<br />
 Deploy new build on device:<br />
 ---------------------------------------<br />
 git pull origin main<br />
-(delete fake gpiozero.py file)<br />
+(delete fake library gpiozero.py file)<br />
 sudo rm -r /var/www/html/* <br />
 sudo cp -rfa /home/vue-flask-fbd-editor/dist/. /var/www/html/ <br />
 !IMPORTANT Before running new build on device make sure to clear files project.json, variables.json, listing.json by rewriting them with "[]" value (without quotation marks - python empty array)
