@@ -57,7 +57,7 @@ Build:<br />
 ---------------------------------------<br />
 Change line in App.vue: 'const flaskURL = "http://localhost:5000"' to 'const flaskURL = "http://192.168.1.2"'<br />
 Run build.bat <br />
-Git commit changes with message ""<br />
+Git commit changes with message "uploading dist vx.x"<br />
 ---------------------------------------<br />
 Deploy new build on device:<br />
 ---------------------------------------<br />
