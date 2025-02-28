@@ -1,5 +1,5 @@
 #### Instalation (on Raspberry PI)
-Open terminal or connect using remote ssh session and run below commands:
+Open terminal or connect using remote ssh session and run commands:
 - sudo apt update <br />
 - sudo apt upgrade -y <br />
 - sudo apt install nginx <br />
@@ -47,18 +47,18 @@ location /forcevariables {
 }
 ```
 
-#### Development:<br />
+#### Development
 Assuming nodejs is installed with vite and python with flask on desktop computer (Windows):
 - Change line in App.vue: 'const flaskURL = "http://192.168.1.2"' to 'const flaskURL = "http://localhost:5000"'
 - Run dev.bat to run vue frontend
 - Run backend/run.bat to run flask backend 
 
-#### Build:<br />
+#### Build
 - Change line in App.vue: 'const flaskURL = "http://localhost:5000"' to 'const flaskURL = "http://192.168.1.2"'
 - Run build.bat
 - Git commit changes with message "uploading dist vx.x"
 
-#### Deploy new build on device:<br />
+#### Deploy new build on device
 - Run "git pull origin main"
 - Run "delete fake library gpiozero.py file"
 - Run "run sudo rm -r /var/www/html/*"
@@ -69,7 +69,10 @@ Assuming nodejs is installed with vite and python with flask on desktop computer
 - Restart nginx: sudo systemctl restart program-data-server.service<br />
 - Status nginx: sudo systemctl status nginx<br />
 
-#### Runtime data description:<br />
+#### Setup direct Ethernet connection
+TODO
+
+#### Runtime data description
 RLO - runtime data (id -> value) of all function blocks<br />
 {<br />
     "13123322" : "True",<br />
