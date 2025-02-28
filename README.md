@@ -1,6 +1,3 @@
-Vue developement is done in windows so in that case we add :5000 port option to flask backend in App.vue file axios requests. <br />
-In order to proprely build app for raspberry pi just before build we need to remove those port numbers because we proxy pass them in nginx.
-
 #### Instalation (on Raspberry PI)
 Open terminal or connect using remote ssh seesion and run below commands:
 - sudo apt update <br />
