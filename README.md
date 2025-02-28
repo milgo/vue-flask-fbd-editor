@@ -46,20 +46,20 @@ location /forcevariables {<br />
 	proxy_pass http://localhost:5000/forcevariables;<br />
 }<br />
 ---------------------------------------<br />
-####Development:<br />
+#### Development:<br />
 ---------------------------------------<br />
 Assuming nodejs is installed with vite and python with flask on desktop computer (Windows):<br />
 Change line in App.vue: 'const flaskURL = "http://192.168.1.2"' to 'const flaskURL = "http://localhost:5000"'<br />
 Run dev.bat to run vue frontend<br />
 Run backend/run.bat to run flask backend <br />
 ---------------------------------------<br />
-Build:<br />
+#### Build:<br />
 ---------------------------------------<br />
 Change line in App.vue: 'const flaskURL = "http://localhost:5000"' to 'const flaskURL = "http://192.168.1.2"'<br />
 Run build.bat <br />
 Git commit changes with message "uploading dist vx.x"<br />
 ---------------------------------------<br />
-Deploy new build on device:<br />
+#### Deploy new build on device:<br />
 ---------------------------------------<br />
 git pull origin main<br />
 (delete fake library gpiozero.py file)<br />
