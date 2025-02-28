@@ -1,6 +1,7 @@
 Vue developement is done in windows so in that case we add :5000 port option to flask backend in App.vue file axios requests. <br />
 In order to proprely build app for raspberry pi just before build we need to remove those port numbers because we proxy pass them in nginx.
 
+#### Instalation (on raspbery PI)
 sudo apt update <br />
 sudo apt upgrade -y <br />
 sudo apt install nginx <br />
@@ -53,25 +54,22 @@ Assuming nodejs is installed with vite and python with flask on desktop computer
 - Run backend/run.bat to run flask backend 
 
 #### Build:<br />
----------------------------------------<br />
-Change line in App.vue: 'const flaskURL = "http://localhost:5000"' to 'const flaskURL = "http://192.168.1.2"'<br />
-Run build.bat <br />
-Git commit changes with message "uploading dist vx.x"<br />
----------------------------------------<br />
+- Change line in App.vue: 'const flaskURL = "http://localhost:5000"' to 'const flaskURL = "http://192.168.1.2"'
+- Run build.bat
+- Git commit changes with message "uploading dist vx.x"
+
 #### Deploy new build on device:<br />
----------------------------------------<br />
-git pull origin main<br />
-(delete fake library gpiozero.py file)<br />
-sudo rm -r /var/www/html/* <br />
-sudo cp -rfa /home/vue-flask-fbd-editor/dist/. /var/www/html/ <br />
-!IMPORTANT Before running new build on device make sure to clear files project.json, variables.json, listing.json by rewriting them with "[]" value (without quotation marks - python empty array)
-<br />
-sudo systemctl daemon-reload <br />
-restart nginx: sudo systemctl restart nginx<br />
-restart nginx: sudo systemctl restart program-data-server.service<br />
-status nginx: sudo systemctl status nginx<br />
----------------------------------------<br />
-Runtime data description:<br />
+- Run "git pull origin main"
+- Run "delete fake library gpiozero.py file"
+- Run "run sudo rm -r /var/www/html/*"
+- Run "sudo cp -rfa /home/vue-flask-fbd-editor/dist/. /var/www/html/"
+- Before running new build on device make sure to clear files project.json, variables.json, listing.json by rewriting them with "[]" value (without quotation marks - python empty array)
+- Run "sudo systemctl daemon-reload"
+- Restart nginx: sudo systemctl restart nginx<br />
+- Restart nginx: sudo systemctl restart program-data-server.service<br />
+- Status nginx: sudo systemctl status nginx<br />
+
+#### Runtime data description:<br />
 RLO - runtime data (id -> value) of all function blocks<br />
 {<br />
     "13123322" : "True",<br />
