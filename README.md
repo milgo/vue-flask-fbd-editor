@@ -47,7 +47,7 @@ location /pullruntimedata {<br />
 location /forcevariables {<br />
 	proxy_pass http://localhost:5000/forcevariables;<br />
 }<br />
-````md
+```
 
 #### Development:<br />
 Assuming nodejs is installed with vite and python with flask on desktop computer (Windows):
