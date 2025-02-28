@@ -46,41 +46,45 @@ location /forcevariables {<br />
 	proxy_pass http://localhost:5000/forcevariables;<br />
 }<br />
 ---------------------------------------<br />
-<br />
-!IMPORTANT 
-	Before running new build on device make sure to clear files project.json, variables.json, listing.json by rewriting them with "[]" value (without quotation marks - python empty array)
-<br /><br />
-Deply new build:<br />
+Development:<br />
+---------------------------------------<br />
+Assuming nodejs is installed with vite and python with flask on desktop computer:<br />
+Change 
+Run dev.bat to run vue frontend<br />
+Run backend/run.bat to run flask backend <br />
+---------------------------------------<br />
+Deploy new build on device:<br />
 ---------------------------------------<br />
 git pull origin main<br />
 (delete fake gpiozero.py file)<br />
 sudo rm -r /var/www/html/* <br />
 sudo cp -rfa /home/vue-flask-fbd-editor/dist/. /var/www/html/ <br />
+!IMPORTANT Before running new build on device make sure to clear files project.json, variables.json, listing.json by rewriting them with "[]" value (without quotation marks - python empty array)
+<br />
 sudo systemctl daemon-reload <br />
 restart nginx: sudo systemctl restart nginx<br />
 restart nginx: sudo systemctl restart program-data-server.service<br />
 status nginx: sudo systemctl status nginx<br />
-
 ---------------------------------------<br />
 Runtime data description:<br />
-RLO_obj - runtime data (id -> value) of all function blocks<br />
+RLO - runtime data (id -> value) of all function blocks<br />
 {<br />
     "13123322" : "True",<br />
     "32423445" : "243",<br />
     ...<br />
 }<br />
 <br />
-BLOCK_obj - current listing block<br />
+THIS - current listing block<br />
 {<br />
-    "function": "before_AND_INPUT", //function to be executed<br />
-    "input": "1736893940672", //input id of parent node to which is connected<br />
-    "memory": "%i1", //memory associated to current function<br />
+    "functionName": "before_AND_INPUT", //function to be executed<br />
+    "inputId": "1736893940672", //input id of parent node to which is connected<br />
+    "memoryAddr": "%i1", //memory associated to current function<br />
     "inputName": "name", //input name of input node to which is connected<br />
-    "inputNode": "1736893945336", //id of input node to which is connected<br />
-    "target": "1736893939333" //id of current node block<br />
+    "childId": "1736893945336", //id of input node to which is connected<br />
+    "id": "1736893939333" //id of current node block<br />
 }<br />
 <br />
-MEM_obj= { <br />
+MEM= { <br />
     "name1" : {<br />
         "type": "bool", //variable type<br />
         "value": "1", //variable value<br />
@@ -89,3 +93,4 @@ MEM_obj= { <br />
     }, <br />
     "name2" : <br />
         { ... }<br />
+---------------------------------------<br />
