@@ -59,15 +59,16 @@ Assuming nodejs is installed with vite and python with flask on desktop computer
 - Git commit changes with message "uploading dist vx.x"
 
 #### Deploy new build on device
-- Run "git pull origin main"
-- Run "delete fake library gpiozero.py file"
-- Run "run sudo rm -r /var/www/html/*"
-- Run "sudo cp -rfa /home/vue-flask-fbd-editor/dist/. /var/www/html/"
-- Before running new build on device make sure to clear files project.json, variables.json, listing.json by rewriting them with "[]" value (without quotation marks - python empty array)
-- Run "sudo systemctl daemon-reload"
-- Restart nginx: sudo systemctl restart nginx<br />
-- Restart nginx: sudo systemctl restart program-data-server.service<br />
-- Status nginx: sudo systemctl status nginx<br />
+Open terminal or connect using remote ssh session and run commands:
+- git pull origin main
+- delete fake library gpiozero.py file
+- run sudo rm -r /var/www/html/*
+- sudo cp -rfa /home/vue-flask-fbd-editor/dist/. /var/www/html/
+- *Before running new build on device make sure to clear files project.json, variables.json, listing.json by rewriting them with "[]" value (without quotation marks - python empty array)
+- sudo systemctl daemon-reload
+- sudo systemctl restart nginx
+- sudo systemctl restart program-data-server.service
+-  sudo systemctl status nginx
 
 #### Setup direct Ethernet connection
 TODO
