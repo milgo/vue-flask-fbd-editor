@@ -14,9 +14,12 @@ from os import path
 from DIN_block import *
 from AND_block import *
 from OR_block import *
+from NOT_block import *
 from ASSIGN_block import *
 from S_block import *
 from R_block import *
+from SR_block import *
+from RS_block import *
 
 app = Flask(__name__)
 #CORS(app, origins=["http://localhost:80","http://localhost:80"])

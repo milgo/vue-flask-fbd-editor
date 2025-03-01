@@ -148,11 +148,13 @@
         "inputs": [
           {
             "name": "R",
-            "type": ["bool"]
+            "type": ["bool"],
+			"show_name": true
           },
           {
             "name": "S",
-            "type": ["bool"]
+            "type": ["bool"],
+			"show_name": true
           }
         ],
         "mem_input": ["marker"],

@@ -1,11 +1,22 @@
-def pre_NOT(RLO_obj, BLOCK_obj):
-	print("-->NOT pre")
-	return RLO_obj
-	
-def NOT(RLO_obj, BLOCK_obj):
-	print("-->NOT exec")
-	return RLO_obj
+def before_NOT(RLO, THIS, MEM):
 
-def post_NOT(RLO_obj, BLOCK_obj):
-	print("-->NOT post")
-	return RLO_obj
+	MEM[THIS["id"]] = 0
+	return RLO
+
+def before_NOT_INPUT(RLO, THIS, MEM):
+	return RLO
+
+def NOT(RLO, THIS, MEM):
+	return RLO
+
+def after_NOT_INPUT(RLO, THIS, MEM):
+	if RLO[THIS["childId"]] == 1:
+		MEM[THIS["id"]] = 0
+	else:
+		MEM[THIS["id"]] = 1
+	return RLO
+
+def after_NOT(RLO, THIS, MEM):
+	RLO[THIS["id"]] = MEM[THIS["id"]]
+	RLO[THIS["parentInputId"]] = MEM[THIS["id"]]
+	return RLO

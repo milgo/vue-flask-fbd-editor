@@ -12,13 +12,12 @@ def AND(RLO, THIS, MEM):
 def after_AND_INPUT(RLO, THIS, MEM):
 
 	if "childId" in THIS:
-		MEM[THIS["id"]] = MEM[THIS["id"]] & MEM[THIS["childId"]]
+		MEM[THIS["id"]] = MEM[THIS["id"]] & RLO[THIS["childId"]]
 	return RLO
 
 def after_AND(RLO, THIS, MEM):
 
-	if "parentInputId" in THIS:
-		RLO[THIS["parentInputId"]] = MEM[THIS["id"]] 
+	RLO[THIS["parentInputId"]] = MEM[THIS["id"]] 
 
 	RLO[THIS["id"]] = MEM[THIS["id"]]
 	return RLO

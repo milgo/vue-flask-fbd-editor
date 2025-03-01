@@ -12,13 +12,12 @@ def OR(RLO, THIS, MEM):
 def after_OR_INPUT(RLO, THIS, MEM):
 
 	if "childId" in THIS:
-		MEM[THIS["id"]] = MEM[THIS["id"]] | MEM[THIS["childId"]]
+		MEM[THIS["id"]] = MEM[THIS["id"]] | RLO[THIS["childId"]]
 	return RLO
 
 def after_OR(RLO, THIS, MEM):
 
-	if "parentInputId" in THIS:
-		RLO[THIS["parentInputId"]] = MEM[THIS["id"]] 
+	RLO[THIS["parentInputId"]] = MEM[THIS["id"]] 
 
 	RLO[THIS["id"]] = MEM[THIS["id"]]
 	return RLO
