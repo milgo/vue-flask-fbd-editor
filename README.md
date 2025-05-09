@@ -1,3 +1,5 @@
+![foto](https://raw.githubusercontent.com/milgo/vue-flask-fbd-editor/main/schematic.png)
+
 #### Instalation (on Raspberry PI)
 Open terminal or connect using remote ssh session and run commands:
 - sudo apt update <br />
