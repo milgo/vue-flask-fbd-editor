@@ -293,7 +293,7 @@ const recursiveLoopBasedOnInputs = (data, element, inputId) => {
         "before_" + (element.alias != "" ? element.alias : element.block),
       memoryAddr: element.mem_loc !== "???" ? element.mem_loc : undefined,
       id: element.id.toString(),
-	  parentInputId: inputId !== null ? inputId.toString() : "", 
+	  destInputId: inputId !== null ? inputId.toString() : "", 
     });
 
     Array.prototype.forEach.call(element.inputs, (input) => {
@@ -305,7 +305,7 @@ const recursiveLoopBasedOnInputs = (data, element, inputId) => {
         inputName: input.name,
         memoryAddr: element.mem_loc !== "???" ? element.mem_loc : undefined,
         id: element.id.toString(),
-        childId: nestedElement.id.toString(),
+        sourceNodeId: nestedElement.id.toString(),
       });
 
       recursiveLoopBasedOnInputs(data, nestedElement, input.id);
@@ -315,7 +315,7 @@ const recursiveLoopBasedOnInputs = (data, element, inputId) => {
         inputName: input.name,
 		memoryAddr: element.mem_loc !== "???" ? element.mem_loc : undefined,
         id: element.id.toString(),
-        childId: nestedElement.id.toString(),
+        sourceNodeId: nestedElement.id.toString(),
       });
     });
 
@@ -324,7 +324,7 @@ const recursiveLoopBasedOnInputs = (data, element, inputId) => {
         "after_" + (element.alias != "" ? element.alias : element.block),
       memoryAddr: element.mem_loc !== "???" ? element.mem_loc : undefined,
       id: element.id.toString(),
-	  parentInputId: inputId !== null ? inputId.toString() : ""
+	  destInputId: inputId !== null ? inputId.toString() : ""
     });
   }
 };

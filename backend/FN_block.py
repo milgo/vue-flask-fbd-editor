@@ -1,11 +1,23 @@
-def pre_FN(RLO_obj, BLOCK_obj):
-	print("-->FN pre")
-	return RLO_obj
-	
-def FN(RLO_obj, BLOCK_obj):
-	print("-->FN exec")
-	return RLO_obj
+def before_FN(RLO, THIS, MEM):
 
-def post_FN(RLO_obj, BLOCK_obj):
-	print("-->FN post")
-	return RLO_obj
+	MEM[THIS["id"]] = 0
+	return RLO
+
+def before_FN_INPUT(RLO, INPUT, MEM):
+	return RLO
+
+def FN(RLO, THIS, MEM):
+	return RLO
+
+def after_FN_INPUT(RLO, INPUT, MEM):
+
+	if RLO[INPUT["sourceNodeId"]] == 0 and MEM[INPUT["memoryAddr"]]["value"] == 1:
+		MEM[INPUT["id"]] = 1
+		
+	MEM[INPUT["memoryAddr"]]["value"] = RLO[INPUT["sourceNodeId"]]
+	return RLO
+
+def after_FN(RLO, THIS, MEM):
+	RLO[THIS["id"]] = MEM[THIS["id"]]
+	RLO[THIS["destInputId"]] = MEM[THIS["id"]]
+	return RLO

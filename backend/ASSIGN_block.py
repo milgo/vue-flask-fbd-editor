@@ -3,14 +3,14 @@ def before_ASSIGN(RLO, THIS, MEM):
 	MEM[THIS["id"]] = 0
 	return RLO
 
-def before_ASSIGN_INPUT(RLO, THIS, MEM):
+def before_ASSIGN_INPUT(RLO, INPUT, MEM):
 	return RLO
 
 def ASSIGN(RLO, THIS, MEM):
 	return RLO
 
-def after_ASSIGN_INPUT(RLO, THIS, MEM):
-	MEM[THIS["id"]] = RLO[THIS["childId"]]
+def after_ASSIGN_INPUT(RLO, INPUT, MEM):
+	MEM[INPUT["id"]] = RLO[INPUT["sourceNodeId"]]
 	return RLO
 
 def after_ASSIGN(RLO, THIS, MEM):
@@ -21,5 +21,5 @@ def after_ASSIGN(RLO, THIS, MEM):
 		MEM[THIS["memoryAddr"]]["value"] = MEM[THIS["id"]]
 
 	RLO[THIS["id"]] = MEM[THIS["memoryAddr"]]["value"]
-	RLO[THIS["parentInputId"]] = MEM[THIS["id"]] 
+	RLO[THIS["destInputId"]] = MEM[THIS["id"]] 
 	return RLO

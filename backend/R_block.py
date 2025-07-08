@@ -3,15 +3,15 @@ def before_R(RLO, THIS, MEM):
 	MEM[THIS["id"]] = 0
 	return RLO
 
-def before_R_INPUT(RLO, THIS, MEM):
+def before_R_INPUT(RLO, INPUT, MEM):
 	return RLO
 
 def R(RLO, THIS, MEM):
 	return RLO
 
-def after_R_INPUT(RLO, THIS, MEM):
-	if RLO[THIS["childId"]] == 1:
-		MEM[THIS["memoryAddr"]]["value"] = 0
+def after_R_INPUT(RLO, INPUT, MEM):
+	if RLO[INPUT["sourceNodeId"]] == 1:
+		MEM[INPUT["memoryAddr"]]["value"] = 0
 	return RLO
 
 def after_R(RLO, THIS, MEM):
@@ -20,6 +20,6 @@ def after_R(RLO, THIS, MEM):
 		MEM[THIS["memoryAddr"]]["value"] = MEM[THIS["memoryAddr"]]["forcedValue"]
 
 	RLO[THIS["id"]] = MEM[THIS["memoryAddr"]]["value"]
-	RLO[THIS["parentInputId"]] = MEM[THIS["memoryAddr"]]["value"]
+	RLO[THIS["destInputId"]] = MEM[THIS["memoryAddr"]]["value"]
 
 	return RLO

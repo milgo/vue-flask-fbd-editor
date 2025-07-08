@@ -183,7 +183,10 @@ class ProgramThread(threading.Thread):
 							#print(func + " " + str(entry["target"]))
 							f_name = globals()[func]
 							self.rlo = f_name(self.rlo, entry, self.mem)
-							#print(self.rlo)	
+							print("=====RLO=====")	
+							print(self.rlo)	
+							print("=====MEM=====")	
+							print(self.mem)	
 						
 programThread = ProgramThread()
 programThread.start()
