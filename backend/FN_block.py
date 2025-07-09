@@ -11,13 +11,13 @@ def FN(RLO, THIS, MEM):
 
 def after_FN_INPUT(RLO, INPUT, MEM):
 
-	if RLO[INPUT["sourceNodeId"]] == 0 and MEM[INPUT["memoryAddr"]]["value"] == 1:
+	if RLO[INPUT["connNodeId"]] == 0 and MEM[INPUT["memoryAddr"]]["value"] == 1:
 		MEM[INPUT["id"]] = 1
 		
-	MEM[INPUT["memoryAddr"]]["value"] = RLO[INPUT["sourceNodeId"]]
+	MEM[INPUT["memoryAddr"]]["value"] = RLO[INPUT["connNodeId"]]
 	return RLO
 
 def after_FN(RLO, THIS, MEM):
 	RLO[THIS["id"]] = MEM[THIS["id"]]
-	RLO[THIS["destInputId"]] = MEM[THIS["id"]]
+	#RLO[THIS["destInputId"]] = MEM[THIS["id"]]
 	return RLO

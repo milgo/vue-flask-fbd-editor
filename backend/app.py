@@ -181,12 +181,8 @@ class ProgramThread(threading.Thread):
 						func = entry["functionName"]
 						if func in globals():
 							#print(func + " " + str(entry["target"]))
-							f_name = globals()[func]
-							self.rlo = f_name(self.rlo, entry, self.mem)
-							print("=====RLO=====")	
-							print(self.rlo)	
-							print("=====MEM=====")	
-							print(self.mem)	
+							f_ptr = globals()[func]
+							self.rlo = f_ptr(self.rlo, entry, self.mem)
 						
 programThread = ProgramThread()
 programThread.start()

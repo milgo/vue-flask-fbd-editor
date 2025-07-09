@@ -11,13 +11,13 @@ def OR(RLO, THIS, MEM):
 
 def after_OR_INPUT(RLO, INPUT, MEM):
 
-	if "sourceNodeId" in INPUT:
-		MEM[INPUT["id"]] = MEM[INPUT["id"]] | RLO[INPUT["sourceNodeId"]]
+	if "connNodeId" in INPUT:
+		MEM[INPUT["id"]] = MEM[INPUT["id"]] | RLO[INPUT["connNodeId"]]
 	return RLO
 
 def after_OR(RLO, THIS, MEM):
 
-	RLO[THIS["destInputId"]] = MEM[THIS["id"]] 
+	#RLO[THIS["destInputId"]] = MEM[THIS["id"]] 
 
 	RLO[THIS["id"]] = MEM[THIS["id"]]
 	return RLO

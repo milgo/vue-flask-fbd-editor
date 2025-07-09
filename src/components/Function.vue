@@ -184,22 +184,22 @@
           <tr>
             <td>
               <div v-if="inputNode.conn_mouse_hover === false">
-                <!--<hr
+                <hr
                   v-if="inputNode.target !== -1"
                   :class="
                     getNodeById(inputNode.target, projectdata).value === 0
                       ? 'hr-normal'
                       : 'hr-green'
                   "
-                />-->
-				<hr
+                />
+				<!--<hr
                   v-if="inputNode.target !== -1"
                   :class="
                     inputNode.value === 0
                       ? 'hr-normal'
                       : 'hr-green'
                   "
-                />
+                />-->
                 <hr v-if="inputNode.target === -1" class="hr-normal" />
               </div>
               <div v-else>

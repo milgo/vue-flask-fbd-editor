@@ -10,7 +10,7 @@ def ASSIGN(RLO, THIS, MEM):
 	return RLO
 
 def after_ASSIGN_INPUT(RLO, INPUT, MEM):
-	MEM[INPUT["id"]] = RLO[INPUT["sourceNodeId"]]
+	MEM[INPUT["id"]] = RLO[INPUT["connNodeId"]]
 	return RLO
 
 def after_ASSIGN(RLO, THIS, MEM):
@@ -21,5 +21,5 @@ def after_ASSIGN(RLO, THIS, MEM):
 		MEM[THIS["memoryAddr"]]["value"] = MEM[THIS["id"]]
 
 	RLO[THIS["id"]] = MEM[THIS["memoryAddr"]]["value"]
-	RLO[THIS["destInputId"]] = MEM[THIS["id"]] 
+	#RLO[THIS["destInputId"]] = MEM[THIS["id"]] 
 	return RLO

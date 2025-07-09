@@ -10,7 +10,7 @@ def NOT(RLO, THIS, MEM):
 	return RLO
 
 def after_NOT_INPUT(RLO, INPUT, MEM):
-	if RLO[INPUT["sourceNodeId"]] == 1:
+	if RLO[INPUT["connNodeId"]] == 1:
 		MEM[INPUT["id"]] = 0
 	else:
 		MEM[INPUT["id"]] = 1
@@ -18,5 +18,5 @@ def after_NOT_INPUT(RLO, INPUT, MEM):
 
 def after_NOT(RLO, THIS, MEM):
 	RLO[THIS["id"]] = MEM[THIS["id"]]
-	RLO[THIS["destInputId"]] = MEM[THIS["id"]]
+	#RLO[THIS["destInputId"]] = MEM[THIS["id"]]
 	return RLO

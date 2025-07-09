@@ -11,13 +11,13 @@ def AND(RLO, THIS, MEM):
 
 def after_AND_INPUT(RLO, INPUT, MEM):
 
-	if "sourceNodeId" in INPUT:
-		MEM[INPUT["id"]] = MEM[INPUT["id"]] & RLO[INPUT["sourceNodeId"]]
+	if "connNodeId" in INPUT:
+		MEM[INPUT["id"]] = MEM[INPUT["id"]] & RLO[INPUT["connNodeId"]]
 	return RLO
 
 def after_AND(RLO, THIS, MEM):
 
-	RLO[THIS["destInputId"]] = MEM[THIS["id"]] 
+	#RLO[THIS["destInputId"]] = MEM[THIS["id"]] 
 
 	RLO[THIS["id"]] = MEM[THIS["id"]]
 	return RLO
