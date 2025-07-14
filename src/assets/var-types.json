@@ -13,7 +13,7 @@
   },
   {
     "type": "time",
-    "valid": "^[Tt]#\\d{1,4}(ms|s|m)$"
+    "valid": "\\d{1,4}"
   },
   {
     "type": "timer",
