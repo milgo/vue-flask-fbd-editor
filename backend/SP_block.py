@@ -57,7 +57,7 @@ def after_SP_INPUT(RLO, INPUT, MEM):
 	
 		MEM[INPUT["memoryAddr"]]["duration"] = RLO[INPUT["connNodeId"]]
 
-	print(RLO)
+	#print(RLO)
 
 	return RLO
 

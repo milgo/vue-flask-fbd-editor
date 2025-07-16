@@ -263,6 +263,84 @@
         ],
         "mem_input": ["timer"],
 		"mem_loc": "???"
+      },
+	  {
+        "name": "SD",
+        "alias": "",
+        "input_only": false,
+        "output_type": "bool",
+        "dyn_inputs": false,
+        "inputs": [
+          {
+            "name": "S",
+            "type": ["bool"],
+            "show_name": true
+          },
+          {
+            "name": "R",
+            "type": ["bool"],
+            "show_name": true
+          },
+          {
+            "name": "T",
+            "type": ["time"],
+            "show_name": true
+          }
+        ],
+        "mem_input": ["timer"],
+		"mem_loc": "???"
+      },
+      {
+        "name": "SS",
+        "alias": "",
+        "input_only": false,
+        "output_type": "bool",
+        "dyn_inputs": false,
+        "inputs": [
+          {
+            "name": "S",
+            "type": ["bool"],
+            "show_name": true
+          },
+          {
+            "name": "R",
+            "type": ["bool"],
+            "show_name": true
+          },
+          {
+            "name": "T",
+            "type": ["time"],
+            "show_name": true
+          }
+        ],
+        "mem_input": ["timer"],
+		"mem_loc": "???"
+      },
+      {
+        "name": "SF",
+        "alias": "",
+        "input_only": false,
+        "output_type": "bool",
+        "dyn_inputs": false,
+        "inputs": [
+          {
+            "name": "S",
+            "type": ["bool"],
+            "show_name": true
+          },
+          {
+            "name": "R",
+            "type": ["bool"],
+            "show_name": true
+          },
+          {
+            "name": "T",
+            "type": ["time"],
+            "show_name": true
+          }
+        ],
+        "mem_input": ["timer"],
+		"mem_loc": "???"
       }
     ]
   },

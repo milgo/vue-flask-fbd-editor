@@ -1,7 +1,7 @@
 def before_TIME(RLO, THIS, MEM):
 	#MEM[THIS["destInputId"]] = MEM[THIS["memoryAddr"]]["value"] 
 	MEM[THIS["id"]] = int(THIS["memoryAddr"])
-	print(THIS)
+	#print(THIS)
 	return RLO
 
 def TIME(RLO, THIS, MEM):
