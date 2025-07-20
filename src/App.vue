@@ -22,6 +22,7 @@
             :networkId="networkId + 1"
             :projectdata="projectdata"
 			:enableEdit="enableEdit[statusdata.state]"
+			:isInMonitorMode="monitorTaskStart[statusdata.monitor]"
             :node="projectdata.filter((n) => n.id === node.id)[0]"
             :variables="variablesdata"
             :interConnection="interConnection"

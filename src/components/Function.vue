@@ -78,6 +78,11 @@
                 ))
               "
             ></div>
+			<!-- monitor data -->
+			<template
+              v-if="isInMonitorMode"
+              "
+            >{{getVariableMonitorDataIfVariableExists(variables, node.mem_loc)}}</template>
             <b
               ><span
                 :class="
@@ -115,6 +120,7 @@
             :parentId="inputNode.id"
             :projectdata="projectdata"
 			:enableEdit="enableEdit"
+			:isInMonitorMode="isInMonitorMode"
             :node="projectdata.filter((n) => n.id === inputNode.target)[0]"
             :variables="variables"
             :interConnection="interConnection"
@@ -371,6 +377,7 @@ export default {
     "parentId",
     "projectdata",
 	"enableEdit",
+	"isInMonitorMode",
     "node",
     "variables",
     "interConnection",
@@ -388,6 +395,11 @@ export default {
     },
     showAlert: (msg) => {
       alert(msg);
+    },
+	getVariableMonitorDataIfVariableExists(variables, mem_loc) {
+      var vars = variables.filter((v) => v.name === mem_loc);
+      if (vars && vars[0]) return vars[0].monitorData;
+      else return "";
     },
     getVariableDescriptionIfVariableExists(variables, mem_loc) {
       var vars = variables.filter((v) => v.name === mem_loc);

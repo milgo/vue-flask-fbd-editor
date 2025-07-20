@@ -20,11 +20,14 @@ def before_SP(RLO, THIS, MEM):
     if "started" in MEM[THIS["memoryAddr"]] and MEM[THIS["memoryAddr"]]["started"] == 1:
         if "startTime" in MEM[THIS["memoryAddr"]] and MEM[THIS["memoryAddr"]]["stopped"] == 0:
             MEM[THIS["memoryAddr"]]["elapsedTime"] = (current_milli_time() - MEM[THIS["memoryAddr"]]["startTime"])
+            MEM[THIS["memoryAddr"]]["monitorData"] = MEM[THIS["memoryAddr"]]["duration"] - MEM[THIS["memoryAddr"]]["elapsedTime"]
+
         if MEM[THIS["memoryAddr"]]["elapsedTime"] < MEM[THIS["memoryAddr"]]["duration"]:
             RLO[THIS["id"]] = 1
         else:
             RLO[THIS["id"]] = 0
             MEM[THIS["memoryAddr"]]["stopped"] = 1 
+            MEM[THIS["memoryAddr"]]["monitorData"] = 0
     return RLO
 
 def before_SP_INPUT(RLO, INPUT, MEM):
