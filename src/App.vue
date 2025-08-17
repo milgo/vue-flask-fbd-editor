@@ -261,6 +261,8 @@ import { ref, provide, onMounted, onUpdated, onUnmounted } from "vue";
 
 const statusdata = ref([]);
 const projectdata = ref([]);
+const compiledata = ref([]);
+const setuplisting = ref([]);
 const listing = ref([]);
 const variablesdata = ref([]);
 //const flaskURL = "http://192.168.1.2"
@@ -331,13 +333,26 @@ const recursiveLoopBasedOnInputs = (data, element, inputId) => {
 };
 
 const buildListing = (data) => {
-  //verifyProgramDataBeforeCompile(data);
+  //setup listing
+  data.forEach((element) => {
+      setuplisting.value.push({
+        functionName: "setup_" + (element.alias != "" ? element.alias : element.block),
+        inputName: element.name,
+        memoryAddr: element.mem_loc !== "???" ? element.mem_loc : undefined,
+        id: element.id.toString(),
+      });
+  });
+  //program listing
   data.forEach((element) => {
     if (element.parentInput === null) {
       //listing.value.push({ function: "CANCEL_RLO" });
       recursiveLoopBasedOnInputs(data, element, null, undefined);
     }
   });
+
+  compiledata.value.push({setuplisting: setuplisting, listing: listing});
+  console.log(compiledata.value);
+
 };
 
 const checkIfVariableExists = (name) => {
@@ -468,7 +483,7 @@ const putProjectDataToFlask = () => {
 
 const putCompileDataToFlask = () => {
   const path = flaskURL+"/compile";
-  axios.post(path, listing.value).then((res) => {statusdata.value = res.data.statusdata;}).catch((err) => console.error(err));
+  axios.post(path, compiledata.value).then((res) => {statusdata.value = res.data.statusdata;}).catch((err) => console.error(err));
 }
 
 const pullRuntimeData = () => {

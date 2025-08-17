@@ -160,13 +160,20 @@ class ProgramThread(threading.Thread):
 				for var in self.variablesdata:
 					self.mem[var["name"]] = var
 
-				#print(self.mem)
+				for setupentry in listingdata[0]['setuplisting']:
+					setupfunc = setupentry["functionName"]
+					print(setupfunc + " " + str(setupentry["id"]))
+					if setupfunc in globals():						
+						f_ptr = globals()[setupfunc]
+						f_ptr(setupentry, self.mem)
+						#print(self.rlo)
+						#print(self.mem)
 
 				while not self._stop_event.is_set():
 					time.sleep(0.1)
 					#print("---------------------")
 
-					for entry in listingdata:
+					for entry in listingdata[0]['listing']:
 
 						if "memoryAddr" in entry and entry["memoryAddr"] != " ":
 
@@ -295,7 +302,7 @@ def compileData():
 	response_object = {}
 	if not programThread.isRunning():
 		post_data = request.get_json()
-		#print('compile data:', post_data)
+		print('compile data:', post_data)
 		with open('listing.json', 'w') as f:
 			f.write(json.dumps(post_data))
 		response_object['message'] = 'Compiled data saved!';
