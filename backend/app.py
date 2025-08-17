@@ -25,6 +25,8 @@ from SE_block import *
 from SD_block import *
 from SS_block import *
 from SF_block import *
+from CU_block import *
+from CD_block import *
 from TIME_block import *
 
 app = Flask(__name__)
@@ -183,7 +185,7 @@ class ProgramThread(threading.Thread):
 								self.mem[entry["memoryAddr"]]["value"] = self.mem[entry["memoryAddr"]]["forcedValue"]
 								#print("forcing value " + str(self.mem[entry["memory"]]["forcedValue"]) + " on variable " + entry["memory"])
 							
-						#print(self.mem)
+						print(self.mem)
 
 						func = entry["functionName"]
 						if func in globals():
