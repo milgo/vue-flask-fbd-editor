@@ -12,6 +12,7 @@ from time import sleep
 from os import path
 
 from DIN_block import *
+from CONST_block import *
 from AND_block import *
 from OR_block import *
 from NOT_block import *
@@ -27,6 +28,11 @@ from SS_block import *
 from SF_block import *
 from CU_block import *
 from CD_block import *
+from EQ_block import *
+from GT_block import *
+from LT_block import *
+from GE_block import *
+from LE_block import *
 from TIME_block import *
 
 app = Flask(__name__)
@@ -185,7 +191,7 @@ class ProgramThread(threading.Thread):
 								self.mem[entry["memoryAddr"]]["value"] = self.mem[entry["memoryAddr"]]["forcedValue"]
 								#print("forcing value " + str(self.mem[entry["memory"]]["forcedValue"]) + " on variable " + entry["memory"])
 							
-						print(self.mem)
+						#print(self.mem)
 
 						func = entry["functionName"]
 						if func in globals():

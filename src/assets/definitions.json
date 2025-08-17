@@ -413,24 +413,6 @@
         ]
       },
       {
-        "name": "DIFF",
-        "alias": "",
-        "input_only": false,
-        "output_type": "bool",
-        "dyn_inputs": false,
-		"mem_loc": " ",
-        "inputs": [
-          {
-            "name": "IN1",
-            "type": ["int"]
-          },
-          {
-            "name": "IN2",
-            "type": ["int"]
-          }
-        ]
-      },
-      {
         "name": "GT",
         "alias": "",
         "input_only": false,
