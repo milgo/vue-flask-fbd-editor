@@ -17,6 +17,7 @@ from AND_block import *
 from OR_block import *
 from NOT_block import *
 from ASSIGN_block import *
+from MOVE_block import *
 from S_block import *
 from R_block import *
 from SR_block import *
@@ -33,6 +34,10 @@ from GT_block import *
 from LT_block import *
 from GE_block import *
 from LE_block import *
+from ADD_block import *
+from SUB_block import *
+from MUL_block import *
+from DIV_block import *
 from TIME_block import *
 
 app = Flask(__name__)
