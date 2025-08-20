@@ -94,7 +94,7 @@
     </tr>
 
     <template v-for="variable in variablesdata">
-      <tr>
+      <tr v-if="variable.monitor === true">
         <td>{{ variable.name }}</td>
         <td>{{ variable.type }}</td>
         <td>
@@ -370,7 +370,8 @@ const addNewVarIfNotExisting = (node, name, type) => {
       edit: false,
 	  value: 0,
 	  forced: false,
-	  forcedValue: 0
+	  forcedValue: 0,
+	  monitor: varTypes.filter((t) => type === t.type)[0].monitor
     };
     variablesdata.value.push(newVar);
 	putVariableDataToFlask();

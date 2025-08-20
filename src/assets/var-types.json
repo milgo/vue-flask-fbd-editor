@@ -1,42 +1,52 @@
 [
   {
     "type": "di",
-    "valid": "^%[Ii]\\d{1,2}$"
+    "valid": "^%[Ii]\\d{1,2}$",
+	"monitor": true
   },
   {
     "type": "do",
-    "valid": "^%[Oo]\\d{1,2}$"
+    "valid": "^%[Oo]\\d{1,2}$",
+	"monitor": true
   },
   {
     "type": "marker",
-    "valid": "^%[Mm]\\d{1,2}$"
+    "valid": "^%[Mm]\\d{1,2}$",
+	"monitor": true
   },
   {
     "type": "time",
-    "valid": "^[Tt]#\\d{1,6}$"
+    "valid": "^[Tt]#\\d{1,6}$",
+	"monitor": false
   },
   {
     "type": "timer",
-    "valid": "^[Tt]\\d{1,2}$"
+    "valid": "^[Tt]\\d{1,2}$",
+	"monitor": true
   },
   {
     "type": "counter",
-    "valid": "^[Cc]\\d{1,2}$"
+    "valid": "^[Cc]\\d{1,2}$",
+	"monitor": true
   },
   {
     "type": "byte",
-    "valid": "^%([Mm])([Bb])\\d{1,2}$"
+    "valid": "^%([Mm])([Bb])\\d{1,2}$",
+	"monitor": true
   },
   {
     "type": "word",
-    "valid": "^%([Mm])([Ww])\\d{1,2}$"
+    "valid": "^%([Mm])([Ww])\\d{1,2}$",
+	"monitor": true
   },
   {
     "type": "dword",
-    "valid": "^%([Mm])([Dd])([Ww])\\d{1,2}$"
+    "valid": "^%([Mm])([Dd])([Ww])\\d{1,2}$",
+	"monitor": true
   },
   {
     "type": "int",
-    "valid": "^\\d{1,9}$"
+    "valid": "^\\d{1,9}$",
+	"monitor": false
   }
 ]
