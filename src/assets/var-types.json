@@ -13,7 +13,7 @@
   },
   {
     "type": "time",
-    "valid": "^\\d{1,6}$"
+    "valid": "^[Tt]#\\d{1,6}$"
   },
   {
     "type": "timer",
