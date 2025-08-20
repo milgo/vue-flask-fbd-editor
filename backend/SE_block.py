@@ -3,19 +3,11 @@ import time
 def current_milli_time():
     return round(time.time() * 1000)
 
-#def create_SP():
-
-#    MEM[THIS["memoryAddr"]]["started"] = 0
-#    MEM[THIS["memoryAddr"]]["stopped"] = 0
+def setup_SE(THIS, MEM):
+    MEM[THIS["memoryAddr"]]["started"] = 0
+    MEM[THIS["memoryAddr"]]["stopped"] = 0 
     
 def before_SE(RLO, THIS, MEM):
-
-    #should be in create function
-    if not ("started" in MEM[THIS["memoryAddr"]]):
-        MEM[THIS["memoryAddr"]]["started"] = 0
-    if not ("stopped" in MEM[THIS["memoryAddr"]]):
-        MEM[THIS["memoryAddr"]]["stopped"] = 0 
-    #----------------------------
             
     if "started" in MEM[THIS["memoryAddr"]] and MEM[THIS["memoryAddr"]]["started"] == 1:
         if "startTime" in MEM[THIS["memoryAddr"]] and MEM[THIS["memoryAddr"]]["stopped"] == 0:

@@ -1,6 +1,7 @@
+def setup_CD (THIS, MEM):
+	MEM[THIS["memoryAddr"]]["edge"] = 0
+
 def before_CD(RLO, THIS, MEM):
-    if not ("edge" in MEM[THIS["memoryAddr"]]):
-    	MEM[THIS["memoryAddr"]]["edge"] = 0
     return RLO
 
 def before_CD_INPUT(RLO, INPUT, MEM):

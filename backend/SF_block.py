@@ -3,12 +3,13 @@ import time
 def current_milli_time():
     return round(time.time() * 1000)
 
+def setup_SF(THIS, MEM):
+    MEM[THIS["memoryAddr"]]["started"] = 0
+    MEM[THIS["memoryAddr"]]["stopped"] = 0 
+
 def before_SF(RLO, THIS, MEM):
 
-    MEM[THIS["id"]] = 0
-
-    if not ("started" in MEM[THIS["memoryAddr"]]):
-        MEM[THIS["memoryAddr"]]["started"] = 0        
+    MEM[THIS["id"]] = 0     
 
     if "started" in MEM[THIS["memoryAddr"]] and MEM[THIS["memoryAddr"]]["started"] == 1:
 

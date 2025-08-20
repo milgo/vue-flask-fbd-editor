@@ -1,9 +1,9 @@
-def before_LE(RLO, THIS, MEM):
+def setup_LE(THIS, MEM):
     MEM[THIS["id"]] = {}
-    if not ("valueA" in MEM[THIS["id"]]):
-        MEM[THIS["id"]]["valueA"] = 0 
-    if not ("valueB" in MEM[THIS["id"]]):
-        MEM[THIS["id"]]["valueB"] = 0 
+    MEM[THIS["id"]]["valueA"] = 0
+    MEM[THIS["id"]]["valueB"] = 0
+
+def before_LE(RLO, THIS, MEM):
     return RLO
 
 def before_LE_INPUT(RLO, INPUT, MEM):

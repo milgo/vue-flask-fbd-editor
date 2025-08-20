@@ -1,5 +1,4 @@
 def before_FP(RLO, THIS, MEM):
-
 	MEM[THIS["id"]] = 0
 	return RLO
 

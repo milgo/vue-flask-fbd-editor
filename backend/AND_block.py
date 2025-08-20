@@ -1,5 +1,4 @@
 def before_AND(RLO, THIS, MEM):
-
 	MEM[THIS["id"]] = 1
 	return RLO
 

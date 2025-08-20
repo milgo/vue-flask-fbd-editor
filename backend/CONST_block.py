@@ -1,5 +1,7 @@
-def before_CONST(RLO, THIS, MEM):
+def setup_CONST(THIS, MEM):
     MEM[THIS["memoryAddr"]]["value"] = int(THIS["memoryAddr"]) 
+
+def before_CONST(RLO, THIS, MEM):
     return RLO
 
 def before_CONST_INPUT(RLO, INPUT, MEM):

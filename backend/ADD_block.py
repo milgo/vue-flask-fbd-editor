@@ -1,5 +1,8 @@
-def before_ADD(RLO, THIS, MEM):
+def setup_ADD(THIS, MEM):
     MEM[THIS["id"]] = 0 
+    return RLO
+
+def before_ADD(RLO, THIS, MEM):
     return RLO
 
 def before_ADD_INPUT(RLO, INPUT, MEM):

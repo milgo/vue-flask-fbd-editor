@@ -1,9 +1,9 @@
-def before_GE(RLO, THIS, MEM):
+def setup_GE(THIS, MEM):
     MEM[THIS["id"]] = {}
-    if not ("valueA" in MEM[THIS["id"]]):
-        MEM[THIS["id"]]["valueA"] = 0 
-    if not ("valueB" in MEM[THIS["id"]]):
-        MEM[THIS["id"]]["valueB"] = 0 
+    MEM[THIS["id"]]["valueA"] = 0
+    MEM[THIS["id"]]["valueB"] = 0
+
+def before_GE(RLO, THIS, MEM):
     return RLO
 
 def before_GE_INPUT(RLO, INPUT, MEM):

@@ -1,5 +1,4 @@
 def before_DIN(RLO, THIS, MEM):
-	#MEM[THIS["destInputId"]] = MEM[THIS["memoryAddr"]]["value"] 
 	MEM[THIS["id"]] = MEM[THIS["memoryAddr"]]["value"]
 	return RLO
 

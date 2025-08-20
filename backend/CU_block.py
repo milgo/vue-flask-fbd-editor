@@ -1,6 +1,7 @@
-def before_CU(RLO, THIS, MEM):
-    if not ("edge" in MEM[THIS["memoryAddr"]]):
-    	MEM[THIS["memoryAddr"]]["edge"] = 0
+def setup_CU(THIS, MEM):
+    MEM[THIS["memoryAddr"]]["edge"] = 0
+
+def before_CU(RLO, THIS, MEM):   	
     return RLO
 
 def before_CU_INPUT(RLO, INPUT, MEM):

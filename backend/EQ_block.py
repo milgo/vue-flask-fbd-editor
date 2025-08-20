@@ -1,9 +1,9 @@
-def before_EQ(RLO, THIS, MEM):
+def setup_EQ(THIS, MEM):
     MEM[THIS["id"]] = {}
-    if not ("valueA" in MEM[THIS["id"]]):
-        MEM[THIS["id"]]["valueA"] = 0 
-    if not ("valueB" in MEM[THIS["id"]]):
-        MEM[THIS["id"]]["valueB"] = 0 
+    MEM[THIS["id"]]["valueA"] = 0
+    MEM[THIS["id"]]["valueB"] = 0
+
+def before_EQ(RLO, THIS, MEM):
     return RLO
 
 def before_EQ_INPUT(RLO, INPUT, MEM):

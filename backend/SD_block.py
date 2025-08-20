@@ -3,17 +3,11 @@ import time
 def current_milli_time():
     return round(time.time() * 1000)
 
-#def create_SD():
+def setup_SD(THIS, MEM):
+    MEM[THIS["memoryAddr"]]["started"] = 0
+    MEM[THIS["memoryAddr"]]["stopped"] = 0 
 
-#    MEM[THIS["memoryAddr"]]["started"] = 0
-#    MEM[THIS["memoryAddr"]]["stopped"] = 0
-
-def before_SD(RLO, THIS, MEM):
-
-    if not ("started" in MEM[THIS["memoryAddr"]]):
-        MEM[THIS["memoryAddr"]]["started"] = 0
-    if not ("stopped" in MEM[THIS["memoryAddr"]]):
-        MEM[THIS["memoryAddr"]]["stopped"] = 0        
+def before_SD(RLO, THIS, MEM):    
 
     if "started" in MEM[THIS["memoryAddr"]] and MEM[THIS["memoryAddr"]]["started"] == 1:
 

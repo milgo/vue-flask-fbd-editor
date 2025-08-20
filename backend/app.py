@@ -203,8 +203,9 @@ class ProgramThread(threading.Thread):
 								self.mem[entry["memoryAddr"]]["value"] = self.mem[entry["memoryAddr"]]["forcedValue"]
 								#print("forcing value " + str(self.mem[entry["memory"]]["forcedValue"]) + " on variable " + entry["memory"])
 							
-						#print(self.mem)
-
+						print(self.mem)
+						print("--------------")
+						print(self.rlo)
 						func = entry["functionName"]
 						if func in globals():
 							#print(func + " " + str(entry["target"]))

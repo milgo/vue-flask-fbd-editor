@@ -1,5 +1,4 @@
 def before_ASSIGN(RLO, THIS, MEM):
-
 	MEM[THIS["id"]] = 0
 	return RLO
 
