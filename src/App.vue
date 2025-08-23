@@ -374,7 +374,7 @@ const addNewVarIfNotExisting = (node, name, type) => {
 	  monitor: varTypes.filter((t) => type === t.type)[0].monitor
     };
     variablesdata.value.push(newVar);
-	putVariableDataToFlask();
+	putProjectDataToFlask();
     return newVar.id;
   }
   return found.id;
@@ -388,7 +388,7 @@ const deleteVariable = (id) => {
       node.mem_loc = "???";
     }
   });
-  putVariableDataToFlask();
+  putProjectDataToFlask();
 };
 
 const toggleForceVariable = (id) => {
@@ -411,13 +411,13 @@ const toggleForceVariableValueBool = (id) => {
 const setForcedValueOfVariable = (id, val) => {
   var variable = variablesdata.value.filter((v) => v.id === id)[0];
   variable.forcedValue = val;
-  putVariableDataToFlask();
+  putProjectDataToFlask();
 };
 
 const toggleForcedValueOfVariable = (id, val) => {
   var variable = variablesdata.value.filter((v) => v.id === id)[0];
   variable.forcedValue = val;
-  putVariableDataToFlask();
+  putProjectDataToFlask();
 };
 
 const getStatusDataFromFlask = () => {
@@ -447,28 +447,30 @@ const toggleMonitorFromFlask = () => {
 		.catch((err) => console.error(err));
 }
 
-const getVariableDataFromFlask = () => {
+/*const getVariableDataFromFlask = () => {
   const path = flaskURL+"/variables";
 	axios.get(path).then((res) => {
 		console.log(res.data);
 		variablesdata.value = res.data.variablesdata;
 		statusdata.value = res.data.statusdata
 	}).catch((err) => console.error(err));
-}
+}*/
 
-const putVariableDataToFlask = () => {
+/*const putVariableDataToFlask = () => {
   const path = flaskURL+"/variables";
   axios.post(path, variablesdata.value)
         .then((res) => {
 			statusdata.value = res.data.statusdata
         }).catch((err) => console.error(err));
-}
+}*/
 
 const getProjectDataFromFlask = () => {
   const path = flaskURL+"/project";
 	axios.get(path).then((res) => {
-			console.log(res.data);
-			projectdata.value = res.data.projectdata;
+			//console.log(res.data.project.program);
+			projectdata.value = res.data.project.program;
+			//console.log(projectdata.value);
+			variablesdata.value = res.data.project.variables;
 			statusdata.value = res.data.statusdata;
 		})
 		.catch((err) => console.error(err));
@@ -476,7 +478,7 @@ const getProjectDataFromFlask = () => {
 
 const putProjectDataToFlask = () => {
   const path = flaskURL+"/project";
-  axios.post(path, projectdata.value)
+  axios.post(path, {program: projectdata.value, variables: variablesdata.value})
         .then((res) => {
 			statusdata.value = res.data.statusdata;
         }).catch((err) => console.error(err));
@@ -491,8 +493,9 @@ const pullRuntimeData = () => {
   const path = flaskURL+"/pullruntimedata";
 	axios.get(path).then((res) => {
 			console.log(res.data);
-			variablesdata.value = res.data.variablesdata;
-			projectdata.value = res.data.projectdata;
+			projectdata.value = res.data.project.program;
+			//variablesdata.value = res.data.variablesdata;
+			//projectdata.value = res.data.projectdata;
 			statusdata.value = res.data.statusdata;
 		})
 		.catch((err) => console.error(err));
@@ -508,7 +511,7 @@ const postForceVariables = () => {
 
 onMounted(() => {
 
-  getVariableDataFromFlask();
+  //getVariableDataFromFlask();
   getProjectDataFromFlask();
 
   monitorInterval = setInterval(() => {

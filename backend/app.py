@@ -52,7 +52,7 @@ class ProgramThread(threading.Thread):
 
 	rlo = {}
 	mem = {}
-	variablesdata = {}
+	#variablesdata = {}
 	projectdata = {}
 	do = {}
 	di = {}
@@ -74,8 +74,8 @@ class ProgramThread(threading.Thread):
 				self.monitor = True
 		with open('project.json') as f:
 			self.projectdata = json.load(f)
-		with open('variables.json', 'r') as file:
-			self.variablesdata = json.load(file)
+		#with open('variables.json', 'r') as file:
+		#	self.variablesdata = json.load(file)
 
 	def stop(self):
 		self._stop_event.set()
@@ -111,8 +111,28 @@ class ProgramThread(threading.Thread):
 		self.monitor = not self.monitor
 
 	#Not tested yet
-	def getNodesAndInputsValuesInProjectData(self, projectData):
-		for node in projectData:
+#	def getNodesAndInputsValuesInProjectData(self, projectData):
+#		for node in projectData:
+			#print(node)
+#			idStr = str(node["id"])
+#			if idStr in self.rlo:
+#				node["value"] = self.rlo[idStr]
+#
+#			for input in node["inputs"]:
+#				idStr = str(input["id"])
+#				if idStr in self.rlo:
+#					input["value"] = self.rlo[idStr]
+			#print(node)
+#
+#		return projectData
+
+#	def getVariablesValuesInVariablesData(self, variablesData):
+#		for variable in variablesData:
+#			variable["value"] = self.mem[variable["name"]]["value"]
+#		return variablesData
+
+	def pullRuntimeValuesToProjectData(self, projectData):
+		for node in projectData["program"]:
 			#print(node)
 			idStr = str(node["id"])
 			if idStr in self.rlo:
@@ -122,14 +142,11 @@ class ProgramThread(threading.Thread):
 				idStr = str(input["id"])
 				if idStr in self.rlo:
 					input["value"] = self.rlo[idStr]
-			#print(node)
+
+		for variable in projectData["variables"]:
+			variable["value"] = self.mem[variable["name"]]["value"]
 
 		return projectData
-
-	def getVariablesValuesInVariablesData(self, variablesData):
-		for variable in variablesData:
-			variable["value"] = self.mem[variable["name"]]["value"]
-		return variablesData
 
 	def forceVariables(self, variablesdata):
 		for variable in variablesdata:
@@ -148,7 +165,7 @@ class ProgramThread(threading.Thread):
 		self.di["%i22"] = Button(22)
 		while True:
 		
-			if os.path.isfile('listing.json') and os.path.isfile('variables.json') and os.path.isfile('project.json') and not self._stop_event.is_set():
+			if os.path.isfile('listing.json') and os.path.isfile('project.json') and not self._stop_event.is_set():
 			
 				self.mem = {}
 				self.rlo = {}
@@ -156,13 +173,13 @@ class ProgramThread(threading.Thread):
 				with open('project.json') as f:
 					self.projectdata = json.load(f)
 
-				with open('variables.json', 'r') as file:
-					self.variablesdata = json.load(file)
+				#with open('variables.json', 'r') as file:
+				#	self.variablesdata = json.load(file)
 					
 				with open('listing.json', 'r') as file:
 					listingdata = json.load(file)
 
-				for var in self.variablesdata:
+				for var in self.projectdata["variables"]:
 					self.mem[var["name"]] = var
 
 				for setupentry in listingdata[0]['setuplisting']:
@@ -233,7 +250,7 @@ def forceVariables():
 		if programThread.isRunning():
 			post_data = request.get_json()
 			programThread.forceVariables(post_data)
-			response_object['variablesdata'] = programThread.variablesdata
+			#response_object['variablesdata'] = programThread.variablesdata
 	response_object['statusdata'] = programThread.getStatus()
 	return jsonify(response_object)
 
@@ -243,8 +260,9 @@ def pullRuntimeData():
 	response_object = {}
 	if request.method == 'GET':
 		if programThread.isRunning():
-			response_object['variablesdata'] = programThread.getVariablesValuesInVariablesData(programThread.variablesdata)
-			response_object['projectdata'] = programThread.getNodesAndInputsValuesInProjectData(programThread.projectdata)
+			#response_object['variablesdata'] = programThread.getVariablesValuesInVariablesData(programThread.variablesdata)
+			#response_object['projectdata'] = programThread.getNodesAndInputsValuesInProjectData(programThread.projectdata)
+			response_object['project'] = programThread.pullRuntimeValuesToProjectData(programThread.projectdata)
 	response_object['statusdata'] = programThread.getStatus()
 	return jsonify(response_object)
 
@@ -269,36 +287,15 @@ def projectData():
 	if request.method == 'POST':
 		if not programThread.isRunning():
 			post_data = request.get_json()
-			#print('POST:', post_data)
+			print('POST:', post_data)
 			with open('project.json', 'w') as f:
 				f.write(json.dumps(post_data))
 			response_object['message'] = 'Project changed!';
-			programThread.projectdata = post_data #!!!
+			programThread.projectdata = post_data
 			programThread.changed = True
 			programThread.saveStatusToFile()
 	else:
-		response_object['projectdata'] = programThread.projectdata
-	response_object['statusdata'] = programThread.getStatus()
-	return jsonify(response_object)
-	
-@app.route('/variables', methods=['GET', 'POST'])
-@cross_origin(origin='*')
-def variablesData():
-	response_object = {}
-	if request.method == 'POST':
-		if not programThread.isRunning():
-			post_data = request.get_json()
-			for var in post_data:
-				var["edit"] = False
-			#print('POST:', post_data)
-			with open('variables.json', 'w') as f:
-				f.write(json.dumps(post_data))
-			response_object['message'] = 'Variables changed!';
-			programThread.variablesdata = post_data
-			programThread.changed = True
-			programThread.saveStatusToFile()
-	else:
-		response_object['variablesdata'] = programThread.variablesdata;
+		response_object['project'] = programThread.projectdata
 	response_object['statusdata'] = programThread.getStatus()
 	return jsonify(response_object)
 
