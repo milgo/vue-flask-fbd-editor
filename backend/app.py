@@ -10,6 +10,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
 from time import sleep
 from os import path
+import hashlib
 
 from DIN_block import *
 from CONST_block import *
@@ -54,6 +55,7 @@ class ProgramThread(threading.Thread):
 	mem = {}
 	#variablesdata = {}
 	projectdata = {}
+	checksum = ""
 	do = {}
 	di = {}
 	
@@ -95,7 +97,13 @@ class ProgramThread(threading.Thread):
 			statusdata['monitor'] = 'on'
 		else: 
 			statusdata['monitor'] = 'off'
+
+		statusdata['checksum'] = self.getProjectdataChecksum(self.projectdata)
 		return statusdata
+
+	def getProjectdataChecksum(self, projectData):
+		hashObject = hashlib.md5(json.dumps(projectData).encode())
+		return hashObject.hexdigest()
 
 	def saveStatusToFile(self):
 		with open('status.json', 'w') as f:
@@ -109,27 +117,6 @@ class ProgramThread(threading.Thread):
 
 	def toggleMonitor(self):
 		self.monitor = not self.monitor
-
-	#Not tested yet
-#	def getNodesAndInputsValuesInProjectData(self, projectData):
-#		for node in projectData:
-			#print(node)
-#			idStr = str(node["id"])
-#			if idStr in self.rlo:
-#				node["value"] = self.rlo[idStr]
-#
-#			for input in node["inputs"]:
-#				idStr = str(input["id"])
-#				if idStr in self.rlo:
-#					input["value"] = self.rlo[idStr]
-			#print(node)
-#
-#		return projectData
-
-#	def getVariablesValuesInVariablesData(self, variablesData):
-#		for variable in variablesData:
-#			variable["value"] = self.mem[variable["name"]]["value"]
-#		return variablesData
 
 	def pullRuntimeValuesToProjectData(self, projectData):
 		for node in projectData["program"]:
@@ -174,8 +161,7 @@ class ProgramThread(threading.Thread):
 				with open('project.json') as f:
 					self.projectdata = json.load(f)
 
-				#with open('variables.json', 'r') as file:
-				#	self.variablesdata = json.load(file)
+				self.checksum = self.getProjectdataChecksum(self.projectdata)
 					
 				with open('listing.json', 'r') as file:
 					listingdata = json.load(file)
@@ -185,7 +171,7 @@ class ProgramThread(threading.Thread):
 
 				for setupentry in listingdata[0]['setuplisting']:
 					setupfunc = setupentry["functionName"]
-					print(setupfunc + " " + str(setupentry["id"]))
+					#print(setupfunc + " " + str(setupentry["id"]))
 					if setupfunc in globals():						
 						f_ptr = globals()[setupfunc]
 						f_ptr(setupentry, self.mem)
@@ -288,16 +274,22 @@ def projectData():
 	if request.method == 'POST':
 		if not programThread.isRunning():
 			post_data = request.get_json()
-			print('POST:', post_data)
-			with open('project.json', 'w') as f:
-				f.write(json.dumps(post_data))
-			response_object['message'] = 'Project changed!';
-			programThread.projectdata = post_data
-			programThread.changed = True
-			programThread.saveStatusToFile()
-	else:
+			#print('POST:', post_data)
+			print('checksum:', post_data["checksum"])
+			print(programThread.getProjectdataChecksum(programThread.projectdata))
+			if post_data["checksum"] == programThread.getProjectdataChecksum(programThread.projectdata):
+				with open('project.json', 'w') as f:
+					f.write(json.dumps(post_data))
+				response_object['checksum'] = 'ok';
+				programThread.projectdata = post_data
+				programThread.changed = True
+				programThread.saveStatusToFile()
+				response_object['statusdata'] = programThread.getStatus()
+			else:
+				response_object['checksum'] = 'bad';
+	elif request.method == 'GET':
 		response_object['project'] = programThread.projectdata
-	response_object['statusdata'] = programThread.getStatus()
+		response_object['statusdata'] = programThread.getStatus()
 	return jsonify(response_object)
 
 @app.route('/compile', methods=['POST'])

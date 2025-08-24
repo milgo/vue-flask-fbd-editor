@@ -479,9 +479,12 @@ const getProjectDataFromFlask = () => {
 
 const putProjectDataToFlask = () => {
   const path = flaskURL+"/project";
-  axios.post(path, {program: projectdata.value, variables: variablesdata.value})
+  axios.post(path, {program: projectdata.value, variables: variablesdata.value, checksum: statusdata.value.checksum})
         .then((res) => {
-			statusdata.value = res.data.statusdata;
+			if(res.data.checksum == "bad")
+				alert("Integrity error! Please reload page (F5)");
+			else
+				statusdata.value = res.data.statusdata;
         }).catch((err) => console.error(err));
 }
 
