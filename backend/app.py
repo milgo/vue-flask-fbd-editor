@@ -145,6 +145,7 @@ class ProgramThread(threading.Thread):
 
 		for variable in projectData["variables"]:
 			variable["value"] = self.mem[variable["name"]]["value"]
+			variable["monitorData"] = self.mem[variable["name"]]["monitorData"]
 
 		return projectData
 

@@ -371,6 +371,7 @@ const addNewVarIfNotExisting = (node, name, type) => {
 	  value: 0,
 	  forced: false,
 	  forcedValue: 0,
+	  monitorData: 0,
 	  monitor: varTypes.filter((t) => type === t.type)[0].monitor
     };
     variablesdata.value.push(newVar);
@@ -494,6 +495,7 @@ const pullRuntimeData = () => {
 	axios.get(path).then((res) => {
 			console.log(res.data);
 			projectdata.value = res.data.project.program;
+			variablesdata.value = res.data.project.variables;
 			//variablesdata.value = res.data.variablesdata;
 			//projectdata.value = res.data.projectdata;
 			statusdata.value = res.data.statusdata;

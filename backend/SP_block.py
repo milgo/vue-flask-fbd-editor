@@ -49,7 +49,6 @@ def after_SP_INPUT(RLO, INPUT, MEM):
 		RLO[INPUT["id"]] = 0
 		
 	if INPUT["inputName"] in ["T"]:
-	
 		MEM[INPUT["memoryAddr"]]["duration"] = RLO[INPUT["connNodeId"]]
 
 	#print(RLO)

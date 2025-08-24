@@ -1,1 +1,1 @@
-{"state": "stopped", "changed": "changed", "monitor": "off"}
+{"state": "running", "changed": "not changed", "monitor": "on"}
