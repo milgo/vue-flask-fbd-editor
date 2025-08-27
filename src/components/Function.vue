@@ -31,7 +31,10 @@
                 @mouseleave="node.header_hover = false"
               >
                 <button
-                  @click="deleteChild(id)"
+                  @click="
+					deleteChild(id);
+					putProjectDataToFlask()
+					"
                   v-if="node.header_hover === true && enableEdit"
                   class="button button-red"
                 >
@@ -257,6 +260,7 @@
                     @click="
                       deleteInput(inputNode.id);
                       deleteChild(inputNode.target);
+					  putProjectDataToFlask();
                     "
                     v-if="inputNode.target === -1 && enableEdit"
                     class="button button-red"

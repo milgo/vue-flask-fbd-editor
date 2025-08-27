@@ -184,7 +184,7 @@ class ProgramThread(threading.Thread):
 
 					for entry in listingdata[0]['listing']:
 
-						if "memoryAddr" in entry and entry["memoryAddr"] != " ":
+						if "memoryAddr" in entry and entry["memoryAddr"] != " " and entry["memoryAddr"] in self.mem:
 
 							#physical inputs
 							if self.mem[entry["memoryAddr"]]["type"] in ["di"]:
@@ -275,8 +275,8 @@ def projectData():
 		if not programThread.isRunning():
 			post_data = request.get_json()
 			#print('POST:', post_data)
-			print('checksum:', post_data["checksum"])
-			print(programThread.getProjectdataChecksum(programThread.projectdata))
+			#print('checksum:', post_data["checksum"])
+			#print(programThread.getProjectdataChecksum(programThread.projectdata))
 			if post_data["checksum"] == programThread.getProjectdataChecksum(programThread.projectdata):
 				with open('project.json', 'w') as f:
 					f.write(json.dumps(post_data))

@@ -34,7 +34,7 @@
                   event.mem_loc,
                   event.output_type
                 );
-				putProjectDataToFlask();
+				//putProjectDataToFlask();
 			}"
           />
         </td>
@@ -606,9 +606,8 @@ const addInput = (nodeId, inputDef, idOffset = 0) => {
       show_name: inputDef.show_name,
       value: 0,
     });
-	putProjectDataToFlask();
   });
-  
+  putProjectDataToFlask();
 };
 
 const connectNodeToInput = (nodeId, inputId) => {
@@ -666,7 +665,7 @@ const deleteInput = (inputId) => {
     n.inputs = n.inputs.filter((input) => input.id !== inputId);
   });
   
-  putProjectDataToFlask();
+  //putProjectDataToFlask();
 };
 const deleteChild = (id) => {
   projectdata.value.forEach((item) => {
@@ -685,7 +684,7 @@ const deleteChild = (id) => {
 
   //delete child
   projectdata.value = projectdata.value.filter((item) => item.id !== id);
-  putProjectDataToFlask();
+  //putProjectDataToFlask();
 };
 const getInputsById = (id, projectdata) => {
   let obj = projectdata.filter((n) => n.id === id)[0];
