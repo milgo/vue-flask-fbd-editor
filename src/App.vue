@@ -131,7 +131,7 @@
           {{
             projectdata.filter(
               (n) =>
-                n.mem_loc === variable.name && n.mem_input.some((m) => m === variable.type)
+                n.mem_loc === variable.name /*&& n.mem_input.some((m) => m === variable.type)*/
             ).length
           }}
         </td>
@@ -361,24 +361,25 @@ const checkIfVariableExists = (name) => {
 
 const addNewVarIfNotExisting = (node, name, type) => {
   var found = checkIfVariableExists(name);
+  var monitor = varTypes.filter((t) => type === t.type)[0].monitor
   if (!found) {
-    var newVar = {
-      id: Date.now(),
-      name: name,
-      type: type,
-      description: "",
-      edit: false,
-	  value: 0,
-	  forced: false,
-	  forcedValue: 0,
-	  monitorData: 0,
-	  monitor: varTypes.filter((t) => type === t.type)[0].monitor
-    };
-    variablesdata.value.push(newVar);
-	putProjectDataToFlask();
-    return newVar.id;
+	  if(monitor === true){
+		var newVar = {
+		  id: Date.now(),
+		  name: name,
+		  type: type,
+		  description: "",
+		  edit: false,
+		  value: 0,
+		  forced: false,
+		  forcedValue: 0,
+		  monitorData: 0,
+		  monitor: monitor
+		};
+		variablesdata.value.push(newVar);
+		putProjectDataToFlask();
+	  }
   }
-  return found.id;
 };
 
 const deleteVariable = (id) => {
