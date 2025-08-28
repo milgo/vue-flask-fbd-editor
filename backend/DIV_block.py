@@ -1,3 +1,6 @@
+def setup_DIV(THIS, MEM):
+    MEM[THIS["id"]] = 0 
+	
 def before_DIV(RLO, THIS, MEM):
     MEM[THIS["id"]] = 0 
     return RLO

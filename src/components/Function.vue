@@ -285,7 +285,8 @@
                         name: '',
                         type: node.dyn_inputs_type,
                         show_name: 'false',
-                      })
+                      });
+					  putProjectDataToFlask();
                     "
                     class="button button-orange"
                   >
@@ -327,7 +328,8 @@
                 name: '',
                 type: node.dyn_inputs_type,
                 show_name: 'false',
-              })
+              });
+			  putProjectDataToFlask();
             "
             class="button button-orange"
           >

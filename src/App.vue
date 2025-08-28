@@ -386,8 +386,10 @@ const addNewVarIfNotExisting = (node, name, type) => {
 		};
 		variablesdata.value.push(newVar);
 		putProjectDataToFlask();
+		return;
 	  }
   }
+  putProjectDataToFlask();
 };
 
 const deleteVariable = (id) => {
@@ -615,7 +617,7 @@ const addInput = (nodeId, inputDef, idOffset = 0) => {
       value: 0,
     });
   });
-  putProjectDataToFlask();
+  //putProjectDataToFlask();
 };
 
 const connectNodeToInput = (nodeId, inputId) => {

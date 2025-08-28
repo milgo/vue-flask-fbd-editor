@@ -15,5 +15,5 @@ def after_CONST_INPUT(RLO, INPUT, MEM):
     return RLO
 
 def after_CONST(RLO, THIS, MEM):
-    RLO[THIS["id"]] = THIS["memoryAddr"]
+    RLO[THIS["id"]] = int(THIS["memoryAddr"])
     return RLO

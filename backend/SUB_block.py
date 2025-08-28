@@ -1,5 +1,8 @@
-def before_SUB(RLO, THIS, MEM):
+def setup_SUB(THIS, MEM):
     MEM[THIS["id"]] = 0 
+	
+def before_SUB(RLO, THIS, MEM):
+    MEM[THIS["id"]] = 0
     return RLO
 
 def before_SUB_INPUT(RLO, INPUT, MEM):

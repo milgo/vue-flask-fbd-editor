@@ -46,7 +46,7 @@
   },
   {
     "type": "int",
-    "valid": "^\\d{1,9}$",
+    "valid": "^([-])?\\d{1,9}$",
 	"monitor": false
   }
 ]

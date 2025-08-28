@@ -1,6 +1,5 @@
 def setup_ADD(THIS, MEM):
     MEM[THIS["id"]] = 0 
-    return RLO
 
 def before_ADD(RLO, THIS, MEM):
     return RLO
@@ -18,4 +17,5 @@ def after_ADD_INPUT(RLO, INPUT, MEM):
 
 def after_ADD(RLO, THIS, MEM):
     RLO[THIS["id"]] = MEM[THIS["id"]]
+    MEM[THIS["id"]] = 0
     return RLO

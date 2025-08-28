@@ -1,5 +1,8 @@
-def before_MUL(RLO, THIS, MEM):
+def setup_MUL(THIS, MEM):
     MEM[THIS["id"]] = 1 
+	
+def before_MUL(RLO, THIS, MEM):
+    MEM[THIS["id"]] = 1
     return RLO
 
 def before_MUL_INPUT(RLO, INPUT, MEM):
@@ -15,4 +18,5 @@ def after_MUL_INPUT(RLO, INPUT, MEM):
 
 def after_MUL(RLO, THIS, MEM):
     RLO[THIS["id"]] = MEM[THIS["id"]]
+    MEM[THIS["id"]] = 0
     return RLO
