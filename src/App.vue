@@ -219,7 +219,15 @@
 		<button
 		  v-if="stopButtonVisible[statusdata.state]"
           @click="axios.get(flaskURL+'/stop')
-					.then((res) => {statusdata = res.data;clearMonitorValues();})
+					.then((res) => {
+						statusdata = res.data;
+						console.log(res.data);
+						
+						delay(() => {
+							getProjectDataFromFlask();
+							delay(() => clearMonitorValues(), 500); 
+							}, 500);
+					})
 					.catch((err) => console.error(err)); /* getVariableDataFromFlask();getProjectDataFromFlask();*/"
         >
           Stop
@@ -740,6 +748,7 @@ export default {
     showAlert: (msg) => {
       alert(msg);
     },
+	delay: (func, time) => {setTimeout(func, time);},
   isVarNameTypeValid (rules, name, acceptableTypes){
       var result = false;
       acceptableTypes.forEach((t) => {
