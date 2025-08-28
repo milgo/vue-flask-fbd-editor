@@ -2,6 +2,21 @@
 
 ![foto](https://raw.githubusercontent.com/milgo/vue-flask-fbd-editor/main/schematic.png)
 
+#### Setup developement on Windows
+
+- Download and install nodejs 
+- Download and install python (3.13.7)
+- Add C:\Users\Oper\AppData\Local\Programs\Python\Python313\Scripts do PATH
+- Install flask (pip install flask in cmd)
+- Install flask-cors (pip install flask-cors)
+- Install vuejs (npm i vue)
+- Install vite (npm install -D vite)
+- Install git
+- Clone repository (git clone https://github.com/milgo/vue-flask-fbd-editor.git)
+- Go to vue-flask-fbd-editor directory and open cmd then type dev
+- Go to backend directory open cmd and type run
+- Open browser and go to http://localhost:5173/
+
 #### Instalation (on Raspberry PI)
 Open terminal or connect using remote ssh session and run commands:
 - sudo apt update <br />
