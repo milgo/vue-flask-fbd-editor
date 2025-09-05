@@ -16,9 +16,9 @@
         "alias": "",
         "input_only": true,
         "show_name": false,
-        "output_type": "int",
+        "output_type": "number",
         "dyn_inputs": false,
-        "mem_input": ["int"],
+        "mem_input": ["number"],
 		"mem_loc": "???"
       },
       {
@@ -200,7 +200,7 @@
         "inputs": [
           {
             "name": "",
-            "type": ["byte", "word", "dword", "int"],
+            "type": ["byte", "word", "dword", "number"],
             "show_name": true
           }
         ],
@@ -404,11 +404,11 @@
         "inputs": [
           {
             "name": "IN1",
-            "type": ["int"]
+            "type": ["number"]
           },
           {
             "name": "IN2",
-            "type": ["int"]
+            "type": ["number"]
           }
         ]
       },
@@ -422,11 +422,11 @@
         "inputs": [
           {
             "name": "IN1",
-            "type": ["int"]
+            "type": ["number"]
           },
           {
             "name": "IN2",
-            "type": ["int"]
+            "type": ["number"]
           }
         ]
       },
@@ -440,11 +440,11 @@
         "inputs": [
           {
             "name": "IN1",
-            "type": ["int"]
+            "type": ["number"]
           },
           {
             "name": "IN2",
-            "type": ["int"]
+            "type": ["number"]
           }
         ]
       },
@@ -458,11 +458,11 @@
         "inputs": [
           {
             "name": "IN1",
-            "type": ["int"]
+            "type": ["number"]
           },
           {
             "name": "IN2",
-            "type": ["int"]
+            "type": ["number"]
           }
         ]
       },
@@ -476,11 +476,11 @@
         "inputs": [
           {
             "name": "IN1",
-            "type": ["int"]
+            "type": ["number"]
           },
           {
             "name": "IN2",
-            "type": ["int"]
+            "type": ["number"]
           }
         ]
       }
@@ -494,8 +494,8 @@
         "alias": "",
         "input_only": false,
         "show_name": true,
-        "output_type": "int",
-        "dyn_inputs_type": ["int"],
+        "output_type": "number",
+        "dyn_inputs_type": ["number"],
         "dyn_inputs": true,
 		"mem_loc": " "
       },
@@ -504,8 +504,8 @@
         "alias": "",
         "input_only": false,
         "show_name": true,
-        "output_type": "int",
-        "dyn_inputs_type": ["int"],
+        "output_type": "number",
+        "dyn_inputs_type": ["number"],
         "dyn_inputs": true,
 		"mem_loc": " "
       },
@@ -514,8 +514,8 @@
         "alias": "",
         "input_only": false,
         "show_name": true,
-        "output_type": "int",
-        "dyn_inputs_type": ["int"],
+        "output_type": "number",
+        "dyn_inputs_type": ["number"],
         "dyn_inputs": true,
 		"mem_loc": " "
       },
@@ -524,8 +524,8 @@
         "alias": "",
         "input_only": false,
         "show_name": true,
-        "output_type": "int",
-        "dyn_inputs_type": ["int"],
+        "output_type": "number",
+        "dyn_inputs_type": ["number"],
         "dyn_inputs": true,
 		"mem_loc": " "
       }

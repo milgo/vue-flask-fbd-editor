@@ -135,7 +135,7 @@
                   event.mem_loc,
                   event.output_type
                 );
-				putProjectDataToFlask();
+				//putProjectDataToFlask();
 				}
             "
           />

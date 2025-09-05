@@ -45,8 +45,8 @@
 	"monitor": true
   },
   {
-    "type": "int",
-    "valid": "^([-])?\\d{1,9}$",
+    "type": "number",
+    "valid": "^([-])?^([+])?\\d{1,9}.?\\d{0,3}$",
 	"monitor": false
   }
 ]

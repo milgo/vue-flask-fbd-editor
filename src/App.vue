@@ -341,6 +341,9 @@ const recursiveLoopBasedOnInputs = (data, element, inputId) => {
 };
 
 const buildListing = (data) => {
+	
+  setuplisting.value = [];
+  listing.value = [];
   //setup listing
   data.forEach((element) => {
       setuplisting.value.push({
@@ -388,6 +391,7 @@ const addNewVarIfNotExisting = (node, name, type) => {
 		putProjectDataToFlask();
 		return;
 	  }
+	  return;
   }
   putProjectDataToFlask();
 };
