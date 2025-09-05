@@ -16,5 +16,6 @@ def after_MOVE_INPUT(RLO, INPUT, MEM):
 def after_MOVE(RLO, THIS, MEM):
 	
 	RLO[THIS["id"]] = MEM[THIS["memoryAddr"]]["value"]
+	MEM[THIS["memoryAddr"]]["monitorData"] = MEM[THIS["memoryAddr"]]["value"]
 	
 	return RLO

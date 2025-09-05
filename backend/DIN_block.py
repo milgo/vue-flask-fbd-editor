@@ -8,4 +8,8 @@ def DIN(RLO, THIS, MEM):
 def after_DIN(RLO, THIS, MEM):
 	#RLO[THIS["destInputId"]] = MEM[THIS["id"]]
 	RLO[THIS["id"]] = MEM[THIS["id"]]
+	if MEM[THIS["id"]] == 1:
+		MEM[THIS["memoryAddr"]]["monitorData"] = "True"
+	else:
+		MEM[THIS["memoryAddr"]]["monitorData"] = "False"
 	return RLO
