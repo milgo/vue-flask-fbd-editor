@@ -15,9 +15,9 @@ def before_SP(RLO, THIS, MEM):
             MEM[THIS["memoryAddr"]]["monitorData"] = MEM[THIS["memoryAddr"]]["duration"] - MEM[THIS["memoryAddr"]]["elapsedTime"]
 
         if MEM[THIS["memoryAddr"]]["elapsedTime"] < MEM[THIS["memoryAddr"]]["duration"]:
-            RLO[THIS["id"]] = 1
+            MEM[THIS["memoryAddr"]]["value"] = 1
         else:
-            RLO[THIS["id"]] = 0
+            MEM[THIS["memoryAddr"]]["value"] = 0
             MEM[THIS["memoryAddr"]]["stopped"] = 1 
             MEM[THIS["memoryAddr"]]["monitorData"] = 0
     return RLO
@@ -56,6 +56,6 @@ def after_SP_INPUT(RLO, INPUT, MEM):
 	return RLO
 
 def after_SP(RLO, THIS, MEM):
-	#RLO[THIS["id"]] = MEM[THIS["id"]]
+	RLO[THIS["id"]] = MEM[THIS["memoryAddr"]]["value"]
 	#RLO[THIS["destInputId"]] = MEM[THIS["id"]]
 	return RLO

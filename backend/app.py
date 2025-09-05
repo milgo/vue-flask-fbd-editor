@@ -234,8 +234,9 @@ def monitorProgram():
 def forceVariables():
 	response_object = {}
 	if request.method == 'POST':
-		if programThread.isRunning():
+		if programThread.isRunning():			
 			post_data = request.get_json()
+			#print(post_data)
 			programThread.forceVariables(post_data)
 			#response_object['variablesdata'] = programThread.variablesdata
 	response_object['statusdata'] = programThread.getStatus()

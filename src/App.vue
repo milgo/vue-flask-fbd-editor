@@ -210,7 +210,19 @@
 			<input type="checkbox" id="forced" :checked="variable.forced === true" v-on:input="toggleForceVariable(variable.id);"/>
 		</td>
 		<td v-if="monitorTaskStart[statusdata.monitor]">
-			<input type="checkbox" id="forcedValue" :checked="variable.forcedValue === 1" v-on:input="toggleForceVariableValueBool(variable.id);"/>
+			<input v-if="['marker', 'di', 'do', 'timer'].some((i) => i===(variable.type))" type="checkbox" id="forcedValue" :checked="variable.forcedValue === 1" v-on:input="toggleForceVariableValueBool(variable.id);" />
+			<VarInput v-else
+			:value="variable.forcedValue"
+			v-on:blur="variable.edit = false"
+            @enter="variable.edit = false;"
+			@valueChanged="(value) => {
+				if(this.isVarNameTypeValid(varTypes, value, ['number']) === true) {
+					setForcedValueOfVariable(variable.id, value);
+				}else{
+					showAlert('Enter numeric value!');
+				}
+			}"
+		  />
 		</td>
       </tr>
     </template>
@@ -388,7 +400,7 @@ const addNewVarIfNotExisting = (node, name, type) => {
 		putProjectDataToFlask();
 		return;
 	  }
-	  return;
+	  //return;
   }
   putProjectDataToFlask();
 };
@@ -407,7 +419,7 @@ const deleteVariable = (id) => {
 const toggleForceVariable = (id) => {
   var variable = variablesdata.value.filter((v) => v.id === id)[0];
   variable.forced = !variable.forced;
-  if(variable.forced === true) variable.forcedValue = 0;
+  //if(variable.forced === false) {variable.forcedValue = 0;}
   postForceVariables();
 };
 
@@ -424,13 +436,7 @@ const toggleForceVariableValueBool = (id) => {
 const setForcedValueOfVariable = (id, val) => {
   var variable = variablesdata.value.filter((v) => v.id === id)[0];
   variable.forcedValue = val;
-  putProjectDataToFlask();
-};
-
-const toggleForcedValueOfVariable = (id, val) => {
-  var variable = variablesdata.value.filter((v) => v.id === id)[0];
-  variable.forcedValue = val;
-  putProjectDataToFlask();
+  postForceVariables();
 };
 
 const getStatusDataFromFlask = () => {
