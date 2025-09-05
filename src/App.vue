@@ -1,12 +1,62 @@
 <template>
+  
+<div>
+ <table  class="stat_table">
+    <tr>
+      <td>
+        <button
+		  v-if="compileButtonVisible[statusdata.changed]"
+          @click="
+            listing.splice(0);
+            buildListing(projectdata);
+			putCompileDataToFlask();
+          "
+		  :disabled="!isProgramDataReadyToCompile(projectdata, varTypes)"
+        >
+		
+          Compile
+        </button>
+		<button
+		  v-if="stopButtonVisible[statusdata.state]"
+          @click="axios.get(flaskURL+'/stop')
+					.then((res) => {
+						statusdata = res.data;
+						console.log(res.data);
+						
+						delay(() => {
+							getProjectDataFromFlask();
+							delay(() => clearMonitorValues(), 500); 
+							}, 500);
+					})
+					.catch((err) => console.error(err)); /* getVariableDataFromFlask();getProjectDataFromFlask();*/"
+        >
+          Stop
+        </button>
+		<button
+		  v-if="startButtonVisible[statusdata.state] && !compileButtonVisible[statusdata.changed]"
+          @click="axios.get(flaskURL+'/start')
+					.then((res) => {statusdata = res.data;})
+					.catch((err) => console.error(err)); /*getVariableDataFromFlask();getProjectDataFromFlask();*/"
+        >
+          Start
+        </button>
+      </td>
+	  <td>
+		<div>Status: {{statusdata.state}}</div>
+	  </td>
+      <td>
+        <div v-if="monitorCheckboxVisible[statusdata.state]">
+			<input type="checkbox" id="monitor" :checked="statusdata['monitor'] == 'on'" v-on:input="toggleMonitorFromFlask();"/>
+			<label for="monitor">Monitor</label>
+		</div>
+      </td>
+    </tr>
+  </table>
+</div>
 
-  <!--{{projectdata.some((n) => n) === true}}
-  <div v-if="projectdata.some((n) => n) === true">
-    <Function :id="projectdata[0].id" :parentId="projectdata[0].parentId" :nodes="nodes" :node="nodes[0]"/>
-  </div>
-  <div v-else>
+<hr class="hr-normal">
 
-   </div>-->
+<br/>
 
   <div v-for="(node, networkId) in projectdata.filter((n) => !n.parentInput)">
     <table>
@@ -78,6 +128,9 @@
       :alone="true"
     />
   </div>
+
+
+<hr class="hr-normal">
 
   <br />
 
@@ -190,69 +243,13 @@
       +
     </option>
     <template v-for="t in varTypes">
-      <option :value="t.type">{{ t.type }}</option>
+      <option :value="t.type" v-if="t.monitor===true">{{ t.type }}</option>
     </template>
   </select>
 
   <br />
   <br />
 
-  <table>
-    <tr>
-      <td>
-        <!--<textarea cols="30" rows="20">{{ projectdata }}</textarea>-->
-      </td>
-      <td>
-         <!--<textarea cols="30" rows="20">{{ listing }}</textarea>-->
-        <button
-		  v-if="compileButtonVisible[statusdata.changed]"
-          @click="
-            listing.splice(0);
-            buildListing(projectdata);
-			putCompileDataToFlask();
-          "
-		  :disabled="!isProgramDataReadyToCompile(projectdata, varTypes)"
-        >
-		
-          Compile
-        </button>
-		<button
-		  v-if="stopButtonVisible[statusdata.state]"
-          @click="axios.get(flaskURL+'/stop')
-					.then((res) => {
-						statusdata = res.data;
-						console.log(res.data);
-						
-						delay(() => {
-							getProjectDataFromFlask();
-							delay(() => clearMonitorValues(), 500); 
-							}, 500);
-					})
-					.catch((err) => console.error(err)); /* getVariableDataFromFlask();getProjectDataFromFlask();*/"
-        >
-          Stop
-        </button>
-		<button
-		  v-if="startButtonVisible[statusdata.state] && !compileButtonVisible[statusdata.changed]"
-          @click="axios.get(flaskURL+'/start')
-					.then((res) => {statusdata = res.data;})
-					.catch((err) => console.error(err)); /*getVariableDataFromFlask();getProjectDataFromFlask();*/"
-        >
-          Start
-        </button>
-		<div v-if="monitorCheckboxVisible[statusdata.state]">
-			<input type="checkbox" id="monitor" :checked="statusdata['monitor'] == 'on'" v-on:input="toggleMonitorFromFlask();"/>
-			<label for="monitor">Monitor</label>
-		</div>
-      </td>
-	  <td>
-		<div>&nbspStatus: {{statusdata}} </div>
-	  </td>
-      <td>
-         <!--<textarea cols="30" rows="20">{{ variablesdata }}</textarea>-->
-      </td>
-    </tr>
-  </table>
  <!--{{ interConnectionDetails }}-->
 
 </template>
