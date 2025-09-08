@@ -56,8 +56,31 @@
 
 <hr class="hr-normal">
 
-<br/>
+<div class="fixed mem_table" v-if="monitorTaskStart[statusdata.monitor]">
+	<table>
+    <tr>
+      <th>Ctrl.</th>
+      <th>Address</th>
+      <th>Description</th>
+    </tr>
 
+    <template v-for="variable in variablesdata.filter((v) => ['di', 'do', 'ai', 'ao'].some((i) => i===(v.type)))">
+      <tr>
+        <td>
+			<label class="switch" v-if="variable.type==='di'"><input type="checkbox"><span class="slider"></span></label>
+			<span class="dot_green" v-if="variable.type==='do'"></span>
+		</td>
+        <td>{{ variable.name }}</td>
+        <td>{{ variable.description }}</td>
+      </tr>
+    </template>
+	
+  </table>
+</div>
+<br/>
+  <table width="100%">
+  <tr>
+  <td width="70%">
   <div v-for="(node, networkId) in projectdata.filter((n) => !n.parentInput)">
     <table>
       <tr>
@@ -128,7 +151,12 @@
       :alone="true"
     />
   </div>
+  </td>
+  <td width="30%">
 
+  </td>
+  </tr>
+</table>
 
 <hr class="hr-normal">
 

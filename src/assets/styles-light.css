@@ -62,6 +62,13 @@ table, td, th
   }
 */
 
+div.fixed {
+	position: fixed;
+	padding: 0px;
+	top: 70px;
+	right: 20px;
+}
+
 .stat_table td
 {
     background-color: white;
@@ -74,18 +81,20 @@ table, td, th
 .mem_table th
 {
     background-color: darkgray;
-    padding: 1px; !important;
+    padding: 5px; !important;
     border-spacing: 0px; !important;
-    border: 0px solid black;
-    text-align: left;
+    border: 1px solid gray;
+    text-align: center;
 }
 
 .mem_table td 
 {
     padding: 1px; !important;
     border-spacing: 0px; !important;
-    border: 0px solid black;
-    background-color: lightgray
+    border: 1px solid gray;
+    background-color: lightgray;
+	text-align: center;
+	vertical-align: middle;
 }
 
 input {
@@ -189,3 +198,87 @@ img { vertical-align:bottom; background-color: transparent;}
   visibility: visible;
 }
 /*Tooltip End*/
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: lightgray;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border: 1px solid gray;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: black;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: lightgray;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 0px white;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+  background-color: black;
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+/*Slider Ends*/
+
+.dot_gray {
+	height: 25px;
+	width: 25px;
+	background-color: #bbb;
+	border-radius: 50%;
+	display: inline-block;
+}
+
+.dot_green {
+	height: 25px;
+	width: 25px;
+	background-color: lime;
+	border-radius: 50%;
+	display: inline-block;
+	border: 1px solid black;
+}
