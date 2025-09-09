@@ -67,8 +67,10 @@
     <template v-for="variable in variablesdata.filter((v) => ['di', 'do', 'ai', 'ao'].some((i) => i===(v.type)))">
       <tr>
         <td>
-			<label class="switch" v-if="variable.type==='di'"><input type="checkbox"><span class="slider"></span></label>
-			<span class="dot_green" v-if="variable.type==='do'"></span>
+			<label class="switch" v-if="variable.type==='di'"><input type="checkbox" :checked="variable.value === 1"
+			v-on:input="toggleForceVariableValueBool(variable.id); delayWithParam((v) => {toggleForceVariable(v.id)}, 500, variable);"> <span class="slider"></span></label>
+			<span class="dot_green" v-if="variable.type==='do' && variable.value === 1"></span>
+			<span class="dot_gray" v-if="variable.type==='do' && variable.value === 0"></span>
 		</td>
         <td>{{ variable.name }}</td>
         <td>{{ variable.description }}</td>
@@ -162,7 +164,7 @@
 
   <br />
 
-  <table class="mem_table" width="60%">
+  <table class="mem_table" width="65%">
     <tr>
       <th>Address</th>
       <th>Type</th>
@@ -174,7 +176,7 @@
 	  <th v-if="monitorTaskStart[statusdata.monitor]">Forced value</th>
     </tr>
 
-    <template v-for="variable in variablesdata">
+    <template v-for="variable in variablesdata.filter((v) => variableTypesVisibleWhenMonitorOnOff[statusdata.monitor].some((i) => i===(v.type)))">
       <tr v-if="variable.monitor === true">
         <td>{{ variable.name }}</td>
         <td>{{ variable.type }}</td>
@@ -320,6 +322,7 @@ const startButtonVisible = {"stopped" : true, "running" : false}
 const compileButtonVisible = {"changed" : true, "not changed" : false}
 const monitorCheckboxVisible = {"stopped" : false, "running" : true}
 const monitorTaskStart = {"on" : true, "off" : false}
+const variableTypesVisibleWhenMonitorOnOff = {"on" : ['marker', 'byte', 'word', 'timer'], "off" : ['marker', 'byte', 'word', 'timer', 'di', 'do', 'ai', 'ao']}
 
 var monitorInterval = null
 
@@ -447,7 +450,6 @@ const deleteVariable = (id) => {
 const toggleForceVariable = (id) => {
   var variable = variablesdata.value.filter((v) => v.id === id)[0];
   variable.forced = !variable.forced;
-  //if(variable.forced === false) {variable.forcedValue = 0;}
   postForceVariables();
 };
 
@@ -785,7 +787,9 @@ export default {
     showAlert: (msg) => {
       alert(msg);
     },
+	delayWithParam: (func, time, param) => {setTimeout(func, time, param);},
 	delay: (func, time) => {setTimeout(func, time);},
+	
   isVarNameTypeValid (rules, name, acceptableTypes){
       var result = false;
       acceptableTypes.forEach((t) => {

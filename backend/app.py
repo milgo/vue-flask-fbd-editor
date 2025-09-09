@@ -23,6 +23,8 @@ from S_block import *
 from R_block import *
 from SR_block import *
 from RS_block import *
+from FP_block import *
+from FN_block import *
 from SP_block import *
 from SE_block import *
 from SD_block import *

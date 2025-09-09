@@ -225,7 +225,7 @@ img { vertical-align:bottom; background-color: transparent;}
   background-color: lightgray;
   -webkit-transition: .4s;
   transition: .4s;
-  border: 1px solid gray;
+
 }
 
 .slider:before {
@@ -235,9 +235,10 @@ img { vertical-align:bottom; background-color: transparent;}
   width: 26px;
   left: 4px;
   bottom: 4px;
-  background-color: black;
+  background-color: gray;
   -webkit-transition: .4s;
   transition: .4s;
+  border: 1px solid black;
 }
 
 input:checked + .slider {
@@ -252,7 +253,8 @@ input:checked + .slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);
-  background-color: black;
+  background-color: lime;
+  border: 1px solid black;
 }
 
 /* Rounded sliders */
@@ -267,14 +269,17 @@ input:checked + .slider:before {
 /*Slider Ends*/
 
 .dot_gray {
+	margin-top: 5px;
 	height: 25px;
 	width: 25px;
 	background-color: #bbb;
 	border-radius: 50%;
 	display: inline-block;
+	border: 1px solid black;
 }
 
 .dot_green {
+	margin-top: 5px;
 	height: 25px;
 	width: 25px;
 	background-color: lime;
