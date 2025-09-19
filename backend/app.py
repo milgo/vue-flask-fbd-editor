@@ -170,6 +170,7 @@ class ProgramThread(threading.Thread):
 
 				for var in self.projectdata["variables"]:
 					self.mem[var["name"]] = var
+					self.mem[var["name"]]["value"] = 0
 
 				for setupentry in listingdata[0]['setuplisting']:
 					setupfunc = setupentry["functionName"]

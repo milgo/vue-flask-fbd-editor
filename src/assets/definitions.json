@@ -225,11 +225,6 @@
             "show_name": true
           },
           {
-            "name": "R",
-            "type": ["bool"],
-            "show_name": true
-          },
-          {
             "name": "T",
             "type": ["time"],
             "show_name": true
@@ -247,11 +242,6 @@
         "inputs": [
           {
             "name": "S",
-            "type": ["bool"],
-            "show_name": true
-          },
-          {
-            "name": "R",
             "type": ["bool"],
             "show_name": true
           },
@@ -277,11 +267,6 @@
             "show_name": true
           },
           {
-            "name": "R",
-            "type": ["bool"],
-            "show_name": true
-          },
-          {
             "name": "T",
             "type": ["time"],
             "show_name": true
@@ -303,11 +288,6 @@
             "show_name": true
           },
           {
-            "name": "R",
-            "type": ["bool"],
-            "show_name": true
-          },
-          {
             "name": "T",
             "type": ["time"],
             "show_name": true
@@ -325,11 +305,6 @@
         "inputs": [
           {
             "name": "S",
-            "type": ["bool"],
-            "show_name": true
-          },
-          {
-            "name": "R",
             "type": ["bool"],
             "show_name": true
           },
