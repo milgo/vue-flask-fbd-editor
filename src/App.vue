@@ -692,7 +692,7 @@ const disconnectNodeFromInput = (nodeId, inputId) => {
       });
     }
   });
-  putProjectDataToFlask();
+  //putProjectDataToFlask();
 };
 
 const clearInput = (inputId) => {};
@@ -715,17 +715,26 @@ const deleteInput = (inputId) => {
   //putProjectDataToFlask();
 };
 const deleteChild = (id) => {
+	
+  var inputsOfDeletedNode = getInputsById(id, projectdata.value);
   projectdata.value.forEach((item) => {
+	  
+	inputsOfDeletedNode.forEach((input) => {
+		if (item.parentInput === input.id) item.parentInput = null;
+		if (item.input_only === true && input.id === item.parentInput) deleteChild(item.id);//delete input only node
+	});
+	
     //reset parent input
     item.inputs.forEach((input) => {
-      if (input.target === id) input.target = -1;
+      if (input.target === id) input.target = -1; //delete left
     });
-    //delete connected children
-    if (item.id === id) {
+    //delete connected input only children
+    /*if (item.id === id) {
       item.inputs.forEach((input) => {
+		if
         deleteChild(input.target);
       });
-    }
+    }*/
     //
   });
 

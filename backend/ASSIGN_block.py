@@ -20,5 +20,10 @@ def after_ASSIGN(RLO, THIS, MEM):
 		MEM[THIS["memoryAddr"]]["value"] = MEM[THIS["id"]]
 
 	RLO[THIS["id"]] = MEM[THIS["memoryAddr"]]["value"]
-	#RLO[THIS["destInputId"]] = MEM[THIS["id"]] 
+
+	if MEM[THIS["memoryAddr"]]["value"] == 1:
+		MEM[THIS["memoryAddr"]]["monitorData"] = "True"
+	else:
+		MEM[THIS["memoryAddr"]]["monitorData"] = "False"
+
 	return RLO

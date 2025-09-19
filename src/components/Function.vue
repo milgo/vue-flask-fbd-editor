@@ -224,6 +224,7 @@
                 <button				  
                   @click="
                     disconnectNodeFromInput(inputNode.target, inputNode.id);
+					putProjectDataToFlask();
                     inputNode.conn_mouse_hover = false;
                   "
                   class="button button-red"

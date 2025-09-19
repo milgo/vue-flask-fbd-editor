@@ -36,13 +36,6 @@ def after_SS_INPUT(RLO, INPUT, MEM):
 			MEM[INPUT["memoryAddr"]]["started"] = 1
 			MEM[INPUT["memoryAddr"]]["startTime"] = current_milli_time()
 
-	if INPUT["inputName"] in ["R"] and RLO[INPUT["connNodeId"]] == 1 and MEM[INPUT["memoryAddr"]]["started"] == 1:
-	
-		MEM[INPUT["memoryAddr"]]["started"] = 0
-		MEM[INPUT["memoryAddr"]]["elapsedTime"] = 0
-		MEM[INPUT["memoryAddr"]]["stopped"] = 0
-		RLO[INPUT["id"]] = 0
-		
 	if INPUT["inputName"] in ["T"]:
 	
 		MEM[INPUT["memoryAddr"]]["duration"] = RLO[INPUT["connNodeId"]]
