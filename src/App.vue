@@ -54,6 +54,17 @@
   </table>
 </div>
 
+<hr v-if="enableEdit[statusdata.state]" class="hr-normal">
+	<table>
+    <tr>
+		<td><button v-if="enableEdit[statusdata.state]" :disabled="projectundostack.length<=1"
+            @click="pushProjectToRedoStack(); popProjectFromUndoStack(); putProjectDataToFlask();">UNDO</button></td>
+		<td><button v-if="enableEdit[statusdata.state]" :disabled="projectredostack.length===0"
+            @click="pushProjectToUndoStack(); popProjectFromRedoStack(); putProjectDataToFlask();">REDO</button></td>
+	</tr>
+	</table>
+          
+		 
 <hr class="hr-normal">
 
 <div class="fixed mem_table" v-if="monitorTaskStart[statusdata.monitor]">
@@ -103,13 +114,13 @@
             :interConnection="interConnection"
             :interConnectionDetails="interConnectionDetails"
             @new-variable="
-              (event) => {
+              (event) => {				
                 addNewVarIfNotExisting(
                   event.node,
                   event.mem_loc,
                   event.output_type
                 );
-				//putProjectDataToFlask();
+				putProjectDataToFlask();
 			}"
           />
         </td>
@@ -145,7 +156,9 @@
   <div align="left" v-if="enableEdit[statusdata.state]">
     <FunctionList
       @selected="
+	    pushProjectToUndoStack();
         addChild(Date.now(), null, $event);
+		putProjectDataToFlask();
         forceFunctionListRerender();
       "
       :key="functionListKey"
@@ -228,7 +241,7 @@
           <button 
 			v-if="enableEdit[statusdata.state]"
             class="button button-red"
-            @click="deleteVariable(variable.id)"
+            @click="pushProjectToUndoStack();deleteVariable(variable.id);putProjectDataToFlask();"
           >
             X
           </button>
@@ -269,7 +282,9 @@
           varTypes.filter((md) => md.type === $event.target.value)[0].valid
         )
       ) {
+		pushProjectToUndoStack();
         addNewVarIfNotExisting(null, varName, $event.target.value);
+		putProjectDataToFlask();
       } else {
         showAlert('Wrong name for that data type!');
       }
@@ -292,8 +307,12 @@
   <br />
   <br />
 
- <!--{{ interConnectionDetails }}-->
-
+  <!--<table>
+	<tr>
+	  <td><textarea>{{ projectundostack }}</textarea></td>
+	  <td><textarea>{{ projectredostack }}</textarea></td>
+	</tr>
+  </table>-->
 </template>
 
 <script setup>
@@ -308,6 +327,8 @@ import { ref, provide, onMounted, onUpdated, onUnmounted } from "vue";
 
 const statusdata = ref([]);
 const projectdata = ref([]);
+const projectundostack = ref([]);
+const projectredostack = ref([]);
 const compiledata = ref([]);
 const setuplisting = ref([]);
 const listing = ref([]);
@@ -428,12 +449,12 @@ const addNewVarIfNotExisting = (node, name, type) => {
 		  monitor: monitor
 		};
 		variablesdata.value.push(newVar);
-		putProjectDataToFlask();
+		//putProjectDataToFlask();
 		return;
 	  }
 	  //return;
   }
-  putProjectDataToFlask();
+  //putProjectDataToFlask();
 };
 
 const deleteVariable = (id) => {
@@ -444,7 +465,7 @@ const deleteVariable = (id) => {
       node.mem_loc = "???";
     }
   });
-  putProjectDataToFlask();
+  //putProjectDataToFlask();
 };
 
 const toggleForceVariable = (id) => {
@@ -525,6 +546,22 @@ const getProjectDataFromFlask = () => {
 		.catch((err) => console.error(err));
 }
 
+const pushProjectToUndoStack = () => {
+	projectundostack.value.push(JSON.parse(JSON.stringify(projectdata.value)));
+}
+
+const popProjectFromUndoStack = () => {
+	projectdata.value = projectundostack.value.pop();
+}
+
+const pushProjectToRedoStack = () => {
+	projectredostack.value.push(JSON.parse(JSON.stringify(projectdata.value)));
+}
+
+const popProjectFromRedoStack = () => {
+	projectdata.value = projectredostack.value.pop();
+}
+
 const putProjectDataToFlask = () => {
   const path = flaskURL+"/project";
   axios.post(path, {program: projectdata.value, variables: variablesdata.value, checksum: statusdata.value.checksum})
@@ -532,7 +569,7 @@ const putProjectDataToFlask = () => {
 			if(res.data.checksum == "bad")
 				alert("Integrity error! Please reload page (F5)");
 			else
-				statusdata.value = res.data.statusdata;
+				statusdata.value = res.data.statusdata;				
         }).catch((err) => console.error(err));
 }
 
@@ -567,6 +604,8 @@ onMounted(() => {
   //getVariableDataFromFlask();
   getProjectDataFromFlask();
 
+  setTimeout(() => pushProjectToUndoStack(), 100);
+  
   monitorInterval = setInterval(() => {
 	if(monitorTaskStart[statusdata.value.monitor]){
 		pullRuntimeData();
@@ -635,7 +674,7 @@ const addChild = (id, parentInput, blockJson) => {
     });
   });
 
-  putProjectDataToFlask();
+  //putProjectDataToFlask();
 };
 const addInput = (nodeId, inputDef, idOffset = 0) => {
   // var inputJson = JSON.parse(input /*? input : '{"name":"", "type":"none"}'*/);
@@ -671,7 +710,7 @@ const connectNodeToInput = (nodeId, inputId) => {
       });
     }
   });
-  putProjectDataToFlask();
+  //putProjectDataToFlask();
 };
 
 const disconnectNodeFromInput = (nodeId, inputId) => {
@@ -769,6 +808,7 @@ provide("disconnectNodeFromInput", disconnectNodeFromInput);
 provide("addNewVarIfNotExisting", addNewVarIfNotExisting);
 provide("connectNodeToInput", connectNodeToInput);
 provide("checkIfVariableExists", checkIfVariableExists);
+provide("pushProjectToUndoStack", pushProjectToUndoStack);
 provide("putProjectDataToFlask", putProjectDataToFlask);
 </script>
 <script>

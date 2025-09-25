@@ -32,6 +32,7 @@
               >
                 <button
                   @click="
+				    pushProjectToUndoStack();
 					deleteChild(id);
 					putProjectDataToFlask()
 					"
@@ -66,6 +67,7 @@
             "
             v-if="node.mem_edit === false"
             @click="
+			  pushProjectToUndoStack();
               node.mem_edit = enableEdit;
             "
           >
@@ -103,7 +105,7 @@
           <div v-else>
 
 				<VarInput 
-				@blur="memoryEdit(node)" 
+				@blur="memoryEdit(node);" 
 				@enter="memoryEdit(node)"
 				:value="node.mem_loc"
 				@valueChanged="(value) => node.mem_loc = value"
@@ -135,7 +137,7 @@
                   event.mem_loc,
                   event.output_type
                 );
-				//putProjectDataToFlask();
+				putProjectDataToFlask();
 				}
             "
           />
@@ -154,7 +156,9 @@
 			  v-if="enableEdit"
               class="button button-red"
               @click="
-                connectNodeToInput(interConnectionDetails.nodeId, inputNode.id)
+			    pushProjectToUndoStack();
+                connectNodeToInput(interConnectionDetails.nodeId, inputNode.id);
+				putProjectDataToFlask();
               "
             >
               ]
@@ -170,7 +174,7 @@
               <FunctionList
                 :outputType="node.dyn_inputs_type"
                 :alone="false"
-                @selected="addChild(Date.now(), inputNode, $event)"
+                @selected="pushProjectToUndoStack();addChild(Date.now(), inputNode, $event);putProjectDataToFlask();"
               />
             </template>
             <template v-else>
@@ -178,7 +182,7 @@
 				v-if="enableEdit"
                 :outputType="node.inputs[index].type"
                 :alone="false"
-                @selected="addChild(Date.now(), inputNode, $event)"
+                @selected="pushProjectToUndoStack();addChild(Date.now(), inputNode, $event);putProjectDataToFlask();"
               />
             </template>
           </template>
@@ -223,6 +227,7 @@
               >
                 <button				  
                   @click="
+				    pushProjectToUndoStack();
                     disconnectNodeFromInput(inputNode.target, inputNode.id);
 					putProjectDataToFlask();
                     inputNode.conn_mouse_hover = false;
@@ -259,6 +264,7 @@
                 <template v-if="inputNode.input_mouse_hover === true">
                   <button
                     @click="
+					  pushProjectToUndoStack();
                       deleteInput(inputNode.id);
                       deleteChild(inputNode.target);
 					  putProjectDataToFlask();
@@ -282,6 +288,7 @@
                 <template v-if="index === inputsById.length - 1 && enableEdit">
                   <button
                     @click="
+					  pushProjectToUndoStack();
                       addInput(id, {
                         name: '',
                         type: node.dyn_inputs_type,
@@ -325,6 +332,7 @@
 
           <button
             @click="
+			  pushProjectToUndoStack();
               addInput(id, {
                 name: '',
                 type: node.dyn_inputs_type,
@@ -369,8 +377,8 @@ const disconnectNodeFromInput = inject("disconnectNodeFromInput");
 const addNewVarIfNotExisting = inject("addNewVarIfNotExisting");
 const connectNodeToInput = inject("connectNodeToInput");
 const checkIfVariableExists = inject("checkIfVariableExists");
+const pushProjectToUndoStack = inject("pushProjectToUndoStack");
 const putProjectDataToFlask = inject("putProjectDataToFlask");
-
 </script>
 <script>
 export default {
