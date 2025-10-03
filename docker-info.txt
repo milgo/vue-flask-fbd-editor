@@ -1,0 +1,6 @@
+docker client most be running
+
+docker build -t my-vite-dev .
+//docker run --rm -it -p 3000:3000 my-vite-dev
+
+adress to run will be in containers in docker gui
