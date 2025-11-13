@@ -6,7 +6,7 @@ import time
 import os
 import re
 from gpiozero import Button, LED
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS, cross_origin
 from time import sleep
 from os import path
@@ -49,7 +49,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return 'Hello, World!'
+    return send_from_directory('dist', 'index.html')
 
 class ProgramThread(threading.Thread):
 
