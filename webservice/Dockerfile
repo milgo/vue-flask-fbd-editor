@@ -13,7 +13,7 @@ RUN apk update && apk add nginx
 COPY dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/nginx.conf
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["nginx"] #, "-g", "daemon off;"]
 CMD ["python3", "app.py"]
 
 EXPOSE 5000
