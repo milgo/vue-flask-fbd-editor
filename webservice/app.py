@@ -59,6 +59,10 @@ def script():
 def style():
     return send_from_directory('dist/assets', 'index-DRvAg8Mn.css')
 
+@app.route('/assets/warning-cVrsjMUi.png')
+def warningSign():
+    return send_from_directory('dist/assets', 'warning-cVrsjMUi.png')
+
 class ProgramThread(threading.Thread):
 
 	rlo = {}
