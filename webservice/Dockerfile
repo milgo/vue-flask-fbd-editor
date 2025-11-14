@@ -8,13 +8,13 @@ COPY . /webservice
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip3 install -r requirements.txt
 
-RUN apk update && apk add nginx
+#RUN apk update && apk add nginx
 
-COPY dist /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/nginx.conf
+#COPY dist /usr/share/nginx/html
+#COPY nginx.conf /etc/nginx/nginx.conf
 
-CMD ["nginx"] #, "-g", "daemon off;"]
+#CMD ["nginx"] #, "-g", "daemon off;"]
 CMD ["python3", "app.py"]
 
 EXPOSE 5000
-EXPOSE 80
+#EXPOSE 80
