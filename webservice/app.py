@@ -51,6 +51,14 @@ app = Flask(__name__)
 def index():
     return send_from_directory('dist', 'index.html')
 
+@app.route('/assets/index-BLo5pCu2.js')
+def script():
+    return send_from_directory('assets', 'index-BLo5pCu2.js')
+
+@app.route('/assets/index-DRvAg8Mn.css')
+def style():
+    return send_from_directory('assets', 'index-DRvAg8Mn.css')
+
 class ProgramThread(threading.Thread):
 
 	rlo = {}
