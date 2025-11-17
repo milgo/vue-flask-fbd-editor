@@ -79,7 +79,7 @@
       <tr>
         <td>
 			<label class="switch" v-if="variable.type==='di'"><input type="checkbox" :checked="variable.value === 1"
-			v-on:input="toggleForceVariable(variable.id);toggleForceVariableValueBool(variable.id); delayWithParam((v) => {toggleForceVariable(v.id)}, 500, variable);"> <span class="slider"></span></label>
+			v-on:input="toggleForceVariable(variable.id);toggleForceVariable(variable.id);toggleForceVariableValueBool(variable.id); delayWithParam((v) => {toggleForceVariable(v.id)}, 500, variable);"> <span class="slider"></span></label>
 			<span class="dot_green" v-if="variable.type==='do' && variable.value === 1"></span>
 			<span class="dot_gray" v-if="variable.type==='do' && variable.value === 0"></span>
 		</td>
@@ -334,7 +334,7 @@ const setuplisting = ref([]);
 const listing = ref([]);
 const variablesdata = ref([]);
 //const flaskURL = "http://192.168.1.2"
-const flaskURL = "http://localhost:5000"
+const flaskURL = "https://vue-flask-fbd-editor-6aim.onrender.com"
 //const varTypes = ref(variableTypes);
 
 const enableEdit = {"stopped" : true, "running" : false}
