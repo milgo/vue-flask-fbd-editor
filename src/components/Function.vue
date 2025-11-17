@@ -105,7 +105,7 @@
           <div v-else>
 
 				<VarInput 
-				@blur="memoryEdit(node);" 
+				@blur="node.mem_edit = false; delayWithParam((n) => {memoryEdit(n);}, 500, node);" 
 				@enter="memoryEdit(node)"
 				:value="node.mem_loc"
 				@valueChanged="(value) => node.mem_loc = value"
@@ -433,6 +433,7 @@ export default {
     isInterconnectionTypeValid() {
       return false;
     },
+	delayWithParam: (func, time, param) => {setTimeout(func, time, param);},
     memoryEdit(node) {
       node.mem_edit = false;
       if (node.mem_loc === "") {
