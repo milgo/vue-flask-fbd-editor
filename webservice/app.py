@@ -51,15 +51,15 @@ app = Flask(__name__)
 def index():
     return send_from_directory('dist', 'index.html')
 
-@app.route('plugin.js')
+@app.route('/plugin.js')
 def script():
     return send_from_directory('dist', 'plugin.js')
 
-@app.route('index.css')
+@app.route('/index.css')
 def style():
     return send_from_directory('dist', 'index.css')
 
-@app.route('warning.png')
+@app.route('/warning.png')
 def warningSign():
     return send_from_directory('dist', 'warning.png')
 
