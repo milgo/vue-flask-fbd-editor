@@ -51,17 +51,17 @@ app = Flask(__name__)
 def index():
     return send_from_directory('dist', 'index.html')
 
-@app.route('/assets/plugin.js')
+@app.route('plugin.js')
 def script():
-    return send_from_directory('dist/assets', 'plugin.js')
+    return send_from_directory('dist', 'plugin.js')
 
-@app.route('/assets/index.css')
+@app.route('index.css')
 def style():
-    return send_from_directory('dist/assets', 'index.css')
+    return send_from_directory('dist', 'index.css')
 
-@app.route('/assets/warning.png')
+@app.route('warning.png')
 def warningSign():
-    return send_from_directory('dist/assets', 'warning.png')
+    return send_from_directory('dist', 'warning.png')
 
 class ProgramThread(threading.Thread):
 
