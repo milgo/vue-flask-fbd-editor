@@ -79,7 +79,7 @@
       <tr>
         <td>
 			<label class="switch" v-if="variable.type==='di'"><input type="checkbox" :checked="variable.value === 1"
-			v-on:input="toggleForceVariable(variable.id);toggleForceVariable(variable.id);toggleForceVariableValueBool(variable.id); delayWithParam((v) => {toggleForceVariable(v.id)}, 500, variable);"> <span class="slider"></span></label>
+			v-on:input="toggleForceVariableValueBool(variable.id); delayWithParam((v) => {toggleForceVariable(v.id)}, 500, variable);"> <span class="slider"></span></label>
 			<span class="dot_green" v-if="variable.type==='do' && variable.value === 1"></span>
 			<span class="dot_gray" v-if="variable.type==='do' && variable.value === 0"></span>
 		</td>
@@ -208,7 +208,7 @@
 			:value="variable.description"
 			v-on:blur="variable.edit = false"
             @enter="variable.edit = false;"
-			@valueChanged="(value) => {variable.description = value; putVariableDataToFlask();}"
+			@valueChanged="(value) => {variable.description = value; putProjectDataToFlask();}"
 		  />
           <!--<input
             ref="desc_input"
