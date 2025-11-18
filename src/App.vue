@@ -50,6 +50,12 @@
 			<label for="monitor">Monitor</label>
 		</div>
       </td>
+	  <td>
+		<button v-if="monitorCheckboxVisible[statusdata.state] && statusdata['monitor'] == 'on' && statusdata['simulate'] == 'off'" 
+		@click="toggleSimulateFromFlask();" >Simulate On</button>
+		<button v-if="monitorCheckboxVisible[statusdata.state] && statusdata['monitor'] == 'on' && statusdata['simulate'] == 'on'" 
+		@click="toggleSimulateFromFlask();" >Simulate Off</button>
+      </td>
     </tr>
   </table>
 </div>
@@ -58,8 +64,8 @@
 	<table>
     <tr>
 		<td><button v-if="enableEdit[statusdata.state]" :disabled="projectundostack.length<=1"
-            @click="pushProjectToRedoStack(); popProjectFromUndoStack(); putProjectDataToFlask();">UNDO</button></td>
-		<td><button v-if="enableEdit[statusdata.state]" :disabled="projectredostack.length===0"
+            @click="pushProjectToRedoStack(); popProjectFromUndoStack(); putProjectDataToFlask();">UNDO</button>
+			<button v-if="enableEdit[statusdata.state]" :disabled="projectredostack.length===0"
             @click="pushProjectToUndoStack(); popProjectFromRedoStack(); putProjectDataToFlask();">REDO</button></td>
 	</tr>
 	</table>
@@ -67,7 +73,7 @@
 		 
 <hr class="hr-normal">
 
-<div class="fixed mem_table" v-if="monitorTaskStart[statusdata.monitor]">
+<div class="fixed mem_table" v-if="monitorTaskStart[statusdata.monitor] && statusdata['simulate'] == 'on'">
 	<table>
     <tr>
       <th>Ctrl.</th>
@@ -79,7 +85,7 @@
       <tr>
         <td>
 			<label class="switch" v-if="variable.type==='di'"><input type="checkbox" :checked="variable.value === 1"
-			v-on:input="toggleForceVariableValueBool(variable.id); delayWithParam((v) => {toggleForceVariable(v.id)}, 500, variable);"> <span class="slider"></span></label>
+			v-on:input="toggleForceVariableValueBool(variable.id);"> <span class="slider"></span></label>
 			<span class="dot_green" v-if="variable.type==='do' && variable.value === 1"></span>
 			<span class="dot_gray" v-if="variable.type==='do' && variable.value === 0"></span>
 		</td>
@@ -333,7 +339,7 @@ const compiledata = ref([]);
 const setuplisting = ref([]);
 const listing = ref([]);
 const variablesdata = ref([]);
-//const flaskURL = "http://192.168.1.2"
+//const flaskURL = "http://localhost:5000"
 const flaskURL = "https://vue-flask-fbd-editor-6aim.onrender.com"
 //const varTypes = ref(variableTypes);
 
@@ -511,6 +517,16 @@ const toggleMonitorFromFlask = () => {
   clearMonitorValues();
   const path = flaskURL+"/monitor";
 	axios.get(path).then((res) => {
+			console.log(res.data);
+			statusdata.value = res.data;
+		})
+		.catch((err) => console.error(err));
+}
+
+const toggleSimulateFromFlask = () => {
+  clearMonitorValues();
+  const path = flaskURL+"/simulate";
+	axios.post(path).then((res) => {
 			console.log(res.data);
 			statusdata.value = res.data;
 		})

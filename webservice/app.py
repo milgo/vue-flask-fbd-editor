@@ -75,6 +75,7 @@ class ProgramThread(threading.Thread):
 	
 	changed = False
 	monitor = False
+	simulate = False
 
 	def __init__(self):
 		super().__init__()
@@ -96,6 +97,7 @@ class ProgramThread(threading.Thread):
 	def stop(self):
 		self._stop_event.set()
 		self.monitor = False
+		self.simulate = False
 
 	def getStatus(self):
 		statusdata = {}
@@ -111,6 +113,11 @@ class ProgramThread(threading.Thread):
 			statusdata['monitor'] = 'on'
 		else: 
 			statusdata['monitor'] = 'off'
+			
+		if programThread.simulate:
+			statusdata['simulate'] = 'on'
+		else: 
+			statusdata['simulate'] = 'off'
 
 		statusdata['checksum'] = self.getProjectdataChecksum(self.projectdata)
 		return statusdata
@@ -131,6 +138,13 @@ class ProgramThread(threading.Thread):
 
 	def toggleMonitor(self):
 		self.monitor = not self.monitor
+		
+	def toggleSimulate(self, projectData):
+		print("here")
+		self.simulate = not self.simulate
+		for variable in projectData["variables"]:
+			if variable["type"] in ["di","ai"]:
+				self.mem[variable["name"]]["forced"] = self.simulate
 
 	def pullRuntimeValuesToProjectData(self, projectData):
 		for node in projectData["program"]:
@@ -154,12 +168,6 @@ class ProgramThread(threading.Thread):
 		for variable in variablesdata:
 			self.mem[variable["name"]]["forced"] = variable["forced"]
 			self.mem[variable["name"]]["forcedValue"] = variable["forcedValue"]
-
-	def forceEnableOnVariable(self, varName, forceEnable):
-		pass
-
-	def forceSetOnVariable(self, varName, forcedValue):
-		pass
 
 	def run(self):
         
@@ -241,6 +249,15 @@ def monitorProgram():
 	if request.method == 'GET':
 		if programThread.isRunning():
 			programThread.toggleMonitor()
+			programThread.saveStatusToFile()
+	return jsonify(programThread.getStatus())
+	
+@app.route('/simulate', methods=['POST'])
+@cross_origin(origin='*')
+def simulateInputs():
+	if request.method == 'POST':
+		if programThread.isRunning() and programThread.monitor == True:
+			programThread.toggleSimulate(programThread.projectdata)
 			programThread.saveStatusToFile()
 	return jsonify(programThread.getStatus())
 
