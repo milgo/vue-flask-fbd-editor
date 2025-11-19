@@ -32,7 +32,7 @@
               >
                 <button
                   @click="
-				    pushProjectToUndoStack();
+				    pushProjectAndVariablesToUndoStack();
 					deleteChild(id);
 					putProjectDataToFlask()
 					"
@@ -67,7 +67,7 @@
             "
             v-if="node.mem_edit === false"
             @click="
-			  pushProjectToUndoStack();
+			  pushProjectAndVariablesToUndoStack();
               node.mem_edit = enableEdit;
             "
           >
@@ -156,7 +156,7 @@
 			  v-if="enableEdit"
               class="button button-red"
               @click="
-			    pushProjectToUndoStack();
+			    pushProjectAndVariablesToUndoStack();
                 connectNodeToInput(interConnectionDetails.nodeId, inputNode.id);
 				putProjectDataToFlask();
               "
@@ -174,7 +174,7 @@
               <FunctionList
                 :outputType="node.dyn_inputs_type"
                 :alone="false"
-                @selected="pushProjectToUndoStack();addChild(Date.now(), inputNode, $event);putProjectDataToFlask();"
+                @selected="pushProjectAndVariablesToUndoStack();addChild(Date.now(), inputNode, $event);putProjectDataToFlask();"
               />
             </template>
             <template v-else>
@@ -182,7 +182,7 @@
 				v-if="enableEdit"
                 :outputType="node.inputs[index].type"
                 :alone="false"
-                @selected="pushProjectToUndoStack();addChild(Date.now(), inputNode, $event);putProjectDataToFlask();"
+                @selected="pushProjectAndVariablesToUndoStack();addChild(Date.now(), inputNode, $event);putProjectDataToFlask();"
               />
             </template>
           </template>
@@ -227,7 +227,7 @@
               >
                 <button				  
                   @click="
-				    pushProjectToUndoStack();
+				    pushProjectAndVariablesToUndoStack();
                     disconnectNodeFromInput(inputNode.target, inputNode.id);
 					putProjectDataToFlask();
                     inputNode.conn_mouse_hover = false;
@@ -264,7 +264,7 @@
                 <template v-if="inputNode.input_mouse_hover === true">
                   <button
                     @click="
-					  pushProjectToUndoStack();
+					  pushProjectAndVariablesToUndoStack();
                       deleteInput(inputNode.id);
                       deleteChild(inputNode.target);
 					  putProjectDataToFlask();
@@ -288,7 +288,7 @@
                 <template v-if="index === inputsById.length - 1 && enableEdit">
                   <button
                     @click="
-					  pushProjectToUndoStack();
+					  pushProjectAndVariablesToUndoStack();
                       addInput(id, {
                         name: '',
                         type: node.dyn_inputs_type,
@@ -332,7 +332,7 @@
 
           <button
             @click="
-			  pushProjectToUndoStack();
+			  pushProjectAndVariablesToUndoStack();
               addInput(id, {
                 name: '',
                 type: node.dyn_inputs_type,
@@ -377,7 +377,7 @@ const disconnectNodeFromInput = inject("disconnectNodeFromInput");
 const addNewVarIfNotExisting = inject("addNewVarIfNotExisting");
 const connectNodeToInput = inject("connectNodeToInput");
 const checkIfVariableExists = inject("checkIfVariableExists");
-const pushProjectToUndoStack = inject("pushProjectToUndoStack");
+const pushProjectAndVariablesToUndoStack = inject("pushProjectAndVariablesToUndoStack");
 const putProjectDataToFlask = inject("putProjectDataToFlask");
 </script>
 <script>
