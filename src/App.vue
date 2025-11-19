@@ -51,10 +51,10 @@
 		</div>
       </td>
 	  <td>
-		<button v-if="monitorCheckboxVisible[statusdata.state] && statusdata['monitor'] == 'on' && statusdata['simulate'] == 'off'" 
-		@click="toggleSimulateFromFlask();" >Simulate On</button>
-		<button v-if="monitorCheckboxVisible[statusdata.state] && statusdata['monitor'] == 'on' && statusdata['simulate'] == 'on'" 
-		@click="toggleSimulateFromFlask();" >Simulate Off</button>
+		<div v-if="monitorCheckboxVisible[statusdata.state] && statusdata['monitor'] == 'on'">
+			<input type="checkbox" id="simulate" :checked="statusdata['simulate'] == 'on'" v-on:input="toggleSimulateFromFlask();"/>
+			<label for="simulate">Simulate</label>
+		</div>
       </td>
     </tr>
   </table>
@@ -64,9 +64,9 @@
 	<table>
     <tr>
 		<td><button v-if="enableEdit[statusdata.state]" :disabled="projectundostack.length<=1"
-            @click="pushProjectToRedoStack(); popProjectFromUndoStack(); putProjectDataToFlask();">UNDO</button>
+            @click="pushProjectAndVariablesToRedoStack(); popProjectAndVariablesFromUndoStack(); putProjectDataToFlask();">UNDO</button>
 			<button v-if="enableEdit[statusdata.state]" :disabled="projectredostack.length===0"
-            @click="pushProjectToUndoStack(); popProjectFromRedoStack(); putProjectDataToFlask();">REDO</button></td>
+            @click="pushProjectAndVariablesToUndoStack(); popProjectAndVariablesFromRedoStack(); putProjectDataToFlask();">REDO</button></td>
 	</tr>
 	</table>
           
@@ -162,7 +162,7 @@
   <div align="left" v-if="enableEdit[statusdata.state]">
     <FunctionList
       @selected="
-	    pushProjectToUndoStack();
+	    pushProjectAndVariablesToUndoStack();
         addChild(Date.now(), null, $event);
 		putProjectDataToFlask();
         forceFunctionListRerender();
@@ -247,7 +247,7 @@
           <button 
 			v-if="enableEdit[statusdata.state]"
             class="button button-red"
-            @click="pushProjectToUndoStack();deleteVariable(variable.id);putProjectDataToFlask();"
+            @click="pushProjectAndVariablesToUndoStack();deleteVariable(variable.id);putProjectDataToFlask();"
           >
             X
           </button>
@@ -288,7 +288,7 @@
           varTypes.filter((md) => md.type === $event.target.value)[0].valid
         )
       ) {
-		pushProjectToUndoStack();
+		pushProjecAndVariablestToUndoStack();
         addNewVarIfNotExisting(null, varName, $event.target.value);
 		putProjectDataToFlask();
       } else {
@@ -335,6 +335,8 @@ const statusdata = ref([]);
 const projectdata = ref([]);
 const projectundostack = ref([]);
 const projectredostack = ref([]);
+const variablesundostack = ref([]);
+const variablesredostack = ref([]);
 const compiledata = ref([]);
 const setuplisting = ref([]);
 const listing = ref([]);
@@ -562,20 +564,24 @@ const getProjectDataFromFlask = () => {
 		.catch((err) => console.error(err));
 }
 
-const pushProjectToUndoStack = () => {
+const pushProjectAndVariablesToUndoStack = () => {
 	projectundostack.value.push(JSON.parse(JSON.stringify(projectdata.value)));
+	variablesundostack.value.push(JSON.parse(JSON.stringify(variablesdata.value)));
 }
 
-const popProjectFromUndoStack = () => {
+const popProjectAndVariablesFromUndoStack = () => {
 	projectdata.value = projectundostack.value.pop();
+	variablesdata.value = variablesundostack.value.pop();
 }
 
-const pushProjectToRedoStack = () => {
+const pushProjectAndVariablesToRedoStack = () => {
 	projectredostack.value.push(JSON.parse(JSON.stringify(projectdata.value)));
+	variablesredostack.value.push(JSON.parse(JSON.stringify(variablesdata.value)));
 }
 
-const popProjectFromRedoStack = () => {
+const popProjectAndVariablesFromRedoStack = () => {
 	projectdata.value = projectredostack.value.pop();
+	variablesdata.value = variablesredostack.value.pop();
 }
 
 const putProjectDataToFlask = () => {
@@ -620,7 +626,7 @@ onMounted(() => {
   //getVariableDataFromFlask();
   getProjectDataFromFlask();
 
-  setTimeout(() => pushProjectToUndoStack(), 100);
+  setTimeout(() => pushProjectAndVariablesToUndoStack(), 100);
   
   monitorInterval = setInterval(() => {
 	if(monitorTaskStart[statusdata.value.monitor]){
@@ -824,7 +830,7 @@ provide("disconnectNodeFromInput", disconnectNodeFromInput);
 provide("addNewVarIfNotExisting", addNewVarIfNotExisting);
 provide("connectNodeToInput", connectNodeToInput);
 provide("checkIfVariableExists", checkIfVariableExists);
-provide("pushProjectToUndoStack", pushProjectToUndoStack);
+provide("pushProjectAndVariablesToUndoStack", pushProjectAndVariablesToUndoStack);
 provide("putProjectDataToFlask", putProjectDataToFlask);
 </script>
 <script>
