@@ -87,7 +87,7 @@
 			<template
               v-if="isInMonitorMode"
               "
-            >{{getVariableMonitorDataIfVariableExists(variables, node.mem_loc)}}</template>
+            >{{getVariableMonitorDataIfVariableExists(variables, node.mem_loc)}}<br/></template>
             <b
               ><span
                 :class="

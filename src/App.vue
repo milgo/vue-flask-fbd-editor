@@ -212,9 +212,9 @@
 		  <VarInput 
 			v-if="variable.edit === true"
 			:value="variable.description"
-			v-on:blur="variable.edit = false"
-            @enter="variable.edit = false;"
-			@valueChanged="(value) => {variable.description = value; putProjectDataToFlask();}"
+			v-on:blur="variable.edit = false; delay(()=>{putProjectDataToFlask();}, 100)"
+            @enter="variable.edit = false; putProjectDataToFlask();"
+			@valueChanged="(value) => {variable.description = value;}"
 		  />
           <!--<input
             ref="desc_input"
