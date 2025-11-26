@@ -62,7 +62,27 @@ def style():
 @app.route('/warning.png')
 def warningSign():
     return send_from_directory('dist', 'warning.png')
+	
+@app.route('/plcworld/PLCworld.html')
+def plcworld():
+    return send_from_directory('dist/plcworld', 'PLCworld.html')
+	
+@app.route('/plcworld/PLCworld.png')
+def plcworldpng():
+    return send_from_directory('dist/plcworld', 'PLCworld.png')
 
+@app.route('/plcworld/PLCworld.js')
+def plcworldjs():
+    return send_from_directory('dist/plcworld', 'PLCworld.js')
+
+@app.route('/plcworld/PLCworld.wasm')
+def plcworldwasm():
+    return send_from_directory('dist/plcworld', 'PLCworld.wasm')
+	
+@app.route('/plcworld/PLCworld.pck')
+def plcworldpck():
+    return send_from_directory('dist/plcworld', 'PLCworld.pck')
+	
 class ProgramThread(threading.Thread):
 
 	rlo = {}

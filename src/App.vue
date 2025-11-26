@@ -341,8 +341,8 @@ const compiledata = ref([]);
 const setuplisting = ref([]);
 const listing = ref([]);
 const variablesdata = ref([]);
-//const flaskURL = "http://localhost:5000"
-const flaskURL = "https://vue-flask-fbd-editor-6aim.onrender.com"
+const flaskURL = "http://localhost:5000"
+//const flaskURL = "https://vue-flask-fbd-editor-6aim.onrender.com"
 //const varTypes = ref(variableTypes);
 
 const enableEdit = {"stopped" : true, "running" : false}
@@ -631,6 +631,7 @@ onMounted(() => {
   monitorInterval = setInterval(() => {
 	if(monitorTaskStart[statusdata.value.monitor]){
 		pullRuntimeData();
+		window.postMessage('Sending monitor data...');
 	}
   }, 500);
 
@@ -854,10 +855,13 @@ export default {
     showAlert: (msg) => {
       alert(msg);
     },
+	receiveMessage(event){
+		console.log(event.data)
+	},
 	delayWithParam: (func, time, param) => {setTimeout(func, time, param);},
 	delay: (func, time) => {setTimeout(func, time);},
 	
-  isVarNameTypeValid (rules, name, acceptableTypes){
+	isVarNameTypeValid (rules, name, acceptableTypes){
       var result = false;
       acceptableTypes.forEach((t) => {
         if (name.match(rules.filter((tv) => tv.type === t)[0].valid)) {
@@ -866,7 +870,8 @@ export default {
       });
       return result;
     },
-  isProgramDataReadyToCompile(data, types) {
+
+	isProgramDataReadyToCompile(data, types) {
 	var emptyMem = "???";
 	var res = data.some((n) => (n.dyn_inputs && n.inputs.length === 0)) ||
 		data.some((n) => (n.mem_loc && n.mem_loc === emptyMem)) ||
@@ -875,6 +880,12 @@ export default {
 
 	return !res;
 }
+  },
+  mounted(){
+	window.addEventListener('message', this.receiveMessage)	
+  },
+  beforeDestroy(){
+	window.removeEventListener('message', this.receiveMessage)
   },
   name: "App",
 

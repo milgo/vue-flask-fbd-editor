@@ -1,0 +1,109 @@
+[gd_scene load_steps=12 format=3 uid="uid://u1vw2y1i1nxa"]
+
+[ext_resource type="Script" uid="uid://d15k53v2qmioc" path="res://world.gd" id="1_c6r4t"]
+[ext_resource type="Script" uid="uid://b0nh4n3seep18" path="res://detection_area_3d.gd" id="2_e2o6t"]
+
+[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_eta22"]
+
+[sub_resource type="Sky" id="Sky_ophbp"]
+sky_material = SubResource("PhysicalSkyMaterial_eta22")
+
+[sub_resource type="Environment" id="Environment_8y2xv"]
+background_mode = 2
+sky = SubResource("Sky_ophbp")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_80nbo"]
+albedo_color = Color(0.470911, 0.805058, 0.551411, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_e2o6t"]
+material = SubResource("StandardMaterial3D_80nbo")
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_80nbo"]
+data = PackedVector3Array(0.5, -0.5, 0, -0.5, -0.5, 0, 0.5, 0.5, 0, -0.5, -0.5, 0, -0.5, 0.5, 0, 0.5, 0.5, 0)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_80nbo"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e2o6t"]
+transparency = 1
+albedo_color = Color(0, 0, 1, 0.388235)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_feb5d"]
+material = SubResource("StandardMaterial3D_e2o6t")
+
+[node name="World" type="Node3D"]
+script = ExtResource("1_c6r4t")
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+
+[node name="PullDataTimer" type="Timer" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0.707107, -0.707107, 0, 0.707107, 0.707107, 1, 3.09086e-08, -3.09086e-08, -9.19239, 19.6167, -4.01812e-07)
+top_level = true
+projection = 1
+size = 20.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_8y2xv")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.4602, 0.849474, -0.25809, 0, 0.290702, 0.956814, 0.887815, 0.440325, -0.133781, 4, 4, -4)
+light_energy = 2.0
+light_indirect_energy = 5.0
+light_volumetric_fog_energy = 5.0
+shadow_enabled = true
+shadow_bias = 0.758
+
+[node name="Floor" type="Node3D" parent="."]
+transform = Transform3D(10, 0, 0, 0, -4.37114e-07, 10, 0, -10, -4.37114e-07, -2.04532, 2.54236, 1.22085)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 3.55271e-15, 0, -3.55271e-15, 1, 0.204317, 0.12557, 0)
+mesh = SubResource("QuadMesh_e2o6t")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Floor/MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor/MeshInstance3D/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_80nbo")
+
+[node name="Creator" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 21.3213, 0)
+
+[node name="Detector" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.28331, 0)
+
+[node name="LimitSwitch" type="Area3D" parent="Detector"]
+script = ExtResource("2_e2o6t")
+description = "krańcówka"
+memAddr = "%i1"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Detector/LimitSwitch"]
+shape = SubResource("CylinderShape3D_80nbo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Detector"]
+mesh = SubResource("CylinderMesh_feb5d")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="HUD"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+offset_right = 33.0
+grow_vertical = 0
+size_flags_horizontal = 0
+size_flags_vertical = 8
+text = "Test"
+
+[node name="SimulationButton" type="Button" parent="HUD"]
+offset_right = 133.0
+offset_bottom = 31.0
+text = "Start Simulation"
+
+[connection signal="body_entered" from="Detector/LimitSwitch" to="Detector/LimitSwitch" method="_on_body_entered"]
+[connection signal="body_exited" from="Detector/LimitSwitch" to="Detector/LimitSwitch" method="_on_body_exited"]
+[connection signal="mouse_entered" from="Detector/LimitSwitch" to="Detector/LimitSwitch" method="_on_mouse_entered"]
+[connection signal="show_description" from="Detector/LimitSwitch" to="." method="_on_show_description"]
+[connection signal="state_changed" from="Detector/LimitSwitch" to="." method="_on_limit_switch_state_changed"]
+[connection signal="button_up" from="HUD/SimulationButton" to="." method="_on_simulation_button_up"]
