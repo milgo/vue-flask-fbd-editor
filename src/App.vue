@@ -1,5 +1,5 @@
 <template>
-  
+
 <div>
  <table  class="stat_table">
     <tr>
@@ -288,7 +288,7 @@
           varTypes.filter((md) => md.type === $event.target.value)[0].valid
         )
       ) {
-		pushProjecAndVariablestToUndoStack();
+		pushProjectAndVariablesToUndoStack();
         addNewVarIfNotExisting(null, varName, $event.target.value);
 		putProjectDataToFlask();
       } else {
@@ -498,11 +498,11 @@ const setForcedValueOfVariable = (id, val) => {
   postForceVariables();
 };
 
-const getStatusDataFromFlask = () => {
+/*const getStatusDataFromFlask = () => {
   const path = flaskURL+"/status";
 	axios.get(path).then((res) => {console.log(res.data);statusdata.value = res.data;})
 		.catch((err) => console.error(err));
-}
+}*/
 
 const clearMonitorValues = () => {
   projectdata.value.forEach((node) => {
@@ -553,15 +553,19 @@ const toggleSimulateFromFlask = () => {
 }*/
 
 const getProjectDataFromFlask = () => {
-  const path = flaskURL+"/project";
-	axios.get(path).then((res) => {
-			//console.log(res.data.project.program);
-			projectdata.value = res.data.project.program;
-			//console.log(projectdata.value);
-			variablesdata.value = res.data.project.variables;
-			statusdata.value = res.data.statusdata;
-		})
-		.catch((err) => console.error(err));
+	
+	if(!window.localStorage.getItem("projectdata"))
+	{	
+		window.localStorage.setItem("projectdata", "{\"program\": [], \"variables\": [], \"checksum\": \"\"}");
+		window.localStorage.setItem("status","{\"state\": \"stopped\", \"changed\": \"not changed\", \"monitor\": \"off\", \"simulate\": \"off\", \"checksum\": \"50cbd9dcf989f23b75598fcfca93b6fd\"}");
+	}
+	
+	var storedprojectdata = JSON.parse(window.localStorage.getItem("projectdata"));
+	var storedstatus = JSON.parse(window.localStorage.getItem("status"));
+	
+	projectdata.value = storedprojectdata.program
+	variablesdata.value = storedprojectdata.variables
+	statusdata.value = storedstatus
 }
 
 const pushProjectAndVariablesToUndoStack = () => {
@@ -585,14 +589,7 @@ const popProjectAndVariablesFromRedoStack = () => {
 }
 
 const putProjectDataToFlask = () => {
-  const path = flaskURL+"/project";
-  axios.post(path, {program: projectdata.value, variables: variablesdata.value, checksum: statusdata.value.checksum})
-        .then((res) => {
-			if(res.data.checksum == "bad")
-				alert("Integrity error! Please reload page (F5)");
-			else
-				statusdata.value = res.data.statusdata;				
-        }).catch((err) => console.error(err));
+	window.localStorage.setItem("projectdata", JSON.stringify({program: projectdata.value, variables: variablesdata.value, checksum: statusdata.value.checksum}));
 }
 
 const putCompileDataToFlask = () => {
