@@ -5,4 +5,4 @@
 *.import
 *.apk
 *.idsig
-/web-export/
+*web-export

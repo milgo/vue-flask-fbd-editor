@@ -8,7 +8,7 @@ static var game_count = 0
 @onready var label: Label = get_node("/root/World/HUD/Label")
 @onready var simButton: Button = get_node("/root/World/HUD/SimulationButton")
 @onready var messageCallback: JavaScriptObject
-
+@onready var logic = $Logic
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	
@@ -21,19 +21,17 @@ func _ready() -> void:
 
 	window.parent.addEventListener("message", messageCallback)	
 	#use window.parent when game is running in iframe
-	window.parent.postMessage("done", "*")
+	#window.parent.postMessage("done", "*")
 		
 
 	#$HTTPRequest.request_completed.connect(_on_request_completed)
 	pass # Replace with function body.
 	
 func OnMessageReceived(args):
-	var event = args[0]
-	var data = event.data
-	print(str("Received message in-game: ", data))
+	logic.execute(JSON.parse_string(args[0].data))
 	pass
 
-func _on_request_completed(result, response_code, headers, body):
+func _on_request_completed(_result, _response_code, _headers, body):
 	var json = JSON.parse_string(body.get_string_from_utf8())
 	print(json)
 	
@@ -55,7 +53,7 @@ func _on_timeout() -> void:
 	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass
 	
 func _post_request() -> void:

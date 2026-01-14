@@ -1,7 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://u1vw2y1i1nxa"]
+[gd_scene load_steps=13 format=3 uid="uid://u1vw2y1i1nxa"]
 
 [ext_resource type="Script" uid="uid://d15k53v2qmioc" path="res://world.gd" id="1_c6r4t"]
 [ext_resource type="Script" uid="uid://b0nh4n3seep18" path="res://detection_area_3d.gd" id="2_e2o6t"]
+[ext_resource type="Script" uid="uid://bjik0b8ki40d8" path="res://logic.gd" id="3_feb5d"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_eta22"]
 
@@ -32,6 +33,9 @@ material = SubResource("StandardMaterial3D_e2o6t")
 
 [node name="World" type="Node3D"]
 script = ExtResource("1_c6r4t")
+
+[node name="Logic" type="Node" parent="."]
+script = ExtResource("3_feb5d")
 
 [node name="HTTPRequest" type="HTTPRequest" parent="."]
 
