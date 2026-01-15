@@ -9,11 +9,14 @@ static var game_count = 0
 @onready var simButton: Button = get_node("/root/World/HUD/SimulationButton")
 @onready var messageCallback: JavaScriptObject
 @onready var logic = $Logic
+
+var window: JavaScriptObject 
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	
-	var window: JavaScriptObject = JavaScriptBridge.get_interface("window")
-	messageCallback = JavaScriptBridge.create_callback(OnMessageReceived)
+	window = JavaScriptBridge.get_interface("window")
+	messageCallback = JavaScriptBridge.create_callback(_on_message_received)
 	pullDataTimer.timeout.connect(_on_timeout)
 	
 	if window == null:
@@ -27,9 +30,15 @@ func _ready() -> void:
 	#$HTTPRequest.request_completed.connect(_on_request_completed)
 	pass # Replace with function body.
 	
-func OnMessageReceived(args):
+func _on_message_received(args):
 	logic.execute(JSON.parse_string(args[0].data))
 	pass
+	
+func _on_logic_send_data_to_frontend(data: String) -> void:
+	print(data)
+	window.parent.postMessage(data, "*")
+	pass # Replace with function body.
+
 
 func _on_request_completed(_result, _response_code, _headers, body):
 	var json = JSON.parse_string(body.get_string_from_utf8())

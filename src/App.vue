@@ -6,11 +6,7 @@
       <td>
         <button
 		  v-if="compileButtonVisible[statusdata.changed]"
-          @click="
-            listing.splice(0);
-            buildListing(projectdata);
-			putCompileDataToFlask();
-          "
+          @click="compile()"
 		  :disabled="!isProgramDataReadyToCompile(projectdata, varTypes)"
         >
 		
@@ -24,19 +20,17 @@
 						console.log(res.data);
 						
 						delay(() => {
-							getProjectDataFromFlask();
+							getProjectData();
 							delay(() => clearMonitorValues(), 500); 
 							}, 500);
 					})
-					.catch((err) => console.error(err)); /* getVariableDataFromFlask();getProjectDataFromFlask();*/"
+					.catch((err) => console.error(err)); /* getVariableDataFromFlask();getProjectData();*/"
         >
           Stop
         </button>
 		<button
 		  v-if="startButtonVisible[statusdata.state] && !compileButtonVisible[statusdata.changed]"
-          @click="axios.get(flaskURL+'/start')
-					.then((res) => {statusdata = res.data;})
-					.catch((err) => console.error(err)); /*getVariableDataFromFlask();getProjectDataFromFlask();*/"
+          @click="start()"
         >
           Start
         </button>
@@ -64,9 +58,9 @@
 	<table>
     <tr>
 		<td><button v-if="enableEdit[statusdata.state]" :disabled="projectundostack.length<=1"
-            @click="pushProjectAndVariablesToRedoStack(); popProjectAndVariablesFromUndoStack(); putProjectDataToFlask();">UNDO</button>
+            @click="pushProjectAndVariablesToRedoStack(); popProjectAndVariablesFromUndoStack(); putProjectData();">UNDO</button>
 			<button v-if="enableEdit[statusdata.state]" :disabled="projectredostack.length===0"
-            @click="pushProjectAndVariablesToUndoStack(); popProjectAndVariablesFromRedoStack(); putProjectDataToFlask();">REDO</button></td>
+            @click="pushProjectAndVariablesToUndoStack(); popProjectAndVariablesFromRedoStack(); putProjectData();">REDO</button></td>
 	</tr>
 	</table>
           
@@ -126,7 +120,7 @@
                   event.mem_loc,
                   event.output_type
                 );
-				putProjectDataToFlask();
+				putProjectData();
 			}"
           />
         </td>
@@ -164,7 +158,7 @@
       @selected="
 	    pushProjectAndVariablesToUndoStack();
         addChild(Date.now(), null, $event);
-		putProjectDataToFlask();
+		putProjectData();
         forceFunctionListRerender();
       "
       :key="functionListKey"
@@ -212,8 +206,8 @@
 		  <VarInput 
 			v-if="variable.edit === true"
 			:value="variable.description"
-			v-on:blur="variable.edit = false; delay(()=>{putProjectDataToFlask();}, 100)"
-            @enter="variable.edit = false; putProjectDataToFlask();"
+			v-on:blur="variable.edit = false; delay(()=>{putProjectData();}, 100)"
+            @enter="variable.edit = false; putProjectData();"
 			@valueChanged="(value) => {variable.description = value;}"
 		  />
           <!--<input
@@ -247,7 +241,7 @@
           <button 
 			v-if="enableEdit[statusdata.state]"
             class="button button-red"
-            @click="pushProjectAndVariablesToUndoStack();deleteVariable(variable.id);putProjectDataToFlask();"
+            @click="pushProjectAndVariablesToUndoStack();deleteVariable(variable.id);putProjectData();"
           >
             X
           </button>
@@ -290,7 +284,7 @@
       ) {
 		pushProjectAndVariablesToUndoStack();
         addNewVarIfNotExisting(null, varName, $event.target.value);
-		putProjectDataToFlask();
+		putProjectData();
       } else {
         showAlert('Wrong name for that data type!');
       }
@@ -313,12 +307,7 @@
   <br />
   <br />
 
-  <!--<table>
-	<tr>
-	  <td><textarea>{{ projectundostack }}</textarea></td>
-	  <td><textarea>{{ projectredostack }}</textarea></td>
-	</tr>
-  </table>-->
+  {{statusdata}}
 </template>
 
 <script setup>
@@ -430,7 +419,7 @@ const buildListing = (data) => {
     }
   });
 
-  compiledata.value.push({setuplisting: setuplisting, listing: listing});
+  compiledata.value = {setuplisting: setuplisting, listing: listing};
   console.log(compiledata.value);
 
 };
@@ -457,12 +446,12 @@ const addNewVarIfNotExisting = (node, name, type) => {
 		  monitor: monitor
 		};
 		variablesdata.value.push(newVar);
-		//putProjectDataToFlask();
+		putProjectData();
 		return;
 	  }
 	  //return;
   }
-  //putProjectDataToFlask();
+  putProjectData();
 };
 
 const deleteVariable = (id) => {
@@ -473,7 +462,7 @@ const deleteVariable = (id) => {
       node.mem_loc = "???";
     }
   });
-  //putProjectDataToFlask();
+  putProjectData();
 };
 
 const toggleForceVariable = (id) => {
@@ -552,7 +541,7 @@ const toggleSimulateFromFlask = () => {
         }).catch((err) => console.error(err));
 }*/
 
-const getProjectDataFromFlask = () => {
+const getProjectData = () => {
 	
 	if(!window.localStorage.getItem("projectdata"))
 	{	
@@ -588,7 +577,8 @@ const popProjectAndVariablesFromRedoStack = () => {
 	variablesdata.value = variablesredostack.value.pop();
 }
 
-const putProjectDataToFlask = () => {
+const putProjectData = () => {
+	statusdata.value["changed"] = "changed";
 	window.localStorage.setItem("projectdata", JSON.stringify({program: projectdata.value, variables: variablesdata.value, checksum: statusdata.value.checksum}));
 }
 
@@ -621,8 +611,9 @@ const postForceVariables = () => {
 onMounted(() => {
 
   //getVariableDataFromFlask();
-  getProjectDataFromFlask();
-
+  getProjectData();
+  buildListing(projectdata.value);
+  
   setTimeout(() => pushProjectAndVariablesToUndoStack(), 100);
   
   monitorInterval = setInterval(() => {
@@ -631,7 +622,7 @@ onMounted(() => {
 		window.postMessage('Sending monitor data...');
 	}
   }, 500);
-
+  
   //getStatusDataFromFlask();
 })
 
@@ -694,7 +685,7 @@ const addChild = (id, parentInput, blockJson) => {
     });
   });
 
-  //putProjectDataToFlask();
+  putProjectData();
 };
 const addInput = (nodeId, inputDef, idOffset = 0) => {
   // var inputJson = JSON.parse(input /*? input : '{"name":"", "type":"none"}'*/);
@@ -713,7 +704,7 @@ const addInput = (nodeId, inputDef, idOffset = 0) => {
       value: 0,
     });
   });
-  //putProjectDataToFlask();
+  putProjectData();
 };
 
 const connectNodeToInput = (nodeId, inputId) => {
@@ -730,7 +721,7 @@ const connectNodeToInput = (nodeId, inputId) => {
       });
     }
   });
-  //putProjectDataToFlask();
+  putProjectData();
 };
 
 const disconnectNodeFromInput = (nodeId, inputId) => {
@@ -751,7 +742,7 @@ const disconnectNodeFromInput = (nodeId, inputId) => {
       });
     }
   });
-  //putProjectDataToFlask();
+  putProjectData();
 };
 
 const clearInput = (inputId) => {};
@@ -771,7 +762,7 @@ const deleteInput = (inputId) => {
     n.inputs = n.inputs.filter((input) => input.id !== inputId);
   });
   
-  //putProjectDataToFlask();
+  putProjectData();
 };
 const deleteChild = (id) => {
 	
@@ -795,7 +786,7 @@ const deleteChild = (id) => {
 
   //delete child
   projectdata.value = projectdata.value.filter((node) => node.id !== id);
-  //putProjectDataToFlask();
+  putProjectData();
 };
 const getInputsById = (id, projectdata) => {
   let obj = projectdata.filter((n) => n.id === id)[0];
@@ -818,6 +809,15 @@ const inputDialog = (msg) => {
   return prompt(msg, "");
 };
 
+const start = () => {
+	window.postMessage(JSON.stringify({reciver:"backend", command: "start", data: compiledata.value}))
+}
+
+const compile = () => {
+    buildListing(projectdata.value);
+	statusdata.value["changed"] = "not changed";
+}
+
 provide("addChild", addChild);
 provide("addInput", addInput);
 provide("deleteChild", deleteChild);
@@ -829,7 +829,7 @@ provide("addNewVarIfNotExisting", addNewVarIfNotExisting);
 provide("connectNodeToInput", connectNodeToInput);
 provide("checkIfVariableExists", checkIfVariableExists);
 provide("pushProjectAndVariablesToUndoStack", pushProjectAndVariablesToUndoStack);
-provide("putProjectDataToFlask", putProjectDataToFlask);
+provide("putProjectData", putProjectData);
 </script>
 <script>
 export default {
@@ -853,7 +853,8 @@ export default {
       alert(msg);
     },
 	receiveMessage(event){
-		console.log(event.data)
+		if(event.data["reciver"] == "frontend")
+			console.log(event.data)
 	},
 	delayWithParam: (func, time, param) => {setTimeout(func, time, param);},
 	delay: (func, time) => {setTimeout(func, time);},
