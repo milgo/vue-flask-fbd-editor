@@ -6,7 +6,7 @@ var _programListing
 var _mem: Dictionary
 var _rlo: Dictionary
 
-signal send_data_to_frontend(data:String)
+signal send_data(data:String)
 var _send_data_timer = Timer.new()
 
 func _ready() -> void:
@@ -24,6 +24,11 @@ func execute(json):
 		
 			print(str(_setupListing))
 			print(str(_programListing))
+			
+			var started_json_info: Dictionary
+			started_json_info["command"] = "started"
+			started_json_info["reciver"] = "frontend"
+			send_data.emit(JSON.stringify(started_json_info));			
 		
 			for setupJson in _setupListing:
 				var setup: Dictionary = setupJson
@@ -44,7 +49,7 @@ func _on_send_data_timer():
 	data_to_send["rlo"] = _rlo
 	data_to_send["mem"] = _mem	
 	var jsonStr = JSON.stringify(data_to_send)
-	send_data_to_frontend.emit(jsonStr)	
+	send_data.emit(jsonStr)	
 	
 func _on_simulation_button_button_up() -> void:
 	pass # Replace with function body.	

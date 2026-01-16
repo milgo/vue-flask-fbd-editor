@@ -615,6 +615,7 @@ onMounted(() => {
   buildListing(projectdata.value);
   
   setTimeout(() => pushProjectAndVariablesToUndoStack(), 100);
+  window.addEventListener('message', receiveMessage)	
   
   monitorInterval = setInterval(() => {
 	if(monitorTaskStart[statusdata.value.monitor]){
@@ -631,6 +632,7 @@ onUpdated(() => {
 
 onUnmounted(() => {
 	clearInterval(monitorInterval)
+	window.removeEventListener('message', receiveMessage)
 });
 
 const addChild = (id, parentInput, blockJson) => {
@@ -809,6 +811,15 @@ const inputDialog = (msg) => {
   return prompt(msg, "");
 };
 
+const receiveMessage = (event) => {
+	var msgJson = JSON.parse(event.data)
+	if(msgJson["reciver"] === 'frontend'){
+		if(msgJson["command"] === 'started'){
+			statusdata.value["state"] = 'running';
+		}
+	}
+}
+
 const start = () => {
 	window.postMessage(JSON.stringify({reciver:"backend", command: "start", data: compiledata.value}))
 }
@@ -852,9 +863,8 @@ export default {
     showAlert: (msg) => {
       alert(msg);
     },
-	receiveMessage(event){
-		if(event.data["reciver"] == "frontend")
-			console.log(event.data)
+	receiveMessage: (event) =>{
+
 	},
 	delayWithParam: (func, time, param) => {setTimeout(func, time, param);},
 	delay: (func, time) => {setTimeout(func, time);},
@@ -878,12 +888,6 @@ export default {
 
 	return !res;
 }
-  },
-  mounted(){
-	window.addEventListener('message', this.receiveMessage)	
-  },
-  beforeDestroy(){
-	window.removeEventListener('message', this.receiveMessage)
   },
   name: "App",
 

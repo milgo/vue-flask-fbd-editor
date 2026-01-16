@@ -31,11 +31,11 @@ func _ready() -> void:
 	pass # Replace with function body.
 	
 func _on_message_received(args):
+	print(args[0].data)	
 	logic.execute(JSON.parse_string(args[0].data))
 	pass
 	
-func _on_logic_send_data_to_frontend(data: String) -> void:
-	print(data)
+func _on_logic_send_data(data: String) -> void:
 	window.parent.postMessage(data, "*")
 	pass # Replace with function body.
 

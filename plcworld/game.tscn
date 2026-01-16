@@ -105,7 +105,7 @@ offset_right = 133.0
 offset_bottom = 31.0
 text = "Start Simulation"
 
-[connection signal="send_data_to_frontend" from="Logic" to="." method="_on_logic_send_data_to_frontend"]
+[connection signal="send_data" from="Logic" to="." method="_on_logic_send_data"]
 [connection signal="body_entered" from="Detector/LimitSwitch" to="Detector/LimitSwitch" method="_on_body_entered"]
 [connection signal="body_exited" from="Detector/LimitSwitch" to="Detector/LimitSwitch" method="_on_body_exited"]
 [connection signal="mouse_entered" from="Detector/LimitSwitch" to="Detector/LimitSwitch" method="_on_mouse_entered"]
