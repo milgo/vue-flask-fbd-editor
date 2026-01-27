@@ -53,13 +53,9 @@ func _on_logic_send_data(data: String) -> void:
 	pass
 
 func _on_timeout() -> void:
-	print("tick")
 	var new_ball = ball.instantiate()
 	new_ball.set_position(creator.get_position())
 	add_child(new_ball)
-	
-	#$HTTPRequest.request("https://vue-flask-fbd-editor-6aim.onrender.com/project",)
-
 	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -75,12 +71,6 @@ func _post_request() -> void:
 func _on_show_description(desc: Variant) -> void:
 	label.text = desc	
 	pass # Replace with function body.
-
-
-func _on_limit_switch_state_changed(memAddr: Variant, state: Variant) -> void:
-	print(memAddr + " limit switch state changed to " + state)
-	pass # Replace with function body.
-
 
 func _on_simulation_button_up() -> void:
 	if(pullDataTimer.is_stopped()):

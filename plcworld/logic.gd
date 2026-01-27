@@ -13,7 +13,7 @@ var _send_data_timer = Timer.new()
 
 func _ready() -> void:
 	_send_data_timer.connect("timeout", _on_send_data_timer)
-	_send_data_timer.wait_time = 1
+	_send_data_timer.wait_time = 0.1
 	_running = false
 	add_child(_send_data_timer)
 
@@ -48,13 +48,15 @@ func execute(json):
 			stopped_json_info["command"] = "stopped"
 			stopped_json_info["reciver"] = "frontend"
 			send_data.emit(JSON.stringify(stopped_json_info));			
-		
-		
 
+func _on_digital_state_changed(memAddr: String, state: int) -> void:
+	_mem[memAddr] = state
+	pass # Replace with function body.
+	
 func _process(_delta: float) -> void:
-	if _running:
+	if _running:		
 		for commandJson in _programListing:
-			var command: Dictionary = commandJson
+			var command: Dictionary = commandJson			
 			call(command["functionName"], command)
 	pass
 
@@ -71,23 +73,21 @@ func _on_simulation_button_button_up() -> void:
 	pass # Replace with function body.	
 	
 #---------- DIN ----------	
+func setup_DIN(_this: Dictionary):
+	_mem[_this["memoryAddr"]] = 0
+
 func before_DIN(_this: Dictionary):
-	_mem[_this["id"]] = _mem[_this["memoryAddr"]]["value"]
+	_mem[_this["id"]] = _mem[_this["memoryAddr"]]
 	
-func after_DIN(_data: Dictionary):
-	_rlo[_data["id"]] = _mem[_data["id"]]
-	if _mem[_data["id"]] == 1:
-		_mem[_data["memoryAddr"]]["monitorData"] = "True"
-	else:
-		_mem[_data["memoryAddr"]]["monitorData"] = "False"
-		
+func after_DIN(_this: Dictionary):
+	_rlo[_this["id"]] = _mem[_this["id"]]
 #---------- AND ----------
 func before_AND(_data: Dictionary):
 	_mem[_data["id"]] = 1
 	
 func after_AND_INPUT(_data: Dictionary):
-	if _data.has("connNodeId"):
-		_mem[_data["id"]] = _mem[_data["id"]] & _rlo[_data["connNodeId"]]
+	if(_rlo[_data["connNodeId"]] == 0):
+		_mem[_data["id"]] = 0
 
 func after_AND(_data: Dictionary):
 	_rlo[_data["id"]] = _mem[_data["id"]]

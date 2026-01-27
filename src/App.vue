@@ -30,7 +30,7 @@
 	  </td>
       <td>
         <div v-if="monitorCheckboxVisible[statusdata.state]">
-			<input type="checkbox" id="monitor" :checked="statusdata['monitor'] == 'on'" v-on:input="toggleMonitorFromFlask();"/>
+			<input type="checkbox" id="monitor" :checked="statusdata['monitor'] == 'on'" v-on:input="toggleMonitor();"/>
 			<label for="monitor">Monitor</label>
 		</div>
       </td>
@@ -330,9 +330,9 @@ const startButtonVisible = {"stopped" : true, "running" : false}
 const compileButtonVisible = {"changed" : true, "not changed" : false}
 const monitorCheckboxVisible = {"stopped" : false, "running" : true}
 const monitorTaskStart = {"on" : true, "off" : false}
-const variableTypesVisibleWhenMonitorOnOff = {"on" : ['marker', 'byte', 'word', 'timer'], "off" : ['marker', 'byte', 'word', 'timer', 'di', 'do', 'ai', 'ao']}
+const variableTypesVisibleWhenMonitorOnOff = {"on" : ['marker', 'byte', 'word', 'timer', 'di', 'do', 'ai', 'ao'], "off" : ['marker', 'byte', 'word', 'timer', 'di', 'do', 'ai', 'ao']}
 
-var monitorInterval = null
+//var monitorInterval = null
 
 const interConnection = ref(false);
 const interConnectionDetails = ref({
@@ -494,14 +494,19 @@ const clearMonitorValues = () => {
   });
 }
 
-const toggleMonitorFromFlask = () => {
+const toggleMonitor = () => {
   clearMonitorValues();
-  const path = flaskURL+"/monitor";
+  /*const path = flaskURL+"/monitor";
 	axios.get(path).then((res) => {
 			console.log(res.data);
 			statusdata.value = res.data;
 		})
-		.catch((err) => console.error(err));
+		.catch((err) => console.error(err));*/
+	if (statusdata.value["monitor"] == "on"){
+		statusdata.value["monitor"] = "off"
+	}else{
+		statusdata.value["monitor"] = "on"
+	}
 }
 
 const toggleSimulateFromFlask = () => {
@@ -607,12 +612,12 @@ onMounted(() => {
   setTimeout(() => pushProjectAndVariablesToUndoStack(), 100);
   window.addEventListener('message', receiveMessage)	
   
-  monitorInterval = setInterval(() => {
+  /*monitorInterval = setInterval(() => {
 	if(monitorTaskStart[statusdata.value.monitor]){
 		pullRuntimeData();
 		window.postMessage('Sending monitor data...');
 	}
-  }, 500);
+  }, 500);*/
   
   //getStatusDataFromFlask();
 })
@@ -621,7 +626,7 @@ onUpdated(() => {
 });
 
 onUnmounted(() => {
-	clearInterval(monitorInterval)
+	//clearInterval(monitorInterval)
 	window.removeEventListener('message', receiveMessage)
 });
 
@@ -804,7 +809,7 @@ const inputDialog = (msg) => {
 const receiveMessage = (event) => {
 	var msgJson = JSON.parse(event.data)
 	if(msgJson["reciver"] === 'frontend'){
-		console.log(JSON.stringify(msgJson))
+		//console.log(JSON.stringify(msgJson))
 		if(msgJson["command"] === 'started'){
 			statusdata.value["state"] = 'running';
 		}
@@ -818,8 +823,10 @@ const receiveMessage = (event) => {
 				
 				Object.keys(msgJson.rlo).map((id) => {
 					if(node.id == id){
-						node.value = msgJson.rlo[id]
-						console.log(node.id + "?=" + id)
+						if(msgJson.rlo[id] != null)
+							node.value = msgJson.rlo[id]
+						else node.value = 0
+						//console.log(node.id + " value=" + msgJson.rlo[id])
 					}
 				})
 				
