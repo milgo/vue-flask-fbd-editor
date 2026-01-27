@@ -14,17 +14,7 @@
         </button>
 		<button
 		  v-if="stopButtonVisible[statusdata.state]"
-          @click="axios.get(flaskURL+'/stop')
-					.then((res) => {
-						statusdata = res.data;
-						console.log(res.data);
-						
-						delay(() => {
-							getProjectData();
-							delay(() => clearMonitorValues(), 500); 
-							}, 500);
-					})
-					.catch((err) => console.error(err)); /* getVariableDataFromFlask();getProjectData();*/"
+          @click="stop()"
         >
           Stop
         </button>
@@ -814,14 +804,36 @@ const inputDialog = (msg) => {
 const receiveMessage = (event) => {
 	var msgJson = JSON.parse(event.data)
 	if(msgJson["reciver"] === 'frontend'){
+		console.log(JSON.stringify(msgJson))
 		if(msgJson["command"] === 'started'){
 			statusdata.value["state"] = 'running';
+		}
+		if(msgJson["command"] === 'stopped'){
+			statusdata.value["state"] = 'stopped';
+			clearMonitorValues()
+		}
+		if(msgJson["command"] === 'monitor'){
+		
+			projectdata.value.forEach((node) => {
+				
+				Object.keys(msgJson.rlo).map((id) => {
+					if(node.id == id){
+						node.value = msgJson.rlo[id]
+						console.log(node.id + "?=" + id)
+					}
+				})
+				
+			});
 		}
 	}
 }
 
 const start = () => {
 	window.postMessage(JSON.stringify({reciver:"backend", command: "start", data: compiledata.value}))
+}
+
+const stop = () => {
+	window.postMessage(JSON.stringify({reciver:"backend", command: "stop", data: compiledata.value}))
 }
 
 const compile = () => {

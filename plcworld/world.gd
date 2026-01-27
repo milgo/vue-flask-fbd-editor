@@ -31,8 +31,9 @@ func _ready() -> void:
 	pass # Replace with function body.
 	
 func _on_message_received(args):
-	print(args[0].data)	
-	logic.execute(JSON.parse_string(args[0].data))
+	var json = JSON.parse_string(args[0].data)
+	#print(args[0].data)	
+	logic.execute(json)
 	pass
 	
 func _on_logic_send_data(data: String) -> void:
@@ -40,9 +41,9 @@ func _on_logic_send_data(data: String) -> void:
 	pass # Replace with function body.
 
 
-func _on_request_completed(_result, _response_code, _headers, body):
-	var json = JSON.parse_string(body.get_string_from_utf8())
-	print(json)
+#func _on_request_completed(_result, _response_code, _headers, body):
+#	var json = JSON.parse_string(body.get_string_from_utf8())
+#	print(json)
 	
 	#var data_dict = json
 	#for key in data_dict:

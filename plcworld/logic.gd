@@ -6,12 +6,15 @@ var _programListing
 var _mem: Dictionary
 var _rlo: Dictionary
 
+var _running: bool
+
 signal send_data(data:String)
 var _send_data_timer = Timer.new()
 
 func _ready() -> void:
 	_send_data_timer.connect("timeout", _on_send_data_timer)
 	_send_data_timer.wait_time = 1
+	_running = false
 	add_child(_send_data_timer)
 
 func execute(json):
@@ -33,18 +36,31 @@ func execute(json):
 			for setupJson in _setupListing:
 				var setup: Dictionary = setupJson
 				call(setup["functionName"], setup)
-				
+			
+			_running = true
 			_send_data_timer.start()
+			
+		if(json["command"] == "stop"):
+			_running = false
+			_send_data_timer.stop()
+			
+			var stopped_json_info: Dictionary
+			stopped_json_info["command"] = "stopped"
+			stopped_json_info["reciver"] = "frontend"
+			send_data.emit(JSON.stringify(stopped_json_info));			
+		
+		
 
-func _process(_delta: float) -> void:	
-	for commandJson in _programListing:
-		var command: Dictionary = commandJson
-		call(command["functionName"], command)
+func _process(_delta: float) -> void:
+	if _running:
+		for commandJson in _programListing:
+			var command: Dictionary = commandJson
+			call(command["functionName"], command)
 	pass
 
 func _on_send_data_timer():
 	var data_to_send : Dictionary
-	data_to_send["command"] = ""
+	data_to_send["command"] = "monitor"
 	data_to_send["reciver"] = "frontend"
 	data_to_send["rlo"] = _rlo
 	data_to_send["mem"] = _mem	
