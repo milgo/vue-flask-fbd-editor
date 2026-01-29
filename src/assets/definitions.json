@@ -99,7 +99,7 @@
             "show_name": false
           }
         ],
-        "mem_input": ["marker"],
+        "mem_input": ["marker", "do"],
 		"mem_loc": "???"
       },
       {
@@ -115,7 +115,7 @@
             "show_name": false
           }
         ],
-        "mem_input": ["marker"],
+        "mem_input": ["marker", "do"],
 		"mem_loc": "???"
       },
       {
@@ -136,7 +136,7 @@
             "show_name": true
           }
         ],
-        "mem_input": ["marker"],
+        "mem_input": ["marker", "do"],
 		"mem_loc": "???"
       },
       {
@@ -157,7 +157,7 @@
 			"show_name": true
           }
         ],
-        "mem_input": ["marker"],
+        "mem_input": ["marker", "do"],
 		"mem_loc": "???"
       },
       {
