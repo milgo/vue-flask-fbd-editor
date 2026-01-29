@@ -4,11 +4,14 @@ var _setupListing
 var _programListing
 
 var _mem: Dictionary
+var _prev_mem : Dictionary
 var _rlo: Dictionary
 
 var _running: bool
 
 signal send_data(data:String)
+signal variable_value_changed(memAddr:String, oldval:String, newval:String)
+
 var _send_data_timer = Timer.new()
 
 func _ready() -> void:
@@ -54,11 +57,21 @@ func _on_digital_state_changed(memAddr: String, state: int) -> void:
 	pass # Replace with function body.
 	
 func _process(_delta: float) -> void:
-	if _running:		
+	if _running:	
+		
+		for key in _mem.keys():
+			var k:String = key
+			_prev_mem[k] = _mem[k]
+			
 		for commandJson in _programListing:
 			var command: Dictionary = commandJson			
 			call(command["functionName"], command)
-	pass
+			
+		for key in _mem.keys():
+			var k:String = key
+			if str(_mem[k]) != str(_prev_mem[k]):
+				variable_value_changed.emit(k, str(_prev_mem[key]), str(_mem[key]))			
+	
 
 func _on_send_data_timer():
 	var data_to_send : Dictionary
@@ -91,3 +104,23 @@ func after_AND_INPUT(_data: Dictionary):
 
 func after_AND(_data: Dictionary):
 	_rlo[_data["id"]] = _mem[_data["id"]]
+#---------- OR ----------
+func before_OR(_data: Dictionary):
+	_mem[_data["id"]] = 0
+	
+func after_OR_INPUT(_data: Dictionary):
+	if(_rlo[_data["connNodeId"]] == 1):
+		_mem[_data["id"]] = 1
+
+func after_OR(_data: Dictionary):
+	_rlo[_data["id"]] = _mem[_data["id"]]
+#---------- ASSIGN ----------
+func before_ASSIGN(_data: Dictionary):
+	_mem[_data["id"]] = 0
+	
+func after_ASSIGN_INPUT(_data: Dictionary):
+	_mem[_data["id"]] = _rlo[_data["connNodeId"]]
+
+func after_ASSIGN(_data: Dictionary):
+	_rlo[_data["id"]] = _mem[_data["id"]]
+	_mem[_data["memoryAddr"]] = _mem[_data["id"]]

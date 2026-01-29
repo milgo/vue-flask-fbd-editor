@@ -432,7 +432,6 @@ const addNewVarIfNotExisting = (node, name, type) => {
 		  value: 0,
 		  forced: false,
 		  forcedValue: 0,
-		  monitorData: 0,
 		  monitor: monitor
 		};
 		variablesdata.value.push(newVar);
@@ -820,7 +819,6 @@ const receiveMessage = (event) => {
 		if(msgJson["command"] === 'monitor'){
 		
 			projectdata.value.forEach((node) => {
-				
 				Object.keys(msgJson.rlo).map((id) => {
 					if(node.id == id){
 						if(msgJson.rlo[id] != null)
@@ -828,8 +826,15 @@ const receiveMessage = (event) => {
 						else node.value = 0
 						//console.log(node.id + " value=" + msgJson.rlo[id])
 					}
-				})
-				
+				})						
+			});
+			
+			variablesdata.value.forEach((v) => {
+				Object.keys(msgJson.mem).map((memAddr) => {
+					if(v.name == memAddr){
+						v.value = msgJson.mem[v.name];
+					}
+				});
 			});
 		}
 	}

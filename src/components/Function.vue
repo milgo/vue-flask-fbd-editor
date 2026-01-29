@@ -87,7 +87,9 @@
 			<template
               v-if="isInMonitorMode"
               "
-            >{{getVariableMonitorDataIfVariableExists(variables, node.mem_loc)}}<br/></template>
+            >
+			{{['marker','di','do'].some((i) => i===(variables.filter((v) => v.name === node.mem_loc)[0].type)) ? (node.value === 1 ? "True":"False" ) : node.value}}
+			<br/></template>
             <b
               ><span
                 :class="
@@ -410,11 +412,6 @@ export default {
     },
     showAlert: (msg) => {
       alert(msg);
-    },
-	getVariableMonitorDataIfVariableExists(variables, mem_loc) {
-      var vars = variables.filter((v) => v.name === mem_loc);
-      if (vars && vars[0]) return vars[0].monitorData;
-      else return "";
     },
     getVariableDescriptionIfVariableExists(variables, mem_loc) {
       var vars = variables.filter((v) => v.name === mem_loc);

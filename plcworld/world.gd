@@ -80,3 +80,8 @@ func _on_simulation_button_up() -> void:
 		pullDataTimer.stop()
 		simButton.text = "Start Simulation"
 	pass # Replace with function body.
+
+
+func _on_logic_variable_value_changed(memAddr: String, oldval: String, newval: String) -> void:
+	print("var " + memAddr + " changed from " + oldval + " to " + newval)
+	pass # Replace with function body.
