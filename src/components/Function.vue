@@ -86,8 +86,8 @@
 			<!-- monitor data -->
 			<template v-if="isInMonitorMode">
 			<!-- When associated variable is digital type show True/False instead 0/1 
-				In other cases for nodes with block name CONST, TIME don't display value because its memAddr is value -->
-			{{['marker','di','do'].some((i) => i===(variables.filter((v) => v.name === node.mem_loc)[0]?.type)) ? (node.value === 1 ? "True":"False" ) : (['CONST','TIME'].some((n) => n===node.block)  ? "" : node.value)}}
+				In other cases for nodes with block with show_name set to false don't display value because its memAddr is name and value -->
+			{{['marker','di','do'].some((i) => i===(variables.filter((v) => v.name === node.mem_loc)[0]?.type)) ? (node.value === 1 ? "True":"False" ) : (definitions.some((g) => g.blocks.some((b) => b.name === node.block && b.show_name === false))  ? "" : node.value)}}
 			<br/></template>
             <b
               ><span
