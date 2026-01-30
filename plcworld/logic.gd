@@ -38,7 +38,18 @@ func execute(json):
 		
 			for setupJson in _setupListing:
 				var setup: Dictionary = setupJson
-				call(setup["functionName"], setup)
+				
+				if setup.has("memoryAddr"):
+					if setup["memoryAddr"].begins_with("%"):
+						var vdict:Dictionary
+						vdict["value"] = 0
+						_mem[setup["memoryAddr"]] = vdict
+				
+				var ndict:Dictionary
+				ndict["value"] = 0
+				_mem[setup["id"]] = ndict
+					
+				call(setup["functionName"], setup)				
 			
 			_running = true
 			_send_data_timer.start()
@@ -87,74 +98,74 @@ func _on_simulation_button_button_up() -> void:
 	
 #---------- CONST ----------	
 func after_CONST(_data: Dictionary):
-	_rlo[_data["id"]] = int(_data["memoryAddr"])
+	_rlo[_data["id"]] = int(_data["memoryAddr"]["value"] )
 	
-#---------- DIN ----------	
+#---------- DIN -----------
 func setup_DIN(_data: Dictionary):
-	_mem[_data["memoryAddr"]] = 0
+	pass
 
 func before_DIN(_data: Dictionary):
-	_mem[_data["id"]] = _mem[_data["memoryAddr"]]
+	_mem[_data["id"]]["value"]  = _mem[_data["memoryAddr"]]["value"] 
 	
 func after_DIN(_data: Dictionary):
-	_rlo[_data["id"]] = _mem[_data["id"]]
+	_rlo[_data["id"]] = _mem[_data["id"]]["value"] 
 	
 #---------- AND ----------
 func before_AND(_data: Dictionary):
-	_mem[_data["id"]] = 1
+	_mem[_data["id"]]["value"]  = 1
 	
 func after_AND_INPUT(_data: Dictionary):
 	if(_rlo[_data["connNodeId"]] == 0):
-		_mem[_data["id"]] = 0
+		_mem[_data["id"]]["value"]  = 0
 
 func after_AND(_data: Dictionary):
-	_rlo[_data["id"]] = _mem[_data["id"]]
+	_rlo[_data["id"]] = _mem[_data["id"]]["value"] 
 	
 #---------- OR ----------
 func before_OR(_data: Dictionary):
-	_mem[_data["id"]] = 0
+	_mem[_data["id"]]["value"]  = 0
 	
 func after_OR_INPUT(_data: Dictionary):
 	if(_rlo[_data["connNodeId"]] == 1):
-		_mem[_data["id"]] = 1
+		_mem[_data["id"]]["value"]  = 1
 
 func after_OR(_data: Dictionary):
-	_rlo[_data["id"]] = _mem[_data["id"]]
+	_rlo[_data["id"]] = _mem[_data["id"]]["value"] 
 	
 #---------- NOT ----------
 func before_NOT(_data: Dictionary):
-	_mem[_data["id"]] = 0
+	_mem[_data["id"]]["value"]  = 0
 	
 func after_NOT_INPUT(_data: Dictionary):
 	if _rlo[_data["connNodeId"]] == 1:
-		_mem[_data["id"]] = 0
+		_mem[_data["id"]]["value"]  = 0
 	else:
-		_mem[_data["id"]] = 0
+		_mem[_data["id"]]["value"]  = 0
 
 func after_NOT(_data: Dictionary):
-	_rlo[_data["id"]] = _mem[_data["id"]]
+	_rlo[_data["id"]] = _mem[_data["id"]]["value"] 
 	
 #---------- ASSIGN ----------
 func before_ASSIGN(_data: Dictionary):
-	_mem[_data["id"]] = 0
+	_mem[_data["id"]]["value"]  = 0
 	
 func after_ASSIGN_INPUT(_data: Dictionary):
-	_mem[_data["id"]] = _rlo[_data["connNodeId"]]
+	_mem[_data["id"]]["value"]  = _rlo[_data["connNodeId"]] 
 
 func after_ASSIGN(_data: Dictionary):
-	_rlo[_data["id"]] = _mem[_data["id"]]
-	_mem[_data["memoryAddr"]] = _mem[_data["id"]]
+	_rlo[_data["id"]] = _mem[_data["id"]]["value"]
+	_mem[_data["memoryAddr"]]["value"]  = _mem[_data["id"]]["value"] 
 
 #---------- SET ----------
 func before_SET(_data: Dictionary):
-	_mem[_data["id"]] = 0
+	_mem[_data["id"]]["value"]  = 0
 	
 func after_SET_INPUT(_data: Dictionary):
 	if _rlo[_data["connNodeId"]] == 1:
-		_mem[_data["memoryAddr"]] = 1
+		_mem[_data["memoryAddr"]]["value"]  = 1
 
 func after_SET(_data: Dictionary):
-	_rlo[_data["id"]] = _mem[_data["memoryAddr"]]
+	_rlo[_data["id"]] = _mem[_data["memoryAddr"]]["value"] 
 
 #---------- RESET ----------
 func before_RESET(_data: Dictionary):
@@ -162,10 +173,10 @@ func before_RESET(_data: Dictionary):
 	
 func after_RESET_INPUT(_data: Dictionary):
 	if _rlo[_data["connNodeId"]] == 1:
-		_mem[_data["memoryAddr"]] = 0
+		_mem[_data["memoryAddr"]]["value"]  = 0
 
 func after_RESET(_data: Dictionary):
-	_rlo[_data["id"]] = _mem[_data["memoryAddr"]]
+	_rlo[_data["id"]] = _mem[_data["memoryAddr"]]["value"] 
 
 #---------- SET/RESET ----------
 func before_SR(_data: Dictionary):
@@ -174,60 +185,61 @@ func before_SR(_data: Dictionary):
 func after_SR_INPUT(_data: Dictionary):
 	if _data["inputName"] == "S":
 		if _rlo[_data["connNodeId"]] == 1:
-			_mem[_data["memoryAddr"]] = 1
+			_mem[_data["memoryAddr"]]["value"]  = 1
 	if _data["inputName"] == "R":
 		if _rlo[_data["connNodeId"]] == 1:
-			_mem[_data["memoryAddr"]] = 0
+			_mem[_data["memoryAddr"]]["value"]  = 0
 
 func after_SR(_data: Dictionary):
-	_rlo[_data["id"]] = _mem[_data["memoryAddr"]]
+	_rlo[_data["id"]] = _mem[_data["memoryAddr"]]["value"] 
 
 #---------- RESET/SET ----------
 func before_RS(_data: Dictionary):
-	_mem[_data["id"]] = 0
+	_mem[_data["id"]]["value"]  = 0
 	
 func after_RS_INPUT(_data: Dictionary):
 	if _data["inputName"] == "R":
 		if _rlo[_data["connNodeId"]] == 1:
-			_mem[_data["memoryAddr"]] = 0
+			_mem[_data["memoryAddr"]]["value"]  = 0
 			
 	if _data["inputName"] == "S":
 		if _rlo[_data["connNodeId"]] == 1:
-			_mem[_data["memoryAddr"]] = 1
+			_mem[_data["memoryAddr"]]["value"]  = 1
 
 func after_RS(_data: Dictionary):
-	_rlo[_data["id"]] = _mem[_data["memoryAddr"]]
+	_rlo[_data["id"]] = _mem[_data["memoryAddr"]]["value"] 
 
 #---------- FP ----------
 func before_FP(_data: Dictionary):
-	_mem[_data["id"]] = 0
+	_mem[_data["id"]]["value"]  = 0
 	
 func after_FP_INPUT(_data: Dictionary):
-	if _rlo[_data["connNodeId"]] == 1 and _mem[_data["memoryAddr"]] == 0:
-		_mem[_data["id"]] = 1
-	_mem[_data["memoryAddr"]] = _rlo[_data["connNodeId"]]
+	if _rlo[_data["connNodeId"]] == 1 and _mem[_data["memoryAddr"]]["value"]  == 0:
+		_mem[_data["id"]]["value"]  = 1
+	_mem[_data["memoryAddr"]]["value"]  = _rlo[_data["connNodeId"]]
 
 func after_FP(_data: Dictionary):
-	_rlo[_data["id"]] = _mem[_data["id"]]
+	_rlo[_data["id"]] = _mem[_data["id"]]["value"] 
 
 #---------- FN ----------
 func before_FN(_data: Dictionary):
 	_mem[_data["id"]] = 0
 	
 func after_FN_INPUT(_data: Dictionary):
-	if _rlo[_data["connNodeId"]] == 0 and _mem[_data["memoryAddr"]] == 1:
-		_mem[_data["id"]] = 1
-	_mem[_data["memoryAddr"]] = _rlo[_data["connNodeId"]]
+	if _rlo[_data["connNodeId"]] == 0 and _mem[_data["memoryAddr"]]["value"]  == 1:
+		_mem[_data["id"]]["value"]  = 1
+	_mem[_data["memoryAddr"]]["value"]  = _rlo[_data["connNodeId"]]
 
 func after_FN(_data: Dictionary):
-	_rlo[_data["id"]] = _mem[_data["id"]]
+	_rlo[_data["id"]] = _mem[_data["id"]]["value"] 
 
 #---------- MOVE ----------
 func before_MOVE(_data: Dictionary):
-	_mem[_data["id"]] = 0
+	_mem[_data["id"]]["value"]  = 0
 	
 func after_MOVE_INPUT(_data: Dictionary):
-	_mem[_data["memoryAddr"]] = _rlo[_data["connNodeId"]]
+	_mem[_data["memoryAddr"]]["value"] = _rlo[_data["connNodeId"]]
 
 func after_MOVE(_data: Dictionary):
-	_rlo[_data["id"]] = _mem[_data["memoryAddr"]]
+	_rlo[_data["id"]] = _mem[_data["memoryAddr"]]["value"] 
+	

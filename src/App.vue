@@ -808,7 +808,7 @@ const inputDialog = (msg) => {
 const receiveMessage = (event) => {
 	var msgJson = JSON.parse(event.data)
 	if(msgJson["reciver"] === 'frontend'){
-		//console.log(JSON.stringify(msgJson))
+		console.log(JSON.stringify(msgJson))
 		if(msgJson["command"] === 'started'){
 			statusdata.value["state"] = 'running';
 		}
@@ -832,7 +832,7 @@ const receiveMessage = (event) => {
 			variablesdata.value.forEach((v) => {
 				Object.keys(msgJson.mem).map((memAddr) => {
 					if(v.name == memAddr){
-						v.value = msgJson.mem[v.name];
+						v.value = msgJson.mem[v.name]["value"];
 					}
 				});
 			});
