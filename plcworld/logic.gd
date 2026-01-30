@@ -40,10 +40,10 @@ func execute(json):
 				var setup: Dictionary = setupJson
 				
 				if setup.has("memoryAddr"):
-					if setup["memoryAddr"].begins_with("%"):
-						var vdict:Dictionary
-						vdict["value"] = 0
-						_mem[setup["memoryAddr"]] = vdict
+					#if setup["memoryAddr"].begins_with("%"):
+					var vdict:Dictionary
+					vdict["value"] = 0
+					_mem[setup["memoryAddr"]] = vdict
 				
 				var ndict:Dictionary
 				ndict["value"] = 0
@@ -99,6 +99,16 @@ func _on_simulation_button_button_up() -> void:
 #---------- CONST ----------	
 func after_CONST(_data: Dictionary):
 	_rlo[_data["id"]] = int(_data["memoryAddr"]["value"] )
+	
+#---------- TIME ----------
+func setup_TIME(_data: Dictionary):
+	var regex = RegEx.create_from_string("\\d{1,6}")
+	var res = regex.search(_data["memoryAddr"])
+	if res:
+		_mem[_data["id"]]["value"] = res.get_string()
+	
+func after_TIME(_data: Dictionary):
+	_rlo[_data["id"]] = _mem[_data["id"]]["value"] 
 	
 #---------- DIN -----------
 func setup_DIN(_data: Dictionary):
@@ -243,3 +253,38 @@ func after_MOVE_INPUT(_data: Dictionary):
 func after_MOVE(_data: Dictionary):
 	_rlo[_data["id"]] = _mem[_data["memoryAddr"]]["value"] 
 	
+#---------- SP ----------
+func setup_SP(_data: Dictionary):
+	_mem[_data["memoryAddr"]]["started"]  = 0
+	_mem[_data["memoryAddr"]]["startTime"]  = 0
+	_mem[_data["memoryAddr"]]["elapsedTime"]  = 0
+	_mem[_data["memoryAddr"]]["stopped"]  = 0
+	
+func before_SP(_data: Dictionary):
+	if _mem[_data["memoryAddr"]]["started"] == 1:
+		if _mem[_data["memoryAddr"]]["stopped"] == 0:
+			_mem[_data["memoryAddr"]]["elapsedTime"] = Time.get_ticks_msec() - _mem[_data["memoryAddr"]]["startTime"]
+			_mem[_data["memoryAddr"]]["value"] = _mem[_data["memoryAddr"]]["elapsedTime"]
+
+	if _mem[_data["memoryAddr"]]["elapsedTime"] < _mem[_data["memoryAddr"]]["duration"]:
+		_mem[_data["memoryAddr"]]["value"] = 1
+	else:
+		_mem[_data["memoryAddr"]]["value"] = 0
+		_mem[_data["memoryAddr"]]["stopped"] = 1
+		_mem[_data["memoryAddr"]]["monitorData"] = 0
+
+func after_SP_INPUT(_data: Dictionary):
+	if _data["inputName"].ends_with("S"):
+		if _rlo[_data["connNodeId"]]  == 1 and _mem[_data["memoryAddr"]]["started"] == 0:
+			_mem[_data["memoryAddr"]]["started"] = 1
+			_mem[_data["memoryAddr"]]["startTime"] = Time.get_ticks_msec()
+		if _rlo[_data["connNodeId"]]  == 0:
+			_mem[_data["memoryAddr"]]["started"] = 0
+			_mem[_data["memoryAddr"]]["stopped"] = 0
+			_rlo[_data["id"]] = 0
+	
+	if _data["inputName"].ends_with("T"):
+		_mem[_data["memoryAddr"]]["duration"] = _rlo[_data["connNodeId"]]
+
+func after_SP(_data: Dictionary):
+	_rlo[_data["id"]] = _mem[_data["memoryAddr"]]["value"]
