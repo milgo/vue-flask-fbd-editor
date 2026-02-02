@@ -64,7 +64,7 @@ func execute(json):
 			send_data.emit(JSON.stringify(stopped_json_info));			
 
 func _on_digital_state_changed(memAddr: String, state: int) -> void:
-	_mem[memAddr] = state
+	_mem[memAddr]["value"] = state
 	pass # Replace with function body.
 	
 func _process(_delta: float) -> void:
@@ -126,7 +126,7 @@ func before_AND(_data: Dictionary):
 	
 func after_AND_INPUT(_data: Dictionary):
 	if(_rlo[_data["connNodeId"]] == 0):
-		_mem[_data["id"]]["value"]  = 0
+		_mem[_data["id"]]["value"] = 0
 
 func after_AND(_data: Dictionary):
 	_rlo[_data["id"]] = _mem[_data["id"]]["value"] 
@@ -265,26 +265,25 @@ func before_SP(_data: Dictionary):
 		if _mem[_data["memoryAddr"]]["stopped"] == 0:
 			_mem[_data["memoryAddr"]]["elapsedTime"] = Time.get_ticks_msec() - _mem[_data["memoryAddr"]]["startTime"]
 			_mem[_data["memoryAddr"]]["value"] = _mem[_data["memoryAddr"]]["elapsedTime"]
-
-	if _mem[_data["memoryAddr"]]["elapsedTime"] < _mem[_data["memoryAddr"]]["duration"]:
-		_mem[_data["memoryAddr"]]["value"] = 1
-	else:
-		_mem[_data["memoryAddr"]]["value"] = 0
-		_mem[_data["memoryAddr"]]["stopped"] = 1
-		_mem[_data["memoryAddr"]]["monitorData"] = 0
+		if _mem[_data["memoryAddr"]]["elapsedTime"] < _mem[_data["memoryAddr"]]["duration"]:
+			_mem[_data["memoryAddr"]]["value"] = 1
+		else:
+			_mem[_data["memoryAddr"]]["value"] = 0
+			_mem[_data["memoryAddr"]]["stopped"] = 1
+			_mem[_data["memoryAddr"]]["monitorData"] = 0
 
 func after_SP_INPUT(_data: Dictionary):
 	if _data["inputName"].ends_with("S"):
-		if _rlo[_data["connNodeId"]]  == 1 and _mem[_data["memoryAddr"]]["started"] == 0:
+		if _rlo[_data["connNodeId"]] == 1 and _mem[_data["memoryAddr"]]["started"] == 0:
 			_mem[_data["memoryAddr"]]["started"] = 1
 			_mem[_data["memoryAddr"]]["startTime"] = Time.get_ticks_msec()
-		if _rlo[_data["connNodeId"]]  == 0:
+		if _rlo[_data["connNodeId"]] == 0:
 			_mem[_data["memoryAddr"]]["started"] = 0
 			_mem[_data["memoryAddr"]]["stopped"] = 0
-			_rlo[_data["id"]] = 0
+			_mem[_data["memoryAddr"]]["value"] = 0
 	
 	if _data["inputName"].ends_with("T"):
-		_mem[_data["memoryAddr"]]["duration"] = _rlo[_data["connNodeId"]]
+		_mem[_data["memoryAddr"]]["duration"] = int(_rlo[_data["connNodeId"]])
 
 func after_SP(_data: Dictionary):
 	_rlo[_data["id"]] = _mem[_data["memoryAddr"]]["value"]
