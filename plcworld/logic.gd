@@ -6,8 +6,8 @@ var _programListing
 var _mem: Dictionary
 var _prev_mem : Dictionary
 var _rlo: Dictionary
-
 var _running: bool
+var _FalseTrue = ["False", "True"]
 
 signal send_data(data:String)
 signal variable_value_changed(memAddr:String, oldval:String, newval:String)
@@ -119,6 +119,7 @@ func before_DIN(_data: Dictionary):
 	
 func after_DIN(_data: Dictionary):
 	_rlo[_data["id"]] = _mem[_data["id"]]["value"] 
+	_mem[_data["memoryAddr"]]["monitorData"] = _FalseTrue[_mem[_data["memoryAddr"]]["value"]]
 	
 #---------- AND ----------
 func before_AND(_data: Dictionary):
@@ -165,7 +166,8 @@ func after_ASSIGN_INPUT(_data: Dictionary):
 func after_ASSIGN(_data: Dictionary):
 	_rlo[_data["id"]] = _mem[_data["id"]]["value"]
 	_mem[_data["memoryAddr"]]["value"]  = _mem[_data["id"]]["value"] 
-
+	_mem[_data["memoryAddr"]]["monitorData"] = _FalseTrue[_mem[_data["memoryAddr"]]["value"]]
+	
 #---------- SET ----------
 func before_SET(_data: Dictionary):
 	_mem[_data["id"]]["value"]  = 0
@@ -176,7 +178,8 @@ func after_SET_INPUT(_data: Dictionary):
 
 func after_SET(_data: Dictionary):
 	_rlo[_data["id"]] = _mem[_data["memoryAddr"]]["value"] 
-
+	_mem[_data["memoryAddr"]]["monitorData"] = _FalseTrue[_mem[_data["memoryAddr"]]["value"]]
+	
 #---------- RESET ----------
 func before_RESET(_data: Dictionary):
 	_mem[_data["id"]] = 0
@@ -187,7 +190,7 @@ func after_RESET_INPUT(_data: Dictionary):
 
 func after_RESET(_data: Dictionary):
 	_rlo[_data["id"]] = _mem[_data["memoryAddr"]]["value"] 
-
+	_mem[_data["memoryAddr"]]["monitorData"] = _FalseTrue[_mem[_data["memoryAddr"]]["value"]]
 #---------- SET/RESET ----------
 func before_SR(_data: Dictionary):
 	_mem[_data["id"]] = 0
@@ -202,7 +205,8 @@ func after_SR_INPUT(_data: Dictionary):
 
 func after_SR(_data: Dictionary):
 	_rlo[_data["id"]] = _mem[_data["memoryAddr"]]["value"] 
-
+	_mem[_data["memoryAddr"]]["monitorData"] = _FalseTrue[_mem[_data["memoryAddr"]]["value"]]
+	
 #---------- RESET/SET ----------
 func before_RS(_data: Dictionary):
 	_mem[_data["id"]]["value"]  = 0
@@ -218,7 +222,7 @@ func after_RS_INPUT(_data: Dictionary):
 
 func after_RS(_data: Dictionary):
 	_rlo[_data["id"]] = _mem[_data["memoryAddr"]]["value"] 
-
+	_mem[_data["memoryAddr"]]["monitorData"] = _FalseTrue[_mem[_data["memoryAddr"]]["value"]]
 #---------- FP ----------
 func before_FP(_data: Dictionary):
 	_mem[_data["id"]]["value"]  = 0
@@ -230,7 +234,8 @@ func after_FP_INPUT(_data: Dictionary):
 
 func after_FP(_data: Dictionary):
 	_rlo[_data["id"]] = _mem[_data["id"]]["value"] 
-
+	_mem[_data["memoryAddr"]]["monitorData"] = _FalseTrue[_mem[_data["memoryAddr"]]["value"]]
+	
 #---------- FN ----------
 func before_FN(_data: Dictionary):
 	_mem[_data["id"]] = 0
@@ -242,7 +247,8 @@ func after_FN_INPUT(_data: Dictionary):
 
 func after_FN(_data: Dictionary):
 	_rlo[_data["id"]] = _mem[_data["id"]]["value"] 
-
+	_mem[_data["memoryAddr"]]["monitorData"] = _FalseTrue[_mem[_data["memoryAddr"]]["value"]]
+	
 #---------- MOVE ----------
 func before_MOVE(_data: Dictionary):
 	_mem[_data["id"]]["value"]  = 0
@@ -252,7 +258,7 @@ func after_MOVE_INPUT(_data: Dictionary):
 
 func after_MOVE(_data: Dictionary):
 	_rlo[_data["id"]] = _mem[_data["memoryAddr"]]["value"] 
-	
+	_mem[_data["memoryAddr"]]["monitorData"] = _mem[_data["memoryAddr"]]["value"]
 #---------- SP ----------
 func setup_SP(_data: Dictionary):
 	_mem[_data["memoryAddr"]]["started"]  = 0
@@ -287,3 +293,4 @@ func after_SP_INPUT(_data: Dictionary):
 
 func after_SP(_data: Dictionary):
 	_rlo[_data["id"]] = _mem[_data["memoryAddr"]]["value"]
+	_mem[_data["memoryAddr"]]["monitorData"] = _mem[_data["memoryAddr"]]["elapsedTime"]

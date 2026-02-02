@@ -85,9 +85,7 @@
             ></div>
 			<!-- monitor data -->
 			<template v-if="isInMonitorMode">
-			<!-- When associated variable is digital type show True/False instead 0/1 
-				In other cases for nodes with block with show_name set to false don't display value because its memAddr is name and value -->
-			{{['marker','di','do'].some((i) => i===(variables.filter((v) => v.name === node.mem_loc)[0]?.type)) ? (node.value === 1 ? "True":"False" ) : (definitions.some((g) => g.blocks.some((b) => b.name === node.block && b.show_name === false))  ? "" : node.value)}}
+			{{getVariableMonitorDataIfVariableExists(variables, node.mem_loc)}}
 			<br/></template>
             <b
               ><span
@@ -417,6 +415,11 @@ export default {
       if (vars && vars[0]) return vars[0].description;
       else return "";
     },
+	getVariableMonitorDataIfVariableExists(variables, mem_loc) {
+      var vars = variables.filter((v) => v.name === mem_loc);
+      if (vars && vars[0]) return vars[0].monitorData;
+      else return "";
+	},
     isVarNameTypeValid (rules, name, acceptableTypes){
       var result = false;
       acceptableTypes.forEach((t) => {

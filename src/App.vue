@@ -833,6 +833,7 @@ const receiveMessage = (event) => {
 				Object.keys(msgJson.mem).map((memAddr) => {
 					if(v.name == memAddr){
 						v.value = msgJson.mem[v.name]["value"];
+						v.monitorData = msgJson.mem[v.name]["monitorData"];
 					}
 				});
 			});
