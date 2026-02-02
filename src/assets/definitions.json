@@ -287,6 +287,11 @@
             "type": ["bool"],
             "show_name": true
           },
+		            {
+            "name": "R",
+            "type": ["bool"],
+            "show_name": true
+          },
           {
             "name": "T",
             "type": ["time"],
