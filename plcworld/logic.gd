@@ -97,9 +97,9 @@ func _on_simulation_button_button_up() -> void:
 	pass # Replace with function body.	
 	
 #---------- CONST ----------	
-func after_CONST(_data: Dictionary):
-	_rlo[_data["id"]] = int(_data["memoryAddr"]["value"] )
-	
+func setup_CONST(_data: Dictionary):
+	_rlo[_data["id"]] = int(_data["memoryAddr"])
+
 #---------- TIME ----------
 func setup_TIME(_data: Dictionary):
 	var regex = RegEx.create_from_string("\\d{1,6}")
@@ -280,7 +280,7 @@ func before_SP(_data: Dictionary):
 			_mem[_data["memoryAddr"]]["monitorData"] = 0
 
 func after_SP_INPUT(_data: Dictionary):
-	if _data["inputName"].ends_with("S"):
+	if _data["inputName"] == "S":
 		if _rlo[_data["connNodeId"]] == 1 and _mem[_data["memoryAddr"]]["started"] == 0:
 			_mem[_data["memoryAddr"]]["started"] = 1
 			_mem[_data["memoryAddr"]]["startTime"] = Time.get_ticks_msec()
@@ -289,7 +289,7 @@ func after_SP_INPUT(_data: Dictionary):
 			_mem[_data["memoryAddr"]]["stopped"] = 0
 			_mem[_data["memoryAddr"]]["value"] = 0
 	
-	if _data["inputName"].ends_with("T"):
+	if _data["inputName"] == "T":
 		_mem[_data["memoryAddr"]]["duration"] = int(_rlo[_data["connNodeId"]])
 
 func after_SP(_data: Dictionary):
@@ -323,7 +323,7 @@ func before_SE(_data: Dictionary):
 			_mem[_data["memoryAddr"]]["monitorData"] = 0
 
 func after_SE_INPUT(_data: Dictionary):
-	if _data["inputName"].ends_with("S"):
+	if _data["inputName"] == "S":
 		if _rlo[_data["connNodeId"]] == 1 and _mem[_data["memoryAddr"]]["started"] == 0 and _mem[_data["memoryAddr"]]["stopped"] == 0:
 			_mem[_data["memoryAddr"]]["started"] = 1
 			_mem[_data["memoryAddr"]]["startTime"] = Time.get_ticks_msec()
@@ -331,7 +331,7 @@ func after_SE_INPUT(_data: Dictionary):
 			_mem[_data["memoryAddr"]]["stopped"] = 0
 			_mem[_data["memoryAddr"]]["value"] = 0
 	
-	if _data["inputName"].ends_with("T"):
+	if _data["inputName"] == "T":
 		_mem[_data["memoryAddr"]]["duration"] = int(_rlo[_data["connNodeId"]])
 
 func after_SE(_data: Dictionary):
@@ -358,7 +358,7 @@ func before_SD(_data: Dictionary):
 			_mem[_data["memoryAddr"]]["monitorData"] = 0
 
 func after_SD_INPUT(_data: Dictionary):
-	if _data["inputName"].ends_with("S"):
+	if _data["inputName"] == "S":
 		if _rlo[_data["connNodeId"]] == 1 and _mem[_data["memoryAddr"]]["started"] == 0:
 			_mem[_data["memoryAddr"]]["started"] = 1
 			_mem[_data["memoryAddr"]]["startTime"] = Time.get_ticks_msec()
@@ -367,7 +367,7 @@ func after_SD_INPUT(_data: Dictionary):
 			_mem[_data["memoryAddr"]]["stopped"] = 0
 			_mem[_data["memoryAddr"]]["value"] = 0
 	
-	if _data["inputName"].ends_with("T"):
+	if _data["inputName"] == "T":
 		_mem[_data["memoryAddr"]]["duration"] = int(_rlo[_data["connNodeId"]])
 
 func after_SD(_data: Dictionary):
@@ -394,18 +394,18 @@ func before_SS(_data: Dictionary):
 			_mem[_data["memoryAddr"]]["monitorData"] = 0
 
 func after_SS_INPUT(_data: Dictionary):
-	if _data["inputName"].ends_with("S"):
+	if _data["inputName"] == "S":
 		if _rlo[_data["connNodeId"]] == 1 and _mem[_data["memoryAddr"]]["started"] == 0:
 			_mem[_data["memoryAddr"]]["started"] = 1
 			_mem[_data["memoryAddr"]]["startTime"] = Time.get_ticks_msec()
 		
-	if _data["inputName"].ends_with("R"):		
+	if _data["inputName"] == "R":		
 		if _rlo[_data["connNodeId"]] == 1:
 			_mem[_data["memoryAddr"]]["started"] = 0
 			_mem[_data["memoryAddr"]]["stopped"] = 0
 			_mem[_data["memoryAddr"]]["value"] = 0
 	
-	if _data["inputName"].ends_with("T"):
+	if _data["inputName"] == "T":
 		_mem[_data["memoryAddr"]]["duration"] = int(_rlo[_data["connNodeId"]])
 
 func after_SS(_data: Dictionary):
@@ -433,7 +433,7 @@ func before_SF(_data: Dictionary):
 			_mem[_data["memoryAddr"]]["monitorData"] = 0
 
 func after_SF_INPUT(_data: Dictionary):
-	if _data["inputName"].ends_with("S"):
+	if _data["inputName"] == "S":
 		if _rlo[_data["connNodeId"]] == 0 and _mem[_data["memoryAddr"]]["started"] == 0 and _mem[_data["memoryAddr"]]["stopped"] == 0:
 			_mem[_data["memoryAddr"]]["started"] = 1
 			_mem[_data["memoryAddr"]]["startTime"] = Time.get_ticks_msec()
@@ -442,7 +442,7 @@ func after_SF_INPUT(_data: Dictionary):
 			_mem[_data["memoryAddr"]]["stopped"] = 0
 			_mem[_data["memoryAddr"]]["value"] = 0
 	
-	if _data["inputName"].ends_with("T"):
+	if _data["inputName"] == "T":
 		_mem[_data["memoryAddr"]]["duration"] = int(_rlo[_data["connNodeId"]])
 
 func after_SF(_data: Dictionary):
@@ -456,7 +456,7 @@ func setup_CU(_data: Dictionary):
 	_mem[_data["memoryAddr"]]["edge"] = 0
 	
 func after_CU_INPUT(_data: Dictionary):
-	if _data["inputName"].ends_with("INC"):
+	if _data["inputName"] == "INC":
 		if _rlo[_data["connNodeId"]] == 1:
 			if _mem[_data["memoryAddr"]]["edge"] == 0:				
 				_mem[_data["memoryAddr"]]["value"] = _mem[_data["memoryAddr"]]["value"] + 1
@@ -465,7 +465,7 @@ func after_CU_INPUT(_data: Dictionary):
 		else:
 			_mem[_data["memoryAddr"]]["edge"] = 0
 				
-	if _data["inputName"].ends_with("R"):
+	if _data["inputName"] == "R":
 		if _rlo[_data["connNodeId"]] == 1:
 			_mem[_data["memoryAddr"]]["value"] = 0
 			_mem[_data["memoryAddr"]]["monitorData"] = 0
@@ -475,7 +475,7 @@ func setup_CD(_data: Dictionary):
 	_mem[_data["memoryAddr"]]["edge"] = 0
 	
 func after_CD_INPUT(_data: Dictionary):
-	if _data["inputName"].ends_with("DEC"):
+	if _data["inputName"] == "DEC":
 		if _rlo[_data["connNodeId"]] == 1:
 			if _mem[_data["memoryAddr"]]["edge"] == 0:				
 				_mem[_data["memoryAddr"]]["value"] = _mem[_data["memoryAddr"]]["value"] - 1
@@ -484,7 +484,92 @@ func after_CD_INPUT(_data: Dictionary):
 		else:
 			_mem[_data["memoryAddr"]]["edge"] = 0
 				
-	if _data["inputName"].ends_with("R"):
+	if _data["inputName"] == "R":
 		if _rlo[_data["connNodeId"]] == 1:
 			_mem[_data["memoryAddr"]]["value"] = 0
 			_mem[_data["memoryAddr"]]["monitorData"] = 0
+
+#---------- EQ ----------
+func setup_EQ(_data: Dictionary):
+	_mem[_data["id"]]["valueA"] = 0
+	_mem[_data["id"]]["valueB"] = 0
+
+func after_EQ_INPUT(_data: Dictionary):
+	if _data["inputName"] == "IN1":
+		_mem[_data["id"]]["valueA"] = _rlo[_data["connNodeId"]]
+
+	if _data["inputName"] == "IN2":
+		_mem[_data["id"]]["valueB"] = _rlo[_data["connNodeId"]]
+
+func after_EQ(_data: Dictionary):
+	_rlo[_data["id"]] = 0
+	if _mem[_data["id"]]["valueA"] == _mem[_data["id"]]["valueB"]:
+		_rlo[_data["id"]] = 1
+
+#---------- GT ----------
+func setup_GT(_data: Dictionary):
+	_mem[_data["id"]]["valueA"] = 0
+	_mem[_data["id"]]["valueB"] = 0
+
+func after_GT_INPUT(_data: Dictionary):
+	if _data["inputName"] == "IN1":
+		_mem[_data["id"]]["valueA"] = _rlo[_data["connNodeId"]]
+
+	if _data["inputName"] == "IN2":
+		_mem[_data["id"]]["valueB"] = _rlo[_data["connNodeId"]]
+
+func after_GT(_data: Dictionary):
+	_rlo[_data["id"]] = 0
+	if _mem[_data["id"]]["valueA"] > _mem[_data["id"]]["valueB"]:
+		_rlo[_data["id"]] = 1
+
+#---------- LT ----------
+func setup_LT(_data: Dictionary):
+	_mem[_data["id"]]["valueA"] = 0
+	_mem[_data["id"]]["valueB"] = 0
+
+func after_LT_INPUT(_data: Dictionary):
+	if _data["inputName"] == "IN1":
+		_mem[_data["id"]]["valueA"] = _rlo[_data["connNodeId"]]
+
+	if _data["inputName"] == "IN2":
+		_mem[_data["id"]]["valueB"] = _rlo[_data["connNodeId"]]
+
+func after_LT(_data: Dictionary):
+	_rlo[_data["id"]] = 0
+	if _mem[_data["id"]]["valueA"] < _mem[_data["id"]]["valueB"]:
+		_rlo[_data["id"]] = 1
+		
+#---------- GE ----------
+func setup_GE(_data: Dictionary):
+	_mem[_data["id"]]["valueA"] = 0
+	_mem[_data["id"]]["valueB"] = 0
+
+func after_GE_INPUT(_data: Dictionary):
+	if _data["inputName"] == "IN1":
+		_mem[_data["id"]]["valueA"] = _rlo[_data["connNodeId"]]
+
+	if _data["inputName"] == "IN2":
+		_mem[_data["id"]]["valueB"] = _rlo[_data["connNodeId"]]
+
+func after_GE(_data: Dictionary):
+	_rlo[_data["id"]] = 0
+	if _mem[_data["id"]]["valueA"] >= _mem[_data["id"]]["valueB"]:
+		_rlo[_data["id"]] = 1
+		
+#---------- LE ----------
+func setup_LE(_data: Dictionary):
+	_mem[_data["id"]]["valueA"] = 0
+	_mem[_data["id"]]["valueB"] = 0
+
+func after_LE_INPUT(_data: Dictionary):
+	if _data["inputName"] == "IN1":
+		_mem[_data["id"]]["valueA"] = _rlo[_data["connNodeId"]]
+
+	if _data["inputName"] == "IN2":
+		_mem[_data["id"]]["valueB"] = _rlo[_data["connNodeId"]]
+
+func after_LE(_data: Dictionary):
+	_rlo[_data["id"]] = 0
+	if _mem[_data["id"]]["valueA"] <= _mem[_data["id"]]["valueB"]:
+		_rlo[_data["id"]] = 1
