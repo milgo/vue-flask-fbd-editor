@@ -450,3 +450,41 @@ func after_SF(_data: Dictionary):
 	if _mem[_data["memoryAddr"]]["value"] == 0:
 		_rlo[_data["id"]] = 1
 	_mem[_data["memoryAddr"]]["monitorData"] = _mem[_data["memoryAddr"]]["elapsedTime"]
+
+#---------- CU ----------
+func setup_CU(_data: Dictionary):
+	_mem[_data["memoryAddr"]]["edge"] = 0
+	
+func after_CU_INPUT(_data: Dictionary):
+	if _data["inputName"].ends_with("INC"):
+		if _rlo[_data["connNodeId"]] == 1:
+			if _mem[_data["memoryAddr"]]["edge"] == 0:				
+				_mem[_data["memoryAddr"]]["value"] = _mem[_data["memoryAddr"]]["value"] + 1
+				_mem[_data["memoryAddr"]]["monitorData"] = _mem[_data["memoryAddr"]]["value"]
+				_mem[_data["memoryAddr"]]["edge"] = 1
+		else:
+			_mem[_data["memoryAddr"]]["edge"] = 0
+				
+	if _data["inputName"].ends_with("R"):
+		if _rlo[_data["connNodeId"]] == 1:
+			_mem[_data["memoryAddr"]]["value"] = 0
+			_mem[_data["memoryAddr"]]["monitorData"] = 0
+
+#---------- CD ----------
+func setup_CD(_data: Dictionary):
+	_mem[_data["memoryAddr"]]["edge"] = 0
+	
+func after_CD_INPUT(_data: Dictionary):
+	if _data["inputName"].ends_with("DEC"):
+		if _rlo[_data["connNodeId"]] == 1:
+			if _mem[_data["memoryAddr"]]["edge"] == 0:				
+				_mem[_data["memoryAddr"]]["value"] = _mem[_data["memoryAddr"]]["value"] - 1
+				_mem[_data["memoryAddr"]]["monitorData"] = _mem[_data["memoryAddr"]]["value"]
+				_mem[_data["memoryAddr"]]["edge"] = 1
+		else:
+			_mem[_data["memoryAddr"]]["edge"] = 0
+				
+	if _data["inputName"].ends_with("R"):
+		if _rlo[_data["connNodeId"]] == 1:
+			_mem[_data["memoryAddr"]]["value"] = 0
+			_mem[_data["memoryAddr"]]["monitorData"] = 0

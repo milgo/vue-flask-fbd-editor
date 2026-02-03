@@ -330,7 +330,7 @@ const startButtonVisible = {"stopped" : true, "running" : false}
 const compileButtonVisible = {"changed" : true, "not changed" : false}
 const monitorCheckboxVisible = {"stopped" : false, "running" : true}
 const monitorTaskStart = {"on" : true, "off" : false}
-const variableTypesVisibleWhenMonitorOnOff = {"on" : ['marker', 'byte', 'word', 'timer', 'di', 'do', 'ai', 'ao'], "off" : ['marker', 'byte', 'word', 'timer', 'di', 'do', 'ai', 'ao']}
+const variableTypesVisibleWhenMonitorOnOff = {"on" : ['marker', 'byte', 'word', 'timer', 'di', 'do', 'ai', 'ao', 'counter'], "off" : ['marker', 'byte', 'word', 'timer', 'di', 'do', 'ai', 'ao', 'counter']}
 
 //var monitorInterval = null
 
