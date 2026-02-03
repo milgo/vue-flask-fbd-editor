@@ -573,3 +573,56 @@ func after_LE(_data: Dictionary):
 	_rlo[_data["id"]] = 0
 	if _mem[_data["id"]]["valueA"] <= _mem[_data["id"]]["valueB"]:
 		_rlo[_data["id"]] = 1
+		
+#---------- ADD ----------
+func setup_ADD(_data: Dictionary):
+	_mem[_data["id"]]["value"] = 0 
+	
+func after_ADD_INPUT(_data: Dictionary):
+	_mem[_data["id"]]["value"] = _mem[_data["id"]]["value"] + _rlo[_data["connNodeId"]]
+
+func after_ADD(_data: Dictionary):
+	_rlo[_data["id"]] = _mem[_data["id"]]["value"]
+	_mem[_data["id"]]["value"] = 0
+
+#---------- SUB ----------
+func setup_SUB(_data: Dictionary):
+	_mem[_data["id"]]["value"] = 0 
+	
+func after_SUB_INPUT(_data: Dictionary):
+	if _mem[_data["id"]]["value"] == 0:
+		_mem[_data["id"]]["value"] = _rlo[_data["connNodeId"]]
+	else:
+		_mem[_data["id"]]["value"] = _mem[_data["id"]]["value"] - _rlo[_data["connNodeId"]]
+
+func after_SUB(_data: Dictionary):
+	_rlo[_data["id"]] = _mem[_data["id"]]["value"]
+	_mem[_data["id"]]["value"] = 0
+
+#---------- MUL ----------
+func setup_MUL(_data: Dictionary):
+	_mem[_data["id"]]["value"] = 1 
+
+func before_MUL(_data: Dictionary):
+	_mem[_data["id"]]["value"] = 1 	
+
+func after_MUL_INPUT(_data: Dictionary):
+	_mem[_data["id"]]["value"] = _mem[_data["id"]]["value"] * _rlo[_data["connNodeId"]]
+
+func after_MUL(_data: Dictionary):
+	_rlo[_data["id"]] = _mem[_data["id"]]["value"]
+	_mem[_data["id"]]["value"] = 0
+	
+#---------- DIV ----------
+func setup_DIV(_data: Dictionary):
+	_mem[_data["id"]]["value"] = 0 
+	
+func after_DIV_INPUT(_data: Dictionary):
+	if _mem[_data["id"]]["value"] == 0:
+		_mem[_data["id"]]["value"] = _rlo[_data["connNodeId"]]
+	else:
+		_mem[_data["id"]]["value"] = _mem[_data["id"]]["value"] / _rlo[_data["connNodeId"]]
+
+func after_DIV(_data: Dictionary):
+	_rlo[_data["id"]] = _mem[_data["id"]]["value"]
+	_mem[_data["id"]]["value"] = 0
