@@ -234,21 +234,15 @@
 		  </table>
         </td>
 		<td v-if="monitorTaskStart[statusdata.monitor]">
-			<input type="checkbox" id="forced" :checked="variable.forced === true" v-on:input="toggleForceVariable(variable.id);"/>
+			<input type="checkbox" id="forced" :checked="variable.forced === 1" v-on:input="toggleForceVariable(variable.id);"/>
 		</td>
 		<td v-if="monitorTaskStart[statusdata.monitor]">
 			<input v-if="['marker', 'di', 'do', 'timer'].some((i) => i===(variable.type))" type="checkbox" id="forcedValue" :checked="variable.forcedValue === 1" v-on:input="toggleForceVariableValueBool(variable.id);" />
 			<VarInput v-else
 			:value="variable.forcedValue"
 			v-on:blur="variable.edit = false"
-            @enter="variable.edit = false;"
-			@valueChanged="(value) => {
-				if(this.isVarNameTypeValid(varTypes, value, ['number']) === true) {
-					setForcedValueOfVariable(variable.id, value);
-				}else{
-					showAlert('Enter numeric value!');
-				}
-			}"
+            
+			@keyup.enter="forceValueHandler(variable.id, $event.target.value)"
 		  />
 		</td>
       </tr>
@@ -423,7 +417,7 @@ const addNewVarIfNotExisting = (node, name, type) => {
 		  description: "",
 		  edit: false,
 		  value: 0,
-		  forced: false,
+		  forced: 0,
 		  forcedValue: 0,
 		  monitor: monitor
 		};
@@ -449,12 +443,18 @@ const deleteVariable = (id) => {
 
 const toggleForceVariable = (id) => {
   var variable = variablesdata.value.filter((v) => v.id === id)[0];
-  variable.forced = !variable.forced;
+  if(variable.forced === 0 ){
+	  variable.forced = 1;
+  }
+  else {
+	  variable.forced = 0;
+  }
   postForceVariables();
 };
 
 const toggleForceVariableValueBool = (id) => {
   var variable = variablesdata.value.filter((v) => v.id === id)[0];
+    console.log(variable.forcedValue)
   if(variable.forcedValue === 1){
 	variable.forcedValue = 0; 
   }else{
@@ -486,8 +486,13 @@ const clearMonitorValues = () => {
   });
 }
 
+const clearVarForces = () => {
+	variablesdata.value.forEach((v) => {v.forced = 0});
+}
+
 const toggleMonitor = () => {
   clearMonitorValues();
+  clearVarForces();
   /*const path = flaskURL+"/monitor";
 	axios.get(path).then((res) => {
 			console.log(res.data);
@@ -581,7 +586,7 @@ const putProjectData = () => {
   axios.post(path, compiledata.value).then((res) => {statusdata.value = res.data.statusdata;}).catch((err) => console.error(err));
 }*/
 
-const pullRuntimeData = () => {
+/*const pullRuntimeData = () => {
   const path = flaskURL+"/pullruntimedata";
 	axios.get(path).then((res) => {
 			console.log(res.data);
@@ -592,14 +597,16 @@ const pullRuntimeData = () => {
 			statusdata.value = res.data.statusdata;
 		})
 		.catch((err) => console.error(err));
-}
+}*/
 
 const postForceVariables = () => {
-  const path = flaskURL+"/forcevariables";
+  /*const path = flaskURL+"/forcevariables";
   axios.post(path, variablesdata.value)
         .then((res) => {
 			statusdata.value = res.data.statusdata;
-        }).catch((err) => console.error(err));
+        }).catch((err) => console.error(err));*/
+	
+	window.postMessage(JSON.stringify({reciver:"backend", command: "forcevariables", data: variablesdata.value}))
 }
 
 onMounted(() => {
@@ -820,6 +827,7 @@ const receiveMessage = (event) => {
 			statusdata.value['monitor'] = 'off'
 			//putStatusData();
 			clearMonitorValues()
+			clearVarForces()
 		}
 		if(msgJson["command"] === 'monitorOn'){
 		
@@ -849,6 +857,7 @@ const receiveMessage = (event) => {
 		if(msgJson["command"] === 'monitorOff'){
 			statusdata.value['monitor'] = 'off'
 			clearMonitorValues();
+			clearVarForces();
 			//putStatusData();
 		}
 	}
@@ -871,9 +880,38 @@ const monitorOff = () => {
 }
 
 const compile = () => {
-    buildListing(projectdata.value);
+	buildListing(projectdata.value);
 	statusdata.value["compiled"] = "yes";
 	window.localStorage.setItem("compiled", "yes");
+}
+
+const isVarNameTypeValid = (rules, name, acceptableTypes) =>{
+    var result = false;
+    acceptableTypes.forEach((t) => {
+			if (name.match(rules.filter((tv) => tv.type === t)[0].valid)) {
+				result = true;
+		}
+    });
+	return result;
+}
+	
+const forceValueHandler = (varId, value) => {
+	console.log(varId + "=" + value);
+	if(isVarNameTypeValid(varTypes, value, ['number']) === true) {
+		setForcedValueOfVariable(varId, value);
+	}else{
+		showAlert('Enter numeric value!');
+	}
+}
+
+const isProgramDataReadyToCompile = (data, types) => {
+	var emptyMem = "???";
+	var res = data.some((n) => (n.dyn_inputs && n.inputs.length === 0)) ||
+		data.some((n) => (n.mem_loc && n.mem_loc === emptyMem)) ||
+		data.some((n) => n.mem_input && !isVarNameTypeValid(types, n.mem_loc, n.mem_input)) ||
+		data.some((n) => (n.inputs.some((i) => i.target === -1)));
+
+	return !res;
 }
 
 provide("addChild", addChild);
@@ -907,31 +945,13 @@ export default {
     };
   },
   methods: {
+	  
     showAlert: (msg) => {
       alert(msg);
     },
-	delayWithParam: (func, time, param) => {setTimeout(func, time, param);},
-	delay: (func, time) => {setTimeout(func, time);},
-	
-	isVarNameTypeValid (rules, name, acceptableTypes){
-      var result = false;
-      acceptableTypes.forEach((t) => {
-        if (name.match(rules.filter((tv) => tv.type === t)[0].valid)) {
-          result = true;
-        }
-      });
-      return result;
-    },
 
-	isProgramDataReadyToCompile(data, types) {
-	var emptyMem = "???";
-	var res = data.some((n) => (n.dyn_inputs && n.inputs.length === 0)) ||
-		data.some((n) => (n.mem_loc && n.mem_loc === emptyMem)) ||
-		data.some((n) => n.mem_input && !this.isVarNameTypeValid(types, n.mem_loc, n.mem_input)) ||
-		data.some((n) => (n.inputs.some((i) => i.target === -1)));
+	delay: (func, time) => {setTimeout(func, time);}
 
-	return !res;
-}
   },
   name: "App",
 
