@@ -1,5 +1,5 @@
 <template>
-  <select @change="$emit('selected', $event.target.value)">
+  <select @change="$emit('selected', $event.target.value)" id="fselect">
     <option disabled="disabled" selected="selected">...</option>
     <template v-for="definition in definitions">
       <template v-if="checkIfAnyBlockHasType(definition, outputType, alone)">
@@ -11,7 +11,7 @@
               alone
             )"
           >
-            <option :value="JSON.stringify(block)">{{ block.name }}</option>
+            <option :value="JSON.stringify(block)">{{ block.name }} - {{block.desc}}</option>
           </template>
         </optgroup>
       </template>

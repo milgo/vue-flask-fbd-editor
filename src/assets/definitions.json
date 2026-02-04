@@ -9,7 +9,8 @@
         "output_type": "bool",
         "dyn_inputs": false,
         "mem_input": ["marker", "di"],
-		"mem_loc": "???"
+	"mem_loc": "???",
+	"desc": "and block"
       },
       {
         "name": "CONST",
@@ -19,7 +20,8 @@
         "output_type": "number",
         "dyn_inputs": false,
         "mem_input": ["number"],
-		"mem_loc": "???"
+	"mem_loc": "???",
+	"desc": "constant value"
       },
       {
         "name": "TIME",
@@ -29,7 +31,8 @@
         "output_type": "time",
         "dyn_inputs": false,
         "mem_input": ["time"],
-		"mem_loc": "???"
+		"mem_loc": "???",
+	"desc": "time value"
       }
     ]
   },

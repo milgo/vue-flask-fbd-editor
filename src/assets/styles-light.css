@@ -110,6 +110,7 @@ select {
     cursor: pointer;
     border: 1px solid black;
     border-radius: 5px;
+	width: 40px;
 }
 
 .fbd-header
