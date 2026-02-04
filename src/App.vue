@@ -5,7 +5,7 @@
     <tr>
       <td>
         <button
-		  v-if="compileButtonVisible[statusdata.changed]"
+		  v-if="compileButtonVisible[statusdata.compiled]"
           @click="compile()"
 		  :disabled="!isProgramDataReadyToCompile(projectdata, varTypes)"
         >
@@ -19,7 +19,7 @@
           Stop
         </button>
 		<button
-		  v-if="startButtonVisible[statusdata.state] && !compileButtonVisible[statusdata.changed]"
+		  v-if="startButtonVisible[statusdata.state] && !compileButtonVisible[statusdata.compiled]"
           @click="start()"
         >
           Start
@@ -32,12 +32,6 @@
         <div v-if="monitorCheckboxVisible[statusdata.state]">
 			<input type="checkbox" id="monitor" :checked="statusdata['monitor'] == 'on'" v-on:input="toggleMonitor();"/>
 			<label for="monitor">Monitor</label>
-		</div>
-      </td>
-	  <td>
-		<div v-if="monitorCheckboxVisible[statusdata.state] && statusdata['monitor'] == 'on'">
-			<input type="checkbox" id="simulate" :checked="statusdata['simulate'] == 'on'" v-on:input="toggleSimulateFromFlask();"/>
-			<label for="simulate">Simulate</label>
 		</div>
       </td>
     </tr>
@@ -57,7 +51,7 @@
 		 
 <hr class="hr-normal">
 
-<div class="fixed mem_table" v-if="monitorTaskStart[statusdata.monitor] && statusdata['simulate'] == 'on'">
+<div class="fixed mem_table" v-if="monitorTaskStart[statusdata.monitor]">
 	<table>
     <tr>
       <th>Ctrl.</th>
@@ -297,7 +291,6 @@
   <br />
   <br />
 
-  {{statusdata}}
 </template>
 
 <script setup>
@@ -327,7 +320,7 @@ const flaskURL = "http://localhost:5000"
 const enableEdit = {"stopped" : true, "running" : false}
 const stopButtonVisible = {"stopped" : false, "running" : true}
 const startButtonVisible = {"stopped" : true, "running" : false}
-const compileButtonVisible = {"changed" : true, "not changed" : false}
+const compileButtonVisible = {"no" : true, "yes" : false}
 const monitorCheckboxVisible = {"stopped" : false, "running" : true}
 const monitorTaskStart = {"on" : true, "off" : false}
 const variableTypesVisibleWhenMonitorOnOff = {"on" : ['marker', 'byte', 'word', 'timer', 'di', 'do', 'ai', 'ao', 'counter'], "off" : ['marker', 'byte', 'word', 'timer', 'di', 'do', 'ai', 'ao', 'counter']}
@@ -502,13 +495,16 @@ const toggleMonitor = () => {
 		})
 		.catch((err) => console.error(err));*/
 	if (statusdata.value["monitor"] == "on"){
-		statusdata.value["monitor"] = "off"
+		//statusdata.value["monitor"] = "off"
+		monitorOff();
 	}else{
-		statusdata.value["monitor"] = "on"
+		//statusdata.value["monitor"] = "on"
+		monitorOn();
 	}
+	//putStatusData();
 }
 
-const toggleSimulateFromFlask = () => {
+/*const toggleSimulateFromFlask = () => {
   clearMonitorValues();
   const path = flaskURL+"/simulate";
 	axios.post(path).then((res) => {
@@ -517,7 +513,7 @@ const toggleSimulateFromFlask = () => {
 		})
 		.catch((err) => console.error(err));
 }
-
+*/
 /*const getVariableDataFromFlask = () => {
   const path = flaskURL+"/variables";
 	axios.get(path).then((res) => {
@@ -539,16 +535,15 @@ const getProjectData = () => {
 	
 	if(!window.localStorage.getItem("projectdata"))
 	{	
-		window.localStorage.setItem("projectdata", "{\"program\": [], \"variables\": [], \"checksum\": \"\"}");
-		window.localStorage.setItem("status","{\"state\": \"stopped\", \"changed\": \"not changed\", \"monitor\": \"off\", \"simulate\": \"off\", \"checksum\": \"50cbd9dcf989f23b75598fcfca93b6fd\"}");
+		window.localStorage.setItem("projectdata", "{\"program\": [], \"variables\": []}");
+		window.localStorage.setItem("compiled", "no");
 	}
 	
 	var storedprojectdata = JSON.parse(window.localStorage.getItem("projectdata"));
-	var storedstatus = JSON.parse(window.localStorage.getItem("status"));
-	
 	projectdata.value = storedprojectdata.program
 	variablesdata.value = storedprojectdata.variables
-	statusdata.value = storedstatus
+	statusdata.value = JSON.parse("{\"state\": \"stopped\", \"compiled\": \"no\", \"monitor\": \"off\"}")
+	statusdata.value["compiled"] = window.localStorage.getItem("compiled")
 }
 
 const pushProjectAndVariablesToUndoStack = () => {
@@ -572,14 +567,19 @@ const popProjectAndVariablesFromRedoStack = () => {
 }
 
 const putProjectData = () => {
-	statusdata.value["changed"] = "changed";
-	window.localStorage.setItem("projectdata", JSON.stringify({program: projectdata.value, variables: variablesdata.value, checksum: statusdata.value.checksum}));
+	window.localStorage.setItem("projectdata", JSON.stringify({program: projectdata.value, variables: variablesdata.value}));
+	window.localStorage.setItem("compiled", "no");
+	statusdata.value["compiled"] = "no";
 }
 
-const putCompileDataToFlask = () => {
+/*const putStatusData = () => {
+	window.localStorage.setItem("status", JSON.stringify(statusdata.value));
+}*/
+
+/*const putCompileDataToFlask = () => {
   const path = flaskURL+"/compile";
   axios.post(path, compiledata.value).then((res) => {statusdata.value = res.data.statusdata;}).catch((err) => console.error(err));
-}
+}*/
 
 const pullRuntimeData = () => {
   const path = flaskURL+"/pullruntimedata";
@@ -606,6 +606,7 @@ onMounted(() => {
 
   //getVariableDataFromFlask();
   getProjectData();
+
   buildListing(projectdata.value);
   
   setTimeout(() => pushProjectAndVariablesToUndoStack(), 100);
@@ -808,15 +809,19 @@ const inputDialog = (msg) => {
 const receiveMessage = (event) => {
 	var msgJson = JSON.parse(event.data)
 	if(msgJson["reciver"] === 'frontend'){
+		console.log("reciving")
 		console.log(JSON.stringify(msgJson))
 		if(msgJson["command"] === 'started'){
 			statusdata.value["state"] = 'running';
+			//putStatusData();
 		}
 		if(msgJson["command"] === 'stopped'){
 			statusdata.value["state"] = 'stopped';
+			statusdata.value['monitor'] = 'off'
+			//putStatusData();
 			clearMonitorValues()
 		}
-		if(msgJson["command"] === 'monitor'){
+		if(msgJson["command"] === 'monitorOn'){
 		
 			projectdata.value.forEach((node) => {
 				Object.keys(msgJson.rlo).map((id) => {
@@ -837,6 +842,14 @@ const receiveMessage = (event) => {
 					}
 				});
 			});
+			
+			statusdata.value['monitor'] = 'on'
+			//putStatusData();
+		}
+		if(msgJson["command"] === 'monitorOff'){
+			statusdata.value['monitor'] = 'off'
+			clearMonitorValues();
+			//putStatusData();
 		}
 	}
 }
@@ -849,9 +862,18 @@ const stop = () => {
 	window.postMessage(JSON.stringify({reciver:"backend", command: "stop", data: compiledata.value}))
 }
 
+const monitorOn = () => {
+	window.postMessage(JSON.stringify({reciver:"backend", command: "monitorOn"}))
+}
+
+const monitorOff = () => {
+	window.postMessage(JSON.stringify({reciver:"backend", command: "monitorOff"}))
+}
+
 const compile = () => {
     buildListing(projectdata.value);
-	statusdata.value["changed"] = "not changed";
+	statusdata.value["compiled"] = "yes";
+	window.localStorage.setItem("compiled", "yes");
 }
 
 provide("addChild", addChild);
@@ -888,9 +910,6 @@ export default {
     showAlert: (msg) => {
       alert(msg);
     },
-	receiveMessage: (event) =>{
-
-	},
 	delayWithParam: (func, time, param) => {setTimeout(func, time, param);},
 	delay: (func, time) => {setTimeout(func, time);},
 	

@@ -52,8 +52,18 @@ func execute(json):
 				call(setup["functionName"], setup)				
 			
 			_running = true
+			
+		if(json["command"] == "monitorOn"):	
 			_send_data_timer.start()
 			
+		if(json["command"] == "monitorOff"):	
+			_send_data_timer.stop()
+			var data_to_send : Dictionary
+			data_to_send["command"] = "monitorOff"
+			data_to_send["reciver"] = "frontend"
+			var jsonStr = JSON.stringify(data_to_send)
+			send_data.emit(jsonStr)	
+				
 		if(json["command"] == "stop"):
 			_running = false
 			_send_data_timer.stop()
@@ -86,7 +96,7 @@ func _process(_delta: float) -> void:
 
 func _on_send_data_timer():
 	var data_to_send : Dictionary
-	data_to_send["command"] = "monitor"
+	data_to_send["command"] = "monitorOn"
 	data_to_send["reciver"] = "frontend"
 	data_to_send["rlo"] = _rlo
 	data_to_send["mem"] = _mem	
