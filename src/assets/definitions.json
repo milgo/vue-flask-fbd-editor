@@ -9,8 +9,8 @@
         "output_type": "bool",
         "dyn_inputs": false,
         "mem_input": ["marker", "di"],
-	"mem_loc": "???",
-	"desc": "and block"
+		"mem_loc": "???",
+		"desc": "digital input"
       },
       {
         "name": "CONST",
@@ -20,8 +20,8 @@
         "output_type": "number",
         "dyn_inputs": false,
         "mem_input": ["number"],
-	"mem_loc": "???",
-	"desc": "constant value"
+		"mem_loc": "???",
+		"desc": "constant value"
       },
       {
         "name": "TIME",
@@ -32,7 +32,7 @@
         "dyn_inputs": false,
         "mem_input": ["time"],
 		"mem_loc": "???",
-	"desc": "time value"
+		"desc": "time constant"
       }
     ]
   },
@@ -47,7 +47,8 @@
         "output_type": "bool",
         "dyn_inputs": true,
         "dyn_inputs_type": ["bool"],
-		"mem_loc": " "
+		"mem_loc": " ",
+		"desc": "and gate"
       },
       {
         "name": ">=",
@@ -56,7 +57,8 @@
         "output_type": "bool",
         "dyn_inputs": true,
         "dyn_inputs_type": ["bool"],
-		"mem_loc": " "
+		"mem_loc": " ",
+		"desc": "or gate"
       },
       {
         "name": "NOT",
@@ -71,7 +73,8 @@
             "type": ["bool"],
             "show_name": false
           }
-        ]
+        ],
+		"desc": "not gate"
       },
       {
         "name": "=",
@@ -87,7 +90,8 @@
           }
         ],
         "mem_input": ["marker", "do"],
-		"mem_loc": "???"
+		"mem_loc": "???",
+		"desc": "assign bit to memory"
       },
       {
         "name": "S",
@@ -103,7 +107,8 @@
           }
         ],
         "mem_input": ["marker", "do"],
-		"mem_loc": "???"
+		"mem_loc": "???",
+		"desc": "set memory bit"
       },
       {
         "name": "R",
@@ -119,7 +124,8 @@
           }
         ],
         "mem_input": ["marker", "do"],
-		"mem_loc": "???"
+		"mem_loc": "???",
+		"desc": "reset memory bit"
       },
       {
         "name": "SR",
@@ -140,7 +146,8 @@
           }
         ],
         "mem_input": ["marker", "do"],
-		"mem_loc": "???"
+		"mem_loc": "???",
+		"desc": "set/reset memory bit"
       },
       {
         "name": "RS",
@@ -161,7 +168,8 @@
           }
         ],
         "mem_input": ["marker", "do"],
-		"mem_loc": "???"
+		"mem_loc": "???",
+		"desc": "reset/set memory bit"
       },
       {
         "name": "FP",
@@ -176,7 +184,8 @@
           }
         ],
         "mem_input": ["marker"],
-		"mem_loc": "???"
+		"mem_loc": "???",
+		"desc": "detect positive edge"
       },
       {
         "name": "FN",
@@ -192,7 +201,8 @@
           }
         ],
         "mem_input": ["marker"],
-		"mem_loc": "???"
+		"mem_loc": "???",
+		"desc": "detect negative edge"
       },
       {
         "name": "MOVE",
@@ -208,7 +218,8 @@
           }
         ],
         "mem_input": ["byte", "word", "dword"],
-		"mem_loc": "???"
+		"mem_loc": "???",
+		"desc": "move value to memory"
       }
     ]
   },
@@ -234,7 +245,8 @@
           }
         ],
         "mem_input": ["timer"],
-		"mem_loc": "???"
+		"mem_loc": "???",
+		"desc": "pulse timer"
       },
 	  {
         "name": "SE",
@@ -255,7 +267,8 @@
           }
         ],
         "mem_input": ["timer"],
-		"mem_loc": "???"
+		"mem_loc": "???",
+		"desc": "extended pulse timer"
       },
 	  {
         "name": "SD",
@@ -276,7 +289,8 @@
           }
         ],
         "mem_input": ["timer"],
-		"mem_loc": "???"
+		"mem_loc": "???",
+		"desc": "on delay timer"
       },
       {
         "name": "SS",
@@ -302,7 +316,8 @@
           }
         ],
         "mem_input": ["timer"],
-		"mem_loc": "???"
+		"mem_loc": "???",
+		"desc": "stored on delay timer"
       },
       {
         "name": "SF",
@@ -323,7 +338,8 @@
           }
         ],
         "mem_input": ["timer"],
-		"mem_loc": "???"
+		"mem_loc": "???",
+		"desc": "off delay timer"
       }
     ]
   },
@@ -349,7 +365,8 @@
           }
         ],
         "mem_input": ["counter"],
-		"mem_loc": "???"
+		"mem_loc": "???",
+		"desc": "up counter"
       },
       {
         "name": "CD",
@@ -370,7 +387,8 @@
           }
         ],
         "mem_input": ["counter"],
-		"mem_loc": "???"
+		"mem_loc": "???",
+		"desc": "down counter"
       }
     ]
   },
@@ -393,7 +411,8 @@
             "name": "IN2",
             "type": ["number"]
           }
-        ]
+        ],
+		"desc": "equal comparison"
       },
       {
         "name": "GT",
@@ -411,7 +430,8 @@
             "name": "IN2",
             "type": ["number"]
           }
-        ]
+        ],
+		"desc": "greater then comparison"
       },
       {
         "name": "LT",
@@ -429,7 +449,8 @@
             "name": "IN2",
             "type": ["number"]
           }
-        ]
+        ],
+		"desc": "lesser then comparison"
       },
       {
         "name": "GE",
@@ -447,7 +468,8 @@
             "name": "IN2",
             "type": ["number"]
           }
-        ]
+        ],
+		"desc": "greater/equal comparison"
       },
       {
         "name": "LE",
@@ -465,7 +487,8 @@
             "name": "IN2",
             "type": ["number"]
           }
-        ]
+        ],
+		"desc": "lesser/equal comparison"
       }
     ]
   },
@@ -480,7 +503,8 @@
         "output_type": "number",
         "dyn_inputs_type": ["number"],
         "dyn_inputs": true,
-		"mem_loc": " "
+		"mem_loc": " ",
+		"desc": "adding values"
       },
       {
         "name": "SUB",
@@ -490,7 +514,8 @@
         "output_type": "number",
         "dyn_inputs_type": ["number"],
         "dyn_inputs": true,
-		"mem_loc": " "
+		"mem_loc": " ",
+		"desc": "substracting values"
       },
       {
         "name": "MUL",
@@ -500,7 +525,8 @@
         "output_type": "number",
         "dyn_inputs_type": ["number"],
         "dyn_inputs": true,
-		"mem_loc": " "
+		"mem_loc": " ",
+		"desc": "multiplying values"
       },
       {
         "name": "DIV",
@@ -510,7 +536,8 @@
         "output_type": "number",
         "dyn_inputs_type": ["number"],
         "dyn_inputs": true,
-		"mem_loc": " "
+		"mem_loc": " ",
+		"desc": "dividing values"
       }
     ]
   }
