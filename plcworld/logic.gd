@@ -94,16 +94,19 @@ func _process(_delta: float) -> void:
 		
 		for key in _mem.keys():
 			var k:String = key
-			_prev_mem[k] = _mem[k]
+			_prev_mem[k] = str(_mem[k]["value"])
 			
 		for commandJson in _programListing:
 			var command: Dictionary = commandJson			
 			call(command["functionName"], command)
 		
 		for key in _mem.keys():
+			var newval: String
 			var k:String = key
-			if str(_mem[k]["value"]) != str(_prev_mem[k]["value"]):
-				variable_value_changed.emit(k, str(_prev_mem[key]), str(_mem[key]))			
+			newval = str(_mem[k]["value"])
+			if newval != _prev_mem[k]:
+				#print("compere: " + newval + "!=" + _prev_mem[k])
+				variable_value_changed.emit(k, _prev_mem[k], newval)			
 	
 
 func _on_send_data_timer():
@@ -121,7 +124,11 @@ func _on_simulation_button_button_up() -> void:
 #---------- CONST ----------	
 func setup_CONST(_data: Dictionary):
 	_rlo[_data["id"]] = int(_data["memoryAddr"])
-
+	
+#---------- VAR ----------
+func after_VAR(_data: Dictionary):
+	_rlo[_data["id"]] = getVariableValue(_data["memoryAddr"])
+	
 #---------- TIME ----------
 func setup_TIME(_data: Dictionary):
 	var regex = RegEx.create_from_string("\\d{1,6}")

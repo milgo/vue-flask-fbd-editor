@@ -53,9 +53,6 @@ func _on_logic_send_data(data: String) -> void:
 	pass
 
 func _on_timeout() -> void:
-	var new_ball = ball.instantiate()
-	new_ball.set_position(creator.get_position())
-	add_child(new_ball)
 	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -84,4 +81,7 @@ func _on_simulation_button_up() -> void:
 
 func _on_logic_variable_value_changed(memAddr: String, oldval: String, newval: String) -> void:
 	print("var " + memAddr + " changed from " + oldval + " to " + newval)
-	pass # Replace with function body.
+	if memAddr == "%o1" and newval == "1":
+		var new_ball = ball.instantiate()
+		new_ball.set_position(creator.get_position())
+		add_child(new_ball)

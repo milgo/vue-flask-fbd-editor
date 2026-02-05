@@ -8,9 +8,19 @@
         "input_only": true,
         "output_type": "bool",
         "dyn_inputs": false,
-        "mem_input": ["marker", "di"],
+        "mem_input": ["marker", "di", "do"],
 		"mem_loc": "???",
 		"desc": "digital input"
+      },
+	  {
+        "name": "VAR",
+        "alias": "",
+        "input_only": true,
+        "output_type": "number",
+        "dyn_inputs": false,
+        "mem_input": ["byte", "word", "dword", "counter", "timer"],
+		"mem_loc": "???",
+		"desc": "variable value"
       },
       {
         "name": "CONST",
