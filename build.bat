@@ -1,1 +1,1 @@
-npm run build && xcopy "plcworld\web-export\" "webservice\dist\plcworld\" /E
+npm run build && xcopy "plcworld\web-export\" "web\plcworld\" /E

@@ -7,7 +7,7 @@ export default defineConfig({
   build: {
 	  rollupOptions: {
 		  output: {
-			  dir: 'webservice/dist',
+			  dir: 'web/',
 			  entryFileNames: 'plugin.js',
 			  assetFileNames: (assetInfo) => {
 				if (assetInfo.name == 'styles-light.css')
