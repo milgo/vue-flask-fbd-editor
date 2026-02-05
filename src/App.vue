@@ -238,13 +238,13 @@
 		</td>
 		<td v-if="monitorTaskStart[statusdata.monitor]">
 			<input v-if="['marker', 'di', 'do', 'timer'].some((i) => i===(variable.type))" type="checkbox" id="forcedValue" :checked="variable.forcedValue === 1" v-on:input="toggleForceVariableValueBool(variable.id);" />
-			<VarInput v-else
-			:value="variable.forcedValue"
-			v-on:blur="variable.edit = false"
-            
-			@keyup.enter="forceValueHandler(variable.id, $event.target.value)"
-		  />
-		</td>
+		     <input v-else
+			 id="forcedValue"
+			 type="text"
+			 style="width: 90%; height: 100%"
+			 @focus="$event.target.select()"
+			 @keyup.enter="forceValueHandler(variable.id, $event.target.value)"/>
+			</td>
       </tr>
     </template>
   </table>
