@@ -814,6 +814,7 @@ const inputDialog = (msg) => {
 };
 
 const receiveMessage = (event) => {
+	console.log("shit")
 	var msgJson = JSON.parse(event.data)
 	if(msgJson["reciver"] === 'frontend'){
 		console.log("reciving")
