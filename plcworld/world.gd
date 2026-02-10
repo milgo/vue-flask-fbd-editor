@@ -6,7 +6,6 @@ static var game_count = 0
 @onready var creator: Node3D = get_node("Creator")
 @onready var ball = preload("res://ball.tscn")
 @onready var label: Label = get_node("/root/World/HUD/Label")
-@onready var simButton: Button = get_node("/root/World/HUD/SimulationButton")
 @onready var messageCallback: JavaScriptObject
 @onready var logic = $Logic
 
@@ -64,20 +63,6 @@ func _post_request() -> void:
 	#var headers = ["Content-Type: application/json"]
 	#$HTTPRequest.request(url, headers, HTTPClient.METHOD_POST, json)
 	pass
-
-func _on_show_description(desc: Variant) -> void:
-	label.text = desc	
-	pass # Replace with function body.
-
-func _on_simulation_button_up() -> void:
-	if(pullDataTimer.is_stopped()):
-		pullDataTimer.start()
-		simButton.text = "Stop Simulation"
-	else:		
-		pullDataTimer.stop()
-		simButton.text = "Start Simulation"
-	pass # Replace with function body.
-
 
 func _on_logic_variable_value_changed(memAddr: String, oldval: String, newval: String) -> void:
 	print("var " + memAddr + " changed from " + oldval + " to " + newval)

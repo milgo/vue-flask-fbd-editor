@@ -1,0 +1,406 @@
+[gd_scene load_steps=37 format=3 uid="uid://c6f0vndfmkhl3"]
+
+[ext_resource type="Script" uid="uid://d15k53v2qmioc" path="res://world.gd" id="1_a1q2r"]
+[ext_resource type="Script" uid="uid://bjik0b8ki40d8" path="res://logic.gd" id="2_77yi3"]
+[ext_resource type="Script" uid="uid://b0nh4n3seep18" path="res://detection_area_3d.gd" id="3_hr1cl"]
+[ext_resource type="Texture2D" uid="uid://d0ichm4rnsh6y" path="res://elevator-project/going_up_gray.png" id="4_1a6eo"]
+[ext_resource type="Texture2D" uid="uid://bk2q5llfs8u5s" path="res://elevator-project/down_button_normal.png" id="4_nreao"]
+[ext_resource type="Texture2D" uid="uid://q7cd5xwvymt6" path="res://elevator-project/0_normal.png" id="4_y5ghj"]
+[ext_resource type="Texture2D" uid="uid://crpudlmvn6fh2" path="res://elevator-project/0_pressed.png" id="5_3iwpb"]
+[ext_resource type="Texture2D" uid="uid://3b0svgildqs5" path="res://elevator-project/1_normal.png" id="5_hschd"]
+[ext_resource type="Texture2D" uid="uid://b4q4vqtxsecx2" path="res://elevator-project/going_down_gray.png" id="5_i41m5"]
+[ext_resource type="Texture2D" uid="uid://ci8x0i5jfqfwq" path="res://elevator-project/down_button_pressed.png" id="5_xu5fp"]
+[ext_resource type="Texture2D" uid="uid://leydmkeaq6ah" path="res://elevator-project/up_button_normal.png" id="5_ym41f"]
+[ext_resource type="Texture2D" uid="uid://myixv7rll2at" path="res://elevator-project/2_normal.png" id="6_3iwpb"]
+[ext_resource type="Texture2D" uid="uid://bp0xwx6tcm7um" path="res://elevator-project/3_normal.png" id="7_ee22d"]
+[ext_resource type="Texture2D" uid="uid://dngb1h3iojieo" path="res://elevator-project/up_button_pressed.png" id="7_xsk2a"]
+[ext_resource type="Texture2D" uid="uid://drdatdmkihxf8" path="res://elevator-project/1_pressed.png" id="7_ytpvu"]
+[ext_resource type="Texture2D" uid="uid://6es3d67ylbcc" path="res://elevator-project/open_normal.png" id="8_majop"]
+[ext_resource type="Texture2D" uid="uid://1uqxovo1fpw" path="res://elevator-project/close_normal.png" id="9_22c28"]
+[ext_resource type="Texture2D" uid="uid://ohkwg8ehxdfr" path="res://elevator-project/2_pressed.png" id="9_68702"]
+[ext_resource type="Texture2D" uid="uid://bj0fn1x87077w" path="res://elevator-project/3_pressed.png" id="11_nreao"]
+[ext_resource type="Texture2D" uid="uid://clqsc00g76clm" path="res://elevator-project/open_pressed.png" id="13_ym41f"]
+[ext_resource type="Texture2D" uid="uid://cpmacyvcuch2n" path="res://elevator-project/close_pressed.png" id="15_xu5fp"]
+
+[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_eta22"]
+
+[sub_resource type="Sky" id="Sky_ophbp"]
+sky_material = SubResource("PhysicalSkyMaterial_eta22")
+
+[sub_resource type="Environment" id="Environment_8y2xv"]
+background_mode = 2
+sky = SubResource("Sky_ophbp")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_77yi3"]
+albedo_color = Color(0.47058824, 0.76862746, 0.5529412, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_e2o6t"]
+material = SubResource("StandardMaterial3D_77yi3")
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_80nbo"]
+data = PackedVector3Array(0.5, -0.5, 0, -0.5, -0.5, 0, 0.5, 0.5, 0, -0.5, -0.5, 0, -0.5, 0.5, 0, 0.5, 0.5, 0)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_80nbo"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e2o6t"]
+transparency = 1
+albedo_color = Color(0, 0, 1, 0.388235)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_feb5d"]
+material = SubResource("StandardMaterial3D_e2o6t")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a1q2r"]
+albedo_color = Color(1, 0, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_77yi3"]
+material = SubResource("StandardMaterial3D_a1q2r")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hr1cl"]
+albedo_color = Color(0.47058824, 0.2, 0.5529412, 0.5019608)
+
+[sub_resource type="QuadMesh" id="QuadMesh_1ug6e"]
+material = SubResource("StandardMaterial3D_hr1cl")
+
+[sub_resource type="BoxMesh" id="BoxMesh_a1q2r"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_hr1cl"]
+
+[node name="World" type="Node3D"]
+script = ExtResource("1_a1q2r")
+
+[node name="Logic" type="Node" parent="."]
+script = ExtResource("2_77yi3")
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+
+[node name="PullDataTimer" type="Timer" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-0.70809346, 0.49930137, -0.49930137, 0, 0.7071068, 0.7071068, 0.7061187, 0.50069773, -0.50069773, -9.192, 22.496267, -9.1)
+top_level = true
+projection = 1
+size = 20.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_8y2xv")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.121869385, -0.9925461, -6.1057406e-08, -0.6932094, 0.08511539, 0.71569276, -0.7103581, 0.08722108, -0.6984153, -25, 4, -4)
+light_energy = 2.0
+light_indirect_energy = 5.0
+light_volumetric_fog_energy = 5.0
+shadow_enabled = true
+shadow_bias = 0.758
+
+[node name="Floor" type="Node3D" parent="."]
+transform = Transform3D(5, 0, 0, 0, -2.1855695e-07, 5, 0, -5, -2.1855695e-07, 0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 3.5527137e-15, 0, -3.5527137e-15, 1, 0, 0, 0)
+mesh = SubResource("QuadMesh_e2o6t")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Floor/MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor/MeshInstance3D/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_80nbo")
+
+[node name="Creator" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 21.3213, 0)
+
+[node name="Detector" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.28331, 0)
+
+[node name="LimitSwitch" type="Area3D" parent="Detector"]
+script = ExtResource("3_hr1cl")
+description = "krańcówka"
+memAddr = "%i1"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Detector/LimitSwitch"]
+shape = SubResource("CylinderShape3D_80nbo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Detector"]
+mesh = SubResource("CylinderMesh_feb5d")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD/VBoxContainer"]
+custom_minimum_size = Vector2(0, 620)
+layout_mode = 2
+size_flags_vertical = 8
+alignment = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="HUD/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer2"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="GoingUp" type="TextureRect" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+texture = ExtResource("4_1a6eo")
+
+[node name="GoingDown" type="TextureRect" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+texture = ExtResource("5_i41m5")
+
+[node name="MarginContainer2" type="MarginContainer" parent="HUD/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="VBoxContainer5" type="VBoxContainer" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer5"]
+layout_mode = 2
+text = "Level
+bnt."
+horizontal_alignment = 1
+
+[node name="Level3" type="VBoxContainer" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+alignment = 1
+
+[node name="DownButton" type="TextureButton" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level3"]
+layout_mode = 2
+texture_normal = ExtResource("4_nreao")
+texture_pressed = ExtResource("5_xu5fp")
+
+[node name="Level2" type="VBoxContainer" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+alignment = 1
+
+[node name="UpButton" type="TextureButton" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level2"]
+layout_mode = 2
+texture_normal = ExtResource("5_ym41f")
+texture_pressed = ExtResource("7_xsk2a")
+
+[node name="DownButton" type="TextureButton" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level2"]
+layout_mode = 2
+texture_normal = ExtResource("4_nreao")
+texture_pressed = ExtResource("5_xu5fp")
+
+[node name="Level1" type="VBoxContainer" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+alignment = 1
+
+[node name="UpButton" type="TextureButton" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level1"]
+layout_mode = 2
+texture_normal = ExtResource("5_ym41f")
+texture_pressed = ExtResource("7_xsk2a")
+
+[node name="DownButton" type="TextureButton" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level1"]
+layout_mode = 2
+texture_normal = ExtResource("4_nreao")
+texture_pressed = ExtResource("5_xu5fp")
+
+[node name="Level0" type="VBoxContainer" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+alignment = 1
+
+[node name="UpButton" type="TextureButton" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level0"]
+layout_mode = 2
+texture_normal = ExtResource("5_ym41f")
+texture_pressed = ExtResource("7_xsk2a")
+
+[node name="MarginContainer" type="MarginContainer" parent="HUD/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HUD/VBoxContainer"]
+layout_mode = 2
+text = "Elevator btn."
+
+[node name="ElevatorButtons" type="HBoxContainer" parent="HUD/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="0" type="TextureButton" parent="HUD/VBoxContainer/ElevatorButtons"]
+layout_mode = 2
+texture_normal = ExtResource("4_y5ghj")
+texture_pressed = ExtResource("5_3iwpb")
+
+[node name="1" type="TextureButton" parent="HUD/VBoxContainer/ElevatorButtons"]
+layout_mode = 2
+texture_normal = ExtResource("5_hschd")
+texture_pressed = ExtResource("7_ytpvu")
+
+[node name="2" type="TextureButton" parent="HUD/VBoxContainer/ElevatorButtons"]
+layout_mode = 2
+texture_normal = ExtResource("6_3iwpb")
+texture_pressed = ExtResource("9_68702")
+
+[node name="3" type="TextureButton" parent="HUD/VBoxContainer/ElevatorButtons"]
+layout_mode = 2
+texture_normal = ExtResource("7_ee22d")
+texture_pressed = ExtResource("11_nreao")
+
+[node name="OpenDoors" type="TextureButton" parent="HUD/VBoxContainer/ElevatorButtons"]
+layout_mode = 2
+texture_normal = ExtResource("8_majop")
+texture_pressed = ExtResource("13_ym41f")
+
+[node name="CloseDoors" type="TextureButton" parent="HUD/VBoxContainer/ElevatorButtons"]
+layout_mode = 2
+texture_normal = ExtResource("9_22c28")
+texture_pressed = ExtResource("15_xu5fp")
+
+[node name="Shaft" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Shaft"]
+transform = Transform3D(0.2, 0, 0, 0, 20, 0, 0, 0, 0.2, 2, 10, 2)
+mesh = SubResource("BoxMesh_77yi3")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Shaft"]
+transform = Transform3D(0.2, 0, 0, 0, 20, 0, 0, 0, 0.2, 2, 10, -2)
+mesh = SubResource("BoxMesh_77yi3")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Shaft"]
+transform = Transform3D(0.2, 0, 0, 0, 20, 0, 0, 0, 0.2, -2, 10, -2)
+mesh = SubResource("BoxMesh_77yi3")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Shaft"]
+transform = Transform3D(0.2, 0, 0, 0, 20, 0, 0, 0, 0.2, -2, 10, 2)
+mesh = SubResource("BoxMesh_77yi3")
+skeleton = NodePath("../..")
+
+[node name="Level01" type="Node3D" parent="Shaft"]
+transform = Transform3D(4, 0, 0, 0, -1.7484555e-07, 4, 0, -4, -1.7484555e-07, 0, 5, 0)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Shaft/Level01"]
+transform = Transform3D(1, 0, 0, 0, 1, 3.5527137e-15, 0, -3.5527137e-15, 1, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Shaft/Level01/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_80nbo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Shaft/Level01"]
+transform = Transform3D(0.05, 0, 0, 0, 1, 3.5527137e-15, 0, -3.5527137e-15, 1, -0.499, 0, 0)
+mesh = SubResource("QuadMesh_1ug6e")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Shaft/Level01"]
+transform = Transform3D(0.05, 0, 0, 0, 1, 3.5527137e-15, 0, -3.5527137e-15, 1, 0.503, 0, 0)
+mesh = SubResource("QuadMesh_1ug6e")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Shaft/Level01"]
+transform = Transform3D(-2.1855695e-09, -0.99999994, 0, 0.05, -4.3711385e-08, 0, 0, 0, 1, 0.005, 0.5, 0)
+mesh = SubResource("QuadMesh_1ug6e")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Shaft/Level01"]
+transform = Transform3D(-2.1855695e-09, -0.99999994, 0, 0.05, -4.3711385e-08, 0, 0, 0, 1, 0.005, -0.5, 0)
+mesh = SubResource("QuadMesh_1ug6e")
+
+[node name="Level02" type="Node3D" parent="Shaft"]
+transform = Transform3D(3.9999998, 0, 0, 0, -1.7484554e-07, 4, 0, -3.9999998, -1.7484555e-07, 0, 10, 0)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Shaft/Level02"]
+transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 3.5527137e-15, 0, -7.1054274e-15, 1, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Shaft/Level02/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_80nbo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Shaft/Level02"]
+transform = Transform3D(0.05, 0, 0, 0, 1, 3.5527137e-15, 0, -3.5527137e-15, 1, -0.499, 0, 0)
+mesh = SubResource("QuadMesh_1ug6e")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Shaft/Level02"]
+transform = Transform3D(0.05, 0, 0, 0, 1, 3.5527137e-15, 0, -3.5527137e-15, 1, 0.503, 0, 0)
+mesh = SubResource("QuadMesh_1ug6e")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Shaft/Level02"]
+transform = Transform3D(-2.1855695e-09, -0.99999994, 0, 0.05, -4.3711385e-08, 0, 0, 0, 1, 0.005, 0.5, 0)
+mesh = SubResource("QuadMesh_1ug6e")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Shaft/Level02"]
+transform = Transform3D(-2.1855695e-09, -0.99999994, 0, 0.05, -4.3711385e-08, 0, 0, 0, 1, 0.005, -0.5, 0)
+mesh = SubResource("QuadMesh_1ug6e")
+
+[node name="Level03" type="Node3D" parent="Shaft"]
+transform = Transform3D(3.9999998, 0, 0, 0, -1.7484554e-07, 4, 0, -3.9999998, -1.7484555e-07, 0, 15, 0)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Shaft/Level03"]
+transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 3.5527137e-15, 0, -7.1054274e-15, 1, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Shaft/Level03/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_80nbo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Shaft/Level03"]
+transform = Transform3D(0.05, 0, 0, 0, 1, 3.5527137e-15, 0, -3.5527137e-15, 1, -0.499, 0, 0)
+mesh = SubResource("QuadMesh_1ug6e")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Shaft/Level03"]
+transform = Transform3D(0.05, 0, 0, 0, 1, 3.5527137e-15, 0, -3.5527137e-15, 1, 0.503, 0, 0)
+mesh = SubResource("QuadMesh_1ug6e")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Shaft/Level03"]
+transform = Transform3D(-2.1855695e-09, -0.99999994, 0, 0.05, -4.3711385e-08, 0, 0, 0, 1, 0.005, 0.5, 0)
+mesh = SubResource("QuadMesh_1ug6e")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Shaft/Level03"]
+transform = Transform3D(-2.1855695e-09, -0.99999994, 0, 0.05, -4.3711385e-08, 0, 0, 0, 1, 0.005, -0.5, 0)
+mesh = SubResource("QuadMesh_1ug6e")
+
+[node name="Level04" type="Node3D" parent="Shaft"]
+transform = Transform3D(3.9999998, 0, 0, 0, -1.7484554e-07, 4, 0, -3.9999998, -1.7484555e-07, 0, 20, 0)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Shaft/Level04"]
+transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 3.5527137e-15, 0, -7.1054274e-15, 1, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Shaft/Level04/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_80nbo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Shaft/Level04"]
+transform = Transform3D(0.05, 0, 0, 0, 1, 3.5527137e-15, 0, -3.5527137e-15, 1, -0.499, 0, 0)
+mesh = SubResource("QuadMesh_1ug6e")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Shaft/Level04"]
+transform = Transform3D(0.05, 0, 0, 0, 1, 3.5527137e-15, 0, -3.5527137e-15, 1, 0.503, 0, 0)
+mesh = SubResource("QuadMesh_1ug6e")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Shaft/Level04"]
+transform = Transform3D(-2.1855695e-09, -0.99999994, 0, 0.05, -4.3711385e-08, 0, 0, 0, 1, 0.005, 0.5, 0)
+mesh = SubResource("QuadMesh_1ug6e")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Shaft/Level04"]
+transform = Transform3D(-2.1855695e-09, -0.99999994, 0, 0.05, -4.3711385e-08, 0, 0, 0, 1, 0.005, -0.5, 0)
+mesh = SubResource("QuadMesh_1ug6e")
+
+[node name="Elevator" type="Node3D" parent="."]
+
+[node name="Cabin" type="Node3D" parent="Elevator"]
+transform = Transform3D(3, 0, 0, 0, 5, 0, 0, 0, 3, 0, 2.5, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Elevator/Cabin"]
+mesh = SubResource("BoxMesh_a1q2r")
+
+[node name="Doors" type="Node3D" parent="Elevator"]
+transform = Transform3D(-4.371139e-09, 0, 3, 0, 5, 0, -0.1, 0, -1.3113416e-07, 1.028, 2.5, -1.6)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Elevator/Doors"]
+mesh = SubResource("BoxMesh_hr1cl")
+
+[connection signal="send_data" from="Logic" to="." method="_on_logic_send_data"]
+[connection signal="variable_value_changed" from="Logic" to="." method="_on_logic_variable_value_changed"]
+[connection signal="body_entered" from="Detector/LimitSwitch" to="Detector/LimitSwitch" method="_on_body_entered"]
+[connection signal="body_exited" from="Detector/LimitSwitch" to="Detector/LimitSwitch" method="_on_body_exited"]
+[connection signal="mouse_entered" from="Detector/LimitSwitch" to="Detector/LimitSwitch" method="_on_mouse_entered"]
+[connection signal="show_description" from="Detector/LimitSwitch" to="." method="_on_show_description"]
+[connection signal="state_changed" from="Detector/LimitSwitch" to="Logic" method="_on_digital_state_changed"]

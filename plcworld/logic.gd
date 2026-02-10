@@ -117,10 +117,7 @@ func _on_send_data_timer():
 	data_to_send["mem"] = _mem	
 	var jsonStr = JSON.stringify(data_to_send)
 	send_data.emit(jsonStr)	
-	
-func _on_simulation_button_button_up() -> void:
-	pass # Replace with function body.	
-	
+
 #---------- CONST ----------	
 func setup_CONST(_data: Dictionary):
 	_rlo[_data["id"]] = int(_data["memoryAddr"])
