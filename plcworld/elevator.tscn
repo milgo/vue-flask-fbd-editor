@@ -131,7 +131,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HUD/VBoxContainer"]
-custom_minimum_size = Vector2(0, 620)
+custom_minimum_size = Vector2(0, 500)
 layout_mode = 2
 size_flags_vertical = 8
 alignment = 2
@@ -152,7 +152,7 @@ layout_mode = 2
 texture = ExtResource("5_i41m5")
 
 [node name="MarginContainer2" type="MarginContainer" parent="HUD/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(240, 0)
+custom_minimum_size = Vector2(230, 0)
 layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HUD/VBoxContainer/HBoxContainer"]
@@ -170,7 +170,7 @@ bnt."
 horizontal_alignment = 1
 
 [node name="Level3" type="VBoxContainer" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 120)
+custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 alignment = 1
 
@@ -180,7 +180,7 @@ texture_normal = ExtResource("4_nreao")
 texture_pressed = ExtResource("5_xu5fp")
 
 [node name="Level2" type="VBoxContainer" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 120)
+custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 alignment = 1
 
@@ -195,7 +195,7 @@ texture_normal = ExtResource("4_nreao")
 texture_pressed = ExtResource("5_xu5fp")
 
 [node name="Level1" type="VBoxContainer" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 120)
+custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 alignment = 1
 
@@ -210,7 +210,7 @@ texture_normal = ExtResource("4_nreao")
 texture_pressed = ExtResource("5_xu5fp")
 
 [node name="Level0" type="VBoxContainer" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 120)
+custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 alignment = 1
 
