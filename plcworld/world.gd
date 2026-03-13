@@ -66,7 +66,7 @@ func _post_request() -> void:
 
 func _on_logic_variable_value_changed(memAddr: String, oldval: String, newval: String) -> void:
 	print("var " + memAddr + " changed from " + oldval + " to " + newval)
-	if memAddr == "%o1" and newval == "1":
-		var new_ball = ball.instantiate()
-		new_ball.set_position(creator.get_position())
-		add_child(new_ball)
+	#if memAddr == "%o1" and newval == "1":
+#		var new_ball = ball.instantiate()
+		#new_ball.set_position(creator.get_position())
+		#add_child(new_ball)

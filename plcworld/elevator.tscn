@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://c6f0vndfmkhl3"]
+[gd_scene load_steps=38 format=3 uid="uid://c6f0vndfmkhl3"]
 
 [ext_resource type="Script" uid="uid://d15k53v2qmioc" path="res://world.gd" id="1_a1q2r"]
 [ext_resource type="Script" uid="uid://bjik0b8ki40d8" path="res://logic.gd" id="2_77yi3"]
@@ -21,6 +21,7 @@
 [ext_resource type="Texture2D" uid="uid://bj0fn1x87077w" path="res://elevator-project/3_pressed.png" id="11_nreao"]
 [ext_resource type="Texture2D" uid="uid://clqsc00g76clm" path="res://elevator-project/open_pressed.png" id="13_ym41f"]
 [ext_resource type="Texture2D" uid="uid://cpmacyvcuch2n" path="res://elevator-project/close_pressed.png" id="15_xu5fp"]
+[ext_resource type="Script" uid="uid://caruk06r0k8pd" path="res://elevator.gd" id="22_i41m5"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_eta22"]
 
@@ -384,6 +385,7 @@ transform = Transform3D(-2.1855695e-09, -0.99999994, 0, 0.05, -4.3711385e-08, 0,
 mesh = SubResource("QuadMesh_1ug6e")
 
 [node name="Elevator" type="Node3D" parent="."]
+script = ExtResource("22_i41m5")
 
 [node name="Cabin" type="Node3D" parent="Elevator"]
 transform = Transform3D(3, 0, 0, 0, 5, 0, 0, 0, 3, 0, 2.5, 0)
@@ -399,6 +401,7 @@ mesh = SubResource("BoxMesh_hr1cl")
 
 [connection signal="send_data" from="Logic" to="." method="_on_logic_send_data"]
 [connection signal="variable_value_changed" from="Logic" to="." method="_on_logic_variable_value_changed"]
+[connection signal="variable_value_changed" from="Logic" to="Elevator" method="_on_logic_variable_value_changed"]
 [connection signal="body_entered" from="Detector/LimitSwitch" to="Detector/LimitSwitch" method="_on_body_entered"]
 [connection signal="body_exited" from="Detector/LimitSwitch" to="Detector/LimitSwitch" method="_on_body_exited"]
 [connection signal="mouse_entered" from="Detector/LimitSwitch" to="Detector/LimitSwitch" method="_on_mouse_entered"]
