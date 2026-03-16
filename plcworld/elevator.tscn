@@ -459,5 +459,7 @@ mesh = SubResource("BoxMesh_hr1cl")
 [connection signal="mouse_entered" from="Detector/LimitSwitch" to="Detector/LimitSwitch" method="_on_mouse_entered"]
 [connection signal="show_description" from="Detector/LimitSwitch" to="." method="_on_show_description"]
 [connection signal="state_changed" from="Detector/LimitSwitch" to="Logic" method="_on_digital_state_changed"]
+[connection signal="button_down" from="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level0/UpButton" to="." method="_on_button_down" binds= ["%i8"]]
+[connection signal="button_up" from="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level0/UpButton" to="." method="_on_button_up" binds= ["%i8"]]
 [connection signal="area_entered" from="Elevator/Cabin/MeshInstance3D/Area3D" to="." method="_on_level_limit_switch_area_entered"]
 [connection signal="area_exited" from="Elevator/Cabin/MeshInstance3D/Area3D" to="." method="_on_level_limit_switch_area_exited"]

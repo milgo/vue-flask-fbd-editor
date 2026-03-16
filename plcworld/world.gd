@@ -79,3 +79,13 @@ func _on_level_limit_switch_area_entered(area: Area3D) -> void:
 func _on_level_limit_switch_area_exited(area: Area3D) -> void:
 	if area.get_meta_list().has("DI"):
 		logic.set_var_value(area.get_meta("DI"), 0)
+
+
+func _on_button_down(extra_arg_0: String) -> void:
+	logic.set_var_value(extra_arg_0, 1)
+	pass # Replace with function body.
+
+
+func _on_button_up(extra_arg_0: String) -> void:
+	logic.set_var_value(extra_arg_0, 0)
+	pass # Replace with function body.
