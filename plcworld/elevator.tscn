@@ -225,6 +225,7 @@ alignment = 1
 layout_mode = 2
 texture_normal = ExtResource("5_ym41f")
 texture_pressed = ExtResource("7_xsk2a")
+metadata/DI = "%i8"
 
 [node name="MarginContainer" type="MarginContainer" parent="HUD/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(20, 0)
@@ -267,6 +268,40 @@ texture_pressed = ExtResource("13_ym41f")
 layout_mode = 2
 texture_normal = ExtResource("9_22c28")
 texture_pressed = ExtResource("15_xu5fp")
+
+[node name="MemDesc" type="Label" parent="HUD"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -200.0
+offset_right = 200.0
+offset_bottom = 595.0
+grow_horizontal = 2
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0, 1, 1, 1)
+text = "%i0 - level1 lim switch
+%i1 - level2 lim switch
+%i2 - level3 lim switch
+%i3 - level4 lim switch
+
+%i4 - level 0 elev. butt.
+%i5 - level 1 elev. butt.
+%i6 - level 2 elev. butt,
+%i7 - level 3 elev. butt.
+
+%i8 - call go up l0
+%i9 - call go down l1
+%i10 - call go up l1
+%i11 - call go down l2
+%i12 - call go up l2
+%i13 - call go down l3
+
+%o0 - elev. up
+%o1 - elev. down
+%o2 - going up ind.
+%o3 - going down ind.
+%o2 - open elev. door
+%o3 - close elev. door"
 
 [node name="Shaft" type="Node3D" parent="."]
 
@@ -396,6 +431,8 @@ mesh = SubResource("QuadMesh_1ug6e")
 
 [node name="Elevator" type="Node3D" parent="."]
 script = ExtResource("22_i41m5")
+metadata/UP = "%o0"
+metadata/DOWN = "%o1"
 
 [node name="Cabin" type="Node3D" parent="Elevator"]
 transform = Transform3D(3, 0, 0, 0, 5, 0, 0, 0, 3, 0, 2.5, 0)
