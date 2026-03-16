@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://c6f0vndfmkhl3"]
+[gd_scene load_steps=40 format=3 uid="uid://c6f0vndfmkhl3"]
 
 [ext_resource type="Script" uid="uid://d15k53v2qmioc" path="res://world.gd" id="1_a1q2r"]
 [ext_resource type="Script" uid="uid://bjik0b8ki40d8" path="res://logic.gd" id="2_77yi3"]
@@ -56,6 +56,9 @@ albedo_color = Color(1, 0, 1, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_77yi3"]
 material = SubResource("StandardMaterial3D_a1q2r")
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_i41m5"]
+size = Vector3(1, 1, 0.01)
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hr1cl"]
 albedo_color = Color(0.47058824, 0.2, 0.5529412, 0.5019608)
 
@@ -63,6 +66,9 @@ albedo_color = Color(0.47058824, 0.2, 0.5529412, 0.5019608)
 material = SubResource("StandardMaterial3D_hr1cl")
 
 [sub_resource type="BoxMesh" id="BoxMesh_a1q2r"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_i41m5"]
+points = PackedVector3Array(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5)
 
 [sub_resource type="BoxMesh" id="BoxMesh_hr1cl"]
 
@@ -285,13 +291,14 @@ mesh = SubResource("BoxMesh_77yi3")
 skeleton = NodePath("../..")
 
 [node name="Level01" type="Node3D" parent="Shaft"]
-transform = Transform3D(4, 0, 0, 0, -1.7484555e-07, 4, 0, -4, -1.7484555e-07, 0, 5, 0)
+transform = Transform3D(4, 0, 0, 0, -1.7484555e-07, 4, 0, -4, -1.7484555e-07, 0, 5.04, 0)
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Shaft/Level01"]
+[node name="LevelLimitSwitch" type="Area3D" parent="Shaft/Level01"]
 transform = Transform3D(1, 0, 0, 0, 1, 3.5527137e-15, 0, -3.5527137e-15, 1, 0, 0, 0)
+metadata/DI = "%i0"
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Shaft/Level01/StaticBody3D"]
-shape = SubResource("ConcavePolygonShape3D_80nbo")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Shaft/Level01/LevelLimitSwitch"]
+shape = SubResource("BoxShape3D_i41m5")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Shaft/Level01"]
 transform = Transform3D(0.05, 0, 0, 0, 1, 3.5527137e-15, 0, -3.5527137e-15, 1, -0.499, 0, 0)
@@ -310,13 +317,14 @@ transform = Transform3D(-2.1855695e-09, -0.99999994, 0, 0.05, -4.3711385e-08, 0,
 mesh = SubResource("QuadMesh_1ug6e")
 
 [node name="Level02" type="Node3D" parent="Shaft"]
-transform = Transform3D(3.9999998, 0, 0, 0, -1.7484554e-07, 4, 0, -3.9999998, -1.7484555e-07, 0, 10, 0)
+transform = Transform3D(3.9999998, 0, 0, 0, -1.7484554e-07, 4, 0, -3.9999998, -1.7484555e-07, 0, 10.04, 0)
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Shaft/Level02"]
+[node name="LevelLimitSwitch" type="Area3D" parent="Shaft/Level02"]
 transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 3.5527137e-15, 0, -7.1054274e-15, 1, 0, 0, 0)
+metadata/DI = "%i1"
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Shaft/Level02/StaticBody3D"]
-shape = SubResource("ConcavePolygonShape3D_80nbo")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Shaft/Level02/LevelLimitSwitch"]
+shape = SubResource("BoxShape3D_i41m5")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Shaft/Level02"]
 transform = Transform3D(0.05, 0, 0, 0, 1, 3.5527137e-15, 0, -3.5527137e-15, 1, -0.499, 0, 0)
@@ -335,13 +343,14 @@ transform = Transform3D(-2.1855695e-09, -0.99999994, 0, 0.05, -4.3711385e-08, 0,
 mesh = SubResource("QuadMesh_1ug6e")
 
 [node name="Level03" type="Node3D" parent="Shaft"]
-transform = Transform3D(3.9999998, 0, 0, 0, -1.7484554e-07, 4, 0, -3.9999998, -1.7484555e-07, 0, 15, 0)
+transform = Transform3D(3.9999998, 0, 0, 0, -1.7484554e-07, 4, 0, -3.9999998, -1.7484555e-07, 0, 15.04, 0)
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Shaft/Level03"]
-transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 3.5527137e-15, 0, -7.1054274e-15, 1, 0, 0, 0)
+[node name="LevelLimitSwitch" type="Area3D" parent="Shaft/Level03"]
+transform = Transform3D(0.9999999, 0, 0, 0, 0.9999999, 3.5527137e-15, 0, -7.1054274e-15, 1, 0, 0, 0)
+metadata/DI = "%i2"
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Shaft/Level03/StaticBody3D"]
-shape = SubResource("ConcavePolygonShape3D_80nbo")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Shaft/Level03/LevelLimitSwitch"]
+shape = SubResource("BoxShape3D_i41m5")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Shaft/Level03"]
 transform = Transform3D(0.05, 0, 0, 0, 1, 3.5527137e-15, 0, -3.5527137e-15, 1, -0.499, 0, 0)
@@ -360,13 +369,14 @@ transform = Transform3D(-2.1855695e-09, -0.99999994, 0, 0.05, -4.3711385e-08, 0,
 mesh = SubResource("QuadMesh_1ug6e")
 
 [node name="Level04" type="Node3D" parent="Shaft"]
-transform = Transform3D(3.9999998, 0, 0, 0, -1.7484554e-07, 4, 0, -3.9999998, -1.7484555e-07, 0, 20, 0)
+transform = Transform3D(3.9999998, 0, 0, 0, -1.7484554e-07, 4, 0, -3.9999998, -1.7484555e-07, 0, 20.04, 0)
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Shaft/Level04"]
-transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 3.5527137e-15, 0, -7.1054274e-15, 1, 0, 0, 0)
+[node name="LevelLimitSwitch" type="Area3D" parent="Shaft/Level04"]
+transform = Transform3D(0.9999999, 0, 0, 0, 0.9999999, 3.5527137e-15, 0, -7.1054274e-15, 1, 0, 0, 0)
+metadata/DI = "%i3"
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Shaft/Level04/StaticBody3D"]
-shape = SubResource("ConcavePolygonShape3D_80nbo")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Shaft/Level04/LevelLimitSwitch"]
+shape = SubResource("BoxShape3D_i41m5")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Shaft/Level04"]
 transform = Transform3D(0.05, 0, 0, 0, 1, 3.5527137e-15, 0, -3.5527137e-15, 1, -0.499, 0, 0)
@@ -393,6 +403,11 @@ transform = Transform3D(3, 0, 0, 0, 5, 0, 0, 0, 3, 0, 2.5, 0)
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Elevator/Cabin"]
 mesh = SubResource("BoxMesh_a1q2r")
 
+[node name="Area3D" type="Area3D" parent="Elevator/Cabin/MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Elevator/Cabin/MeshInstance3D/Area3D"]
+shape = SubResource("ConvexPolygonShape3D_i41m5")
+
 [node name="Doors" type="Node3D" parent="Elevator"]
 transform = Transform3D(-4.371139e-09, 0, 3, 0, 5, 0, -0.1, 0, -1.3113416e-07, 1.028, 2.5, -1.6)
 
@@ -407,3 +422,5 @@ mesh = SubResource("BoxMesh_hr1cl")
 [connection signal="mouse_entered" from="Detector/LimitSwitch" to="Detector/LimitSwitch" method="_on_mouse_entered"]
 [connection signal="show_description" from="Detector/LimitSwitch" to="." method="_on_show_description"]
 [connection signal="state_changed" from="Detector/LimitSwitch" to="Logic" method="_on_digital_state_changed"]
+[connection signal="area_entered" from="Elevator/Cabin/MeshInstance3D/Area3D" to="." method="_on_level_limit_switch_area_entered"]
+[connection signal="area_exited" from="Elevator/Cabin/MeshInstance3D/Area3D" to="." method="_on_level_limit_switch_area_exited"]

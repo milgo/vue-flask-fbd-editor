@@ -5,7 +5,7 @@ static var game_count = 0
 
 @onready var creator: Node3D = get_node("Creator")
 @onready var ball = preload("res://ball.tscn")
-@onready var label: Label = get_node("/root/World/HUD/Label")
+#@onready var label: Label = get_node("/root/World/HUD/Label")
 @onready var messageCallback: JavaScriptObject
 @onready var logic = $Logic
 
@@ -70,3 +70,12 @@ func _on_logic_variable_value_changed(memAddr: String, oldval: String, newval: S
 #		var new_ball = ball.instantiate()
 		#new_ball.set_position(creator.get_position())
 		#add_child(new_ball)
+
+func _on_level_limit_switch_area_entered(area: Area3D) -> void:
+	if area.get_meta_list().has("DI"):
+		logic.set_var_value(area.get_meta("DI"), 1)
+
+
+func _on_level_limit_switch_area_exited(area: Area3D) -> void:
+	if area.get_meta_list().has("DI"):
+		logic.set_var_value(area.get_meta("DI"), 0)

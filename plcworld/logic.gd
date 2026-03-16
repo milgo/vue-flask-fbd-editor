@@ -79,11 +79,14 @@ func execute(json):
 				_mem[fvar["name"]]["forced"] = fvar["forced"]
 				_mem[fvar["name"]]["forcedValue"] = fvar["forcedValue"]
 
-func getVariableValue(memoryAddr:String):
+func get_var_value(memoryAddr:String):
 	if _mem[memoryAddr].has("forced") and _mem[memoryAddr].has("forcedValue"):
 		if _mem[memoryAddr]["forced"] == 1:
 			return _mem[memoryAddr]["forcedValue"]
 	return _mem[memoryAddr]["value"]
+
+func set_var_value(memoryAddr:String, value:Variant):
+	_mem[memoryAddr]["value"] = value
 
 func _on_digital_state_changed(memAddr: String, state: int) -> void:
 	_mem[memAddr]["value"] = state
@@ -108,7 +111,6 @@ func _process(_delta: float) -> void:
 				#print("compere: " + newval + "!=" + _prev_mem[k])
 				variable_value_changed.emit(k, _prev_mem[k], newval)			
 	
-
 func _on_send_data_timer():
 	var data_to_send : Dictionary
 	data_to_send["command"] = "monitorOn"
@@ -124,7 +126,7 @@ func setup_CONST(_data: Dictionary):
 	
 #---------- VAR ----------
 func after_VAR(_data: Dictionary):
-	_rlo[_data["id"]] = getVariableValue(_data["memoryAddr"])
+	_rlo[_data["id"]] = get_var_value(_data["memoryAddr"])
 	
 #---------- TIME ----------
 func setup_TIME(_data: Dictionary):
@@ -141,11 +143,11 @@ func setup_DIN(_data: Dictionary):
 	pass
 
 func before_DIN(_data: Dictionary):
-	_mem[_data["id"]]["value"]  = getVariableValue(_data["memoryAddr"])
+	_mem[_data["id"]]["value"]  = get_var_value(_data["memoryAddr"])
 	
 func after_DIN(_data: Dictionary):
 	_rlo[_data["id"]] = _mem[_data["id"]]["value"] 
-	_mem[_data["memoryAddr"]]["monitorData"] = _FalseTrue[getVariableValue(_data["memoryAddr"])]
+	_mem[_data["memoryAddr"]]["monitorData"] = _FalseTrue[get_var_value(_data["memoryAddr"])]
 	
 #---------- AND ----------
 func before_AND(_data: Dictionary):
@@ -203,7 +205,7 @@ func after_SET_INPUT(_data: Dictionary):
 		_mem[_data["memoryAddr"]]["value"]  = 1
 
 func after_SET(_data: Dictionary):
-	_rlo[_data["id"]] = getVariableValue(_data["memoryAddr"])
+	_rlo[_data["id"]] = get_var_value(_data["memoryAddr"])
 	_mem[_data["memoryAddr"]]["monitorData"] = _FalseTrue[_mem[_data["memoryAddr"]]["value"]]
 	
 #---------- RESET ----------
@@ -215,7 +217,7 @@ func after_RESET_INPUT(_data: Dictionary):
 		_mem[_data["memoryAddr"]]["value"]  = 0
 
 func after_RESET(_data: Dictionary):
-	_rlo[_data["id"]] = getVariableValue(_data["memoryAddr"])
+	_rlo[_data["id"]] = get_var_value(_data["memoryAddr"])
 	_mem[_data["memoryAddr"]]["monitorData"] = _FalseTrue[_mem[_data["memoryAddr"]]["value"]]
 #---------- SET/RESET ----------
 func before_SR(_data: Dictionary):
@@ -230,7 +232,7 @@ func after_SR_INPUT(_data: Dictionary):
 			_mem[_data["memoryAddr"]]["value"]  = 0
 
 func after_SR(_data: Dictionary):
-	_rlo[_data["id"]] = getVariableValue(_data["memoryAddr"]) 
+	_rlo[_data["id"]] = get_var_value(_data["memoryAddr"]) 
 	_mem[_data["memoryAddr"]]["monitorData"] = _FalseTrue[_mem[_data["memoryAddr"]]["value"]]
 	
 #---------- RESET/SET ----------
@@ -247,7 +249,7 @@ func after_RS_INPUT(_data: Dictionary):
 			_mem[_data["memoryAddr"]]["value"]  = 1
 
 func after_RS(_data: Dictionary):
-	_rlo[_data["id"]] = getVariableValue(_data["memoryAddr"])
+	_rlo[_data["id"]] = get_var_value(_data["memoryAddr"])
 	_mem[_data["memoryAddr"]]["monitorData"] = _FalseTrue[_mem[_data["memoryAddr"]]["value"]]
 #---------- FP ----------
 func before_FP(_data: Dictionary):
@@ -283,8 +285,8 @@ func after_MOVE_INPUT(_data: Dictionary):
 	_mem[_data["memoryAddr"]]["value"] = _rlo[_data["connNodeId"]]
 
 func after_MOVE(_data: Dictionary):
-	_rlo[_data["id"]] = getVariableValue(_data["memoryAddr"])
-	_mem[_data["memoryAddr"]]["monitorData"] = getVariableValue(_data["memoryAddr"])
+	_rlo[_data["id"]] = get_var_value(_data["memoryAddr"])
+	_mem[_data["memoryAddr"]]["monitorData"] = get_var_value(_data["memoryAddr"])
 	
 #---------- SP ----------
 func setup_SP(_data: Dictionary):
@@ -319,7 +321,7 @@ func after_SP_INPUT(_data: Dictionary):
 		_mem[_data["memoryAddr"]]["duration"] = int(_rlo[_data["connNodeId"]])
 
 func after_SP(_data: Dictionary):
-	_rlo[_data["id"]] = getVariableValue(_data["memoryAddr"])
+	_rlo[_data["id"]] = get_var_value(_data["memoryAddr"])
 	_mem[_data["memoryAddr"]]["monitorData"] = _mem[_data["memoryAddr"]]["elapsedTime"]
 
 #---------- SE ----------
@@ -361,7 +363,7 @@ func after_SE_INPUT(_data: Dictionary):
 		_mem[_data["memoryAddr"]]["duration"] = int(_rlo[_data["connNodeId"]])
 
 func after_SE(_data: Dictionary):
-	_rlo[_data["id"]] = getVariableValue(_data["memoryAddr"])
+	_rlo[_data["id"]] = get_var_value(_data["memoryAddr"])
 	_mem[_data["memoryAddr"]]["monitorData"] = _mem[_data["memoryAddr"]]["elapsedTime"]
 
 #---------- SD ----------
@@ -397,7 +399,7 @@ func after_SD_INPUT(_data: Dictionary):
 		_mem[_data["memoryAddr"]]["duration"] = int(_rlo[_data["connNodeId"]])
 
 func after_SD(_data: Dictionary):
-	_rlo[_data["id"]] = getVariableValue(_data["memoryAddr"])
+	_rlo[_data["id"]] = get_var_value(_data["memoryAddr"])
 	_mem[_data["memoryAddr"]]["monitorData"] = _mem[_data["memoryAddr"]]["elapsedTime"]
 
 #---------- SS ----------
@@ -435,7 +437,7 @@ func after_SS_INPUT(_data: Dictionary):
 		_mem[_data["memoryAddr"]]["duration"] = int(_rlo[_data["connNodeId"]])
 
 func after_SS(_data: Dictionary):
-	_rlo[_data["id"]] = getVariableValue(_data["memoryAddr"])
+	_rlo[_data["id"]] = get_var_value(_data["memoryAddr"])
 	_mem[_data["memoryAddr"]]["monitorData"] = _mem[_data["memoryAddr"]]["elapsedTime"]
 
 #---------- SF ----------
@@ -486,7 +488,7 @@ func after_CU_INPUT(_data: Dictionary):
 		if _rlo[_data["connNodeId"]] == 1:
 			if _mem[_data["memoryAddr"]]["edge"] == 0:				
 				_mem[_data["memoryAddr"]]["value"] = _mem[_data["memoryAddr"]]["value"] + 1
-				_mem[_data["memoryAddr"]]["monitorData"] = getVariableValue(_data["memoryAddr"])
+				_mem[_data["memoryAddr"]]["monitorData"] = get_var_value(_data["memoryAddr"])
 				_mem[_data["memoryAddr"]]["edge"] = 1
 		else:
 			_mem[_data["memoryAddr"]]["edge"] = 0
@@ -497,7 +499,7 @@ func after_CU_INPUT(_data: Dictionary):
 			_mem[_data["memoryAddr"]]["monitorData"] = 0
 
 func after_CU(_data: Dictionary):
-	_rlo[_data["id"]] = getVariableValue(_data["memoryAddr"])
+	_rlo[_data["id"]] = get_var_value(_data["memoryAddr"])
 	
 #---------- CD ----------
 func setup_CD(_data: Dictionary):
@@ -508,7 +510,7 @@ func after_CD_INPUT(_data: Dictionary):
 		if _rlo[_data["connNodeId"]] == 1:
 			if _mem[_data["memoryAddr"]]["edge"] == 0:				
 				_mem[_data["memoryAddr"]]["value"] = _mem[_data["memoryAddr"]]["value"] - 1
-				_mem[_data["memoryAddr"]]["monitorData"] = getVariableValue(_data["memoryAddr"])
+				_mem[_data["memoryAddr"]]["monitorData"] = get_var_value(_data["memoryAddr"])
 				_mem[_data["memoryAddr"]]["edge"] = 1
 		else:
 			_mem[_data["memoryAddr"]]["edge"] = 0
@@ -519,7 +521,7 @@ func after_CD_INPUT(_data: Dictionary):
 			_mem[_data["memoryAddr"]]["monitorData"] = 0
 			
 func after_CD(_data: Dictionary):
-	_rlo[_data["id"]] = getVariableValue(_data["memoryAddr"])
+	_rlo[_data["id"]] = get_var_value(_data["memoryAddr"])
 	
 #---------- EQ ----------
 func setup_EQ(_data: Dictionary):
