@@ -388,6 +388,15 @@ const buildListing = (data) => {
         id: element.id.toString(),
       });
   });
+  
+  variablesdata.value.forEach((v) => {
+	  setuplisting.value.push({
+        functionName: "setup_MEM",
+		memoryAddr: v.name,
+        data: v,
+      });
+  });
+  
   //program listing
   data.forEach((element) => {
     if (element.parentInput === null) {

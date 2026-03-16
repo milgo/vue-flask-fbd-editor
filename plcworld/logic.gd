@@ -120,6 +120,10 @@ func _on_send_data_timer():
 	var jsonStr = JSON.stringify(data_to_send)
 	send_data.emit(jsonStr)	
 
+#---------- SETUP MEM ----------	
+func setup_MEM(_data: Dictionary):
+	_mem[_data["memoryAddr"]] = {"value" : 0}
+
 #---------- CONST ----------	
 func setup_CONST(_data: Dictionary):
 	_rlo[_data["id"]] = int(_data["memoryAddr"])
