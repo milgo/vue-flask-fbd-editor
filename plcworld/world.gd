@@ -14,6 +14,7 @@ var window: JavaScriptObject
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	
+	$HUD/MemDesc.visible = false
 	window = JavaScriptBridge.get_interface("window")
 	messageCallback = JavaScriptBridge.create_callback(_on_message_received)
 	pullDataTimer.timeout.connect(_on_timeout)
@@ -88,4 +89,14 @@ func _on_button_down(extra_arg_0: String) -> void:
 
 func _on_button_up(extra_arg_0: String) -> void:
 	logic.set_var_value(extra_arg_0, 0)
+	pass # Replace with function body.
+
+
+func _on_info_button_button_down() -> void:
+	$HUD/MemDesc.visible = true
+	pass # Replace with function body.
+
+
+func _on_info_button_button_up() -> void:
+	$HUD/MemDesc.visible = false
 	pass # Replace with function body.

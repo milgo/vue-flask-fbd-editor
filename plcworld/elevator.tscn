@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://c6f0vndfmkhl3"]
+[gd_scene load_steps=42 format=3 uid="uid://c6f0vndfmkhl3"]
 
 [ext_resource type="Script" uid="uid://d15k53v2qmioc" path="res://world.gd" id="1_a1q2r"]
 [ext_resource type="Script" uid="uid://bjik0b8ki40d8" path="res://logic.gd" id="2_77yi3"]
@@ -22,6 +22,8 @@
 [ext_resource type="Texture2D" uid="uid://clqsc00g76clm" path="res://elevator-project/open_pressed.png" id="13_ym41f"]
 [ext_resource type="Texture2D" uid="uid://cpmacyvcuch2n" path="res://elevator-project/close_pressed.png" id="15_xu5fp"]
 [ext_resource type="Script" uid="uid://caruk06r0k8pd" path="res://elevator.gd" id="22_i41m5"]
+[ext_resource type="Texture2D" uid="uid://d18wlfthkat0p" path="res://elevator-project/i_nromal.png" id="22_irklk"]
+[ext_resource type="Texture2D" uid="uid://b4quoyewoxdgy" path="res://elevator-project/i_pressed.png" id="23_pg1wk"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_eta22"]
 
@@ -269,6 +271,13 @@ layout_mode = 2
 texture_normal = ExtResource("9_22c28")
 texture_pressed = ExtResource("15_xu5fp")
 
+[node name="TextureButton" type="TextureButton" parent="HUD"]
+offset_right = 400.0
+offset_bottom = 15.0
+size_flags_horizontal = 8
+texture_normal = ExtResource("22_irklk")
+texture_pressed = ExtResource("23_pg1wk")
+
 [node name="MemDesc" type="Label" parent="HUD"]
 anchors_preset = 5
 anchor_left = 0.5
@@ -277,6 +286,7 @@ offset_left = -200.0
 offset_right = 200.0
 offset_bottom = 595.0
 grow_horizontal = 2
+size_flags_horizontal = 0
 size_flags_vertical = 0
 theme_override_colors/font_color = Color(0, 1, 1, 1)
 text = "%i0 - level1 lim switch
@@ -461,5 +471,7 @@ mesh = SubResource("BoxMesh_hr1cl")
 [connection signal="state_changed" from="Detector/LimitSwitch" to="Logic" method="_on_digital_state_changed"]
 [connection signal="button_down" from="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level0/UpButton" to="." method="_on_button_down" binds= ["%i8"]]
 [connection signal="button_up" from="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level0/UpButton" to="." method="_on_button_up" binds= ["%i8"]]
+[connection signal="button_down" from="HUD/TextureButton" to="." method="_on_info_button_button_down"]
+[connection signal="button_up" from="HUD/TextureButton" to="." method="_on_info_button_button_up"]
 [connection signal="area_entered" from="Elevator/Cabin/MeshInstance3D/Area3D" to="." method="_on_level_limit_switch_area_entered"]
 [connection signal="area_exited" from="Elevator/Cabin/MeshInstance3D/Area3D" to="." method="_on_level_limit_switch_area_exited"]

@@ -24,14 +24,15 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      inkscape:zoom="0.71370863"
-     inkscape:cx="576.56582"
-     inkscape:cy="327.16432"
+     inkscape:cx="419.63903"
+     inkscape:cy="775.52656"
      inkscape:window-width="1280"
      inkscape:window-height="1377"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer1" />
+     inkscape:current-layer="layer1"
+     showgrid="false" />
   <defs
      id="defs1" />
   <g
@@ -212,6 +213,52 @@
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#ffffff;stroke-width:0.14"
          x="77.911179"
          y="103.82488">P</tspan></text>
+    <rect
+       style="fill:#808080;fill-opacity:1;stroke-width:0.14"
+       id="rect1-89-8"
+       width="30.407764"
+       height="30.407764"
+       x="144.11124"
+       y="227.15018"
+       rx="5"
+       ry="5"
+       inkscape:export-filename="0_pressed.png"
+       inkscape:export-xdpi="50.118778"
+       inkscape:export-ydpi="50.118778" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:19.7556px;font-family:Calibri;-inkscape-font-specification:Calibri;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;stroke-width:0.14"
+       x="156.60451"
+       y="249.58395"
+       id="text3-2-2"><tspan
+         sodipodi:role="line"
+         id="tspan3-7-4"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#ffffff;stroke-width:0.14"
+         x="156.60451"
+         y="249.58395">i</tspan></text>
+    <rect
+       style="fill:#b3b3b3;fill-opacity:1;stroke-width:0.14"
+       id="rect1-89-8-1"
+       width="30.407764"
+       height="30.407764"
+       x="142.63278"
+       y="262.07657"
+       rx="5"
+       ry="5"
+       inkscape:export-filename="0_pressed.png"
+       inkscape:export-xdpi="50.118778"
+       inkscape:export-ydpi="50.118778" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:19.7556px;font-family:Calibri;-inkscape-font-specification:Calibri;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;stroke-width:0.14"
+       x="155.12605"
+       y="284.51035"
+       id="text3-2-2-1"><tspan
+         sodipodi:role="line"
+         id="tspan3-7-4-5"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#ffffff;stroke-width:0.14"
+         x="155.12605"
+         y="284.51035">i</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:19.7556px;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;stroke-width:0.14"
