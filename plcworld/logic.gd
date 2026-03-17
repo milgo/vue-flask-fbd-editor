@@ -108,7 +108,6 @@ func _process(_delta: float) -> void:
 			var k:String = key
 			newval = str(_mem[k]["value"])
 			if newval != _prev_mem[k]:
-				#print("compere: " + newval + "!=" + _prev_mem[k])
 				variable_value_changed.emit(k, _prev_mem[k], newval)			
 	
 func _on_send_data_timer():

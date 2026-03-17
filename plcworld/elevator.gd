@@ -9,20 +9,19 @@ func _ready() -> void:
 	_goingDown = false
 
 func _on_logic_variable_value_changed(memAddr: String, oldval: String, newval: String) -> void:
-	print("testing 123: "+memAddr+" "+newval)
+	var newvalf = float(newval)
 	if memAddr.to_lower() == get_meta("UP"):
-		if newval == "1.0":
+		if newvalf == 1.0:
 			_goingUp = true
 			_goingDown = false
-		if newval == "0.0":
+		if newvalf == 0.0:
 			_goingUp = false
 			_goingDown = false
-		
 	if memAddr.to_lower() == get_meta("DOWN"):
-		if newval == "1.0":
+		if newvalf == 1.0:
 			_goingUp = false
 			_goingDown = true
-		if newval == "0.0":
+		if newvalf == 0.0:
 			_goingUp = false
 			_goingDown = false
 			
