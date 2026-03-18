@@ -222,12 +222,12 @@ texture_pressed = ExtResource("5_xu5fp")
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 alignment = 1
+metadata/DI = "%i10"
 
 [node name="UpButton" type="TextureButton" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level0"]
 layout_mode = 2
 texture_normal = ExtResource("5_ym41f")
 texture_pressed = ExtResource("7_xsk2a")
-metadata/DI = "%i8"
 
 [node name="MarginContainer" type="MarginContainer" parent="HUD/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(20, 0)
@@ -289,6 +289,8 @@ grow_horizontal = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 theme_override_colors/font_color = Color(0, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
 text = "%i0 - level1 lim switch
 %i1 - level2 lim switch
 %i2 - level3 lim switch
@@ -296,15 +298,17 @@ text = "%i0 - level1 lim switch
 
 %i4 - level 0 elev. butt.
 %i5 - level 1 elev. butt.
-%i6 - level 2 elev. butt,
+%i6 - level 2 elev. butt.
 %i7 - level 3 elev. butt.
+%i8 - elev. open door
+%i9 - elev. close doors
 
-%i8 - call go up l0
-%i9 - call go down l1
-%i10 - call go up l1
-%i11 - call go down l2
-%i12 - call go up l2
-%i13 - call go down l3
+%i10 - call go up l0
+%i11 - call go down l1
+%i12 - call go up l1
+%i13 - call go down l2
+%i14 - call go up l2
+%i15 - call go down l3
 
 %o0 - elev. up
 %o1 - elev. down
@@ -469,8 +473,30 @@ mesh = SubResource("BoxMesh_hr1cl")
 [connection signal="mouse_entered" from="Detector/LimitSwitch" to="Detector/LimitSwitch" method="_on_mouse_entered"]
 [connection signal="show_description" from="Detector/LimitSwitch" to="." method="_on_show_description"]
 [connection signal="state_changed" from="Detector/LimitSwitch" to="Logic" method="_on_digital_state_changed"]
-[connection signal="button_down" from="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level0/UpButton" to="." method="_on_button_down" binds= ["%i8"]]
-[connection signal="button_up" from="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level0/UpButton" to="." method="_on_button_up" binds= ["%i8"]]
+[connection signal="button_down" from="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level3/DownButton" to="." method="_on_button_down" binds= ["%i15"]]
+[connection signal="button_up" from="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level3/DownButton" to="." method="_on_button_up" binds= ["%i15"]]
+[connection signal="button_down" from="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level2/UpButton" to="." method="_on_button_down" binds= ["%i14"]]
+[connection signal="button_up" from="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level2/UpButton" to="." method="_on_button_up" binds= ["%i14"]]
+[connection signal="button_down" from="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level2/DownButton" to="." method="_on_button_down" binds= ["%i13"]]
+[connection signal="button_up" from="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level2/DownButton" to="." method="_on_button_up" binds= ["%i13"]]
+[connection signal="button_down" from="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level1/UpButton" to="." method="_on_button_down" binds= ["%i12"]]
+[connection signal="button_up" from="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level1/UpButton" to="." method="_on_button_up" binds= ["%i12"]]
+[connection signal="button_down" from="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level1/DownButton" to="." method="_on_button_down" binds= ["%i11"]]
+[connection signal="button_up" from="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level1/DownButton" to="." method="_on_button_up" binds= ["%i11"]]
+[connection signal="button_down" from="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level0/UpButton" to="." method="_on_button_down" binds= ["%i10"]]
+[connection signal="button_up" from="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level0/UpButton" to="." method="_on_button_up" binds= ["%i10"]]
+[connection signal="button_down" from="HUD/VBoxContainer/ElevatorButtons/0" to="." method="_on_button_down" binds= ["%i4"]]
+[connection signal="button_up" from="HUD/VBoxContainer/ElevatorButtons/0" to="." method="_on_button_up" binds= ["%i4"]]
+[connection signal="button_down" from="HUD/VBoxContainer/ElevatorButtons/1" to="." method="_on_button_down" binds= ["%i5"]]
+[connection signal="button_up" from="HUD/VBoxContainer/ElevatorButtons/1" to="." method="_on_button_up" binds= ["%i5"]]
+[connection signal="button_down" from="HUD/VBoxContainer/ElevatorButtons/2" to="." method="_on_button_down" binds= ["%i6"]]
+[connection signal="button_up" from="HUD/VBoxContainer/ElevatorButtons/2" to="." method="_on_button_up" binds= ["%i6"]]
+[connection signal="button_down" from="HUD/VBoxContainer/ElevatorButtons/3" to="." method="_on_button_down" binds= ["%i7"]]
+[connection signal="button_up" from="HUD/VBoxContainer/ElevatorButtons/3" to="." method="_on_button_up" binds= ["%i7"]]
+[connection signal="button_down" from="HUD/VBoxContainer/ElevatorButtons/OpenDoors" to="." method="_on_button_down" binds= ["%i8"]]
+[connection signal="button_up" from="HUD/VBoxContainer/ElevatorButtons/OpenDoors" to="." method="_on_button_up" binds= ["%i8"]]
+[connection signal="button_down" from="HUD/VBoxContainer/ElevatorButtons/CloseDoors" to="." method="_on_button_down" binds= ["%i9"]]
+[connection signal="button_up" from="HUD/VBoxContainer/ElevatorButtons/CloseDoors" to="." method="_on_button_up" binds= ["%i9"]]
 [connection signal="button_down" from="HUD/TextureButton" to="." method="_on_info_button_button_down"]
 [connection signal="button_up" from="HUD/TextureButton" to="." method="_on_info_button_button_up"]
 [connection signal="area_entered" from="Elevator/Cabin/MeshInstance3D/Area3D" to="." method="_on_level_limit_switch_area_entered"]

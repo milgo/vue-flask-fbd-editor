@@ -51,7 +51,7 @@
 		 
 <hr class="hr-normal">
 
-<div class="fixed mem_table" v-if="monitorTaskStart[statusdata.monitor]">
+<!-- <div class="fixed mem_table" v-if="monitorTaskStart[statusdata.monitor]">
 	<table>
     <tr>
       <th>Ctrl.</th>
@@ -73,7 +73,7 @@
     </template>
 	
   </table>
-</div>
+</div> -->
 <br/>
   <table width="100%">
   <tr>
@@ -173,7 +173,7 @@
 	  <th v-if="monitorTaskStart[statusdata.monitor]">Forced value</th>
     </tr>
 
-    <template v-for="variable in variablesdata.filter((v) => variableTypesVisibleWhenMonitorOnOff[statusdata.monitor].some((i) => i===(v.type)))">
+    <template v-for="variable in variablesdata.filter((v) => variableTypesVisibleWhenMonitorOnOff[statusdata.monitor].some((i) => i===(v.type))).sort((a,b) => {if(a.name < b.name) return -1; if(a.name > b.name) return 1; return 0;})">
       <tr v-if="variable.monitor === true">
         <td>{{ variable.name }}</td>
         <td>{{ variable.type }}</td>
@@ -255,18 +255,21 @@
     v-model="selected"
     @change="
       varName = inputDialog('Enter variable name: ');
-      if (
-        varName.match(
-          varTypes.filter((md) => md.type === $event.target.value)[0].valid
-        )
-      ) {
-		pushProjectAndVariablesToUndoStack();
-        addNewVarIfNotExisting(null, varName, $event.target.value);
-		putProjectData();
-      } else {
-        showAlert('Wrong name for that data type!');
-      }
-      selected = 'undefined';
+	  if(varName){
+		  if (
+			varName.match(
+			  varTypes.filter((md) => md.type === $event.target.value)[0].valid
+			)
+		  ) {
+			pushProjectAndVariablesToUndoStack();
+			addNewVarIfNotExisting(null, varName, $event.target.value);
+			putProjectData();
+		  } else {
+			showAlert('Wrong name for that data type!');
+		  }
+	  }
+      
+	  delay(()=>{selected = 'undefined';}, 100);
     "
   >
     <option
