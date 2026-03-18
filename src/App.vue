@@ -34,6 +34,19 @@
 			<label for="monitor">Monitor</label>
 		</div>
       </td>
+      <td>
+		<div v-if="importExportButtonVisible[statusdata.state]">
+			<label for="file-upload" class="custom-file-upload">
+			Import
+			</label>
+			<input id="file-upload" type="file" ref="doc" @change="uploadDb($refs.doc.files[0])"/>
+		</div>
+      </td>
+      <td>
+			<div v-if="importExportButtonVisible[statusdata.state]">
+			<button @click="downloadDb()">Export</button>
+			</div>
+      </td>
     </tr>
   </table>
 </div>
@@ -317,6 +330,7 @@ const flaskURL = "http://localhost:5000"
 const enableEdit = {"stopped" : true, "running" : false}
 const stopButtonVisible = {"stopped" : false, "running" : true}
 const startButtonVisible = {"stopped" : true, "running" : false}
+const importExportButtonVisible = {"stopped" : true, "running" : false}
 const compileButtonVisible = {"no" : true, "yes" : false}
 const monitorCheckboxVisible = {"stopped" : false, "running" : true}
 const monitorTaskStart = {"on" : true, "off" : false}
@@ -963,6 +977,55 @@ export default {
 	  
     showAlert: (msg) => {
       alert(msg);
+    },
+	
+	getNow() {
+      const today = new Date();
+      const date =
+        today.getFullYear() +
+        "" +
+        (today.getMonth() + 1) +
+        "" +
+        today.getDate();
+      const time =
+        today.getHours() + "" + today.getMinutes() + "" + today.getSeconds();
+      const dateTime = date + "" + time;
+      return dateTime;
+    },
+	
+	downloadDb(timestamp, db) {
+      const text = window.localStorage.getItem('projectdata'); // Get the content from the textarea
+      // Create a new Blob object with the text content
+      const blob = new Blob([text], { type: "text/plain" });
+
+      // Create a temporary <a> element and set its download attribute to specify the file name
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = this.getNow() + ".json"; // Replace with your desired file name
+
+      // Programmatically click the link to trigger the download
+      link.click();
+      // Clean up the URL.createObjectURL by revoking the object URL after some time
+      setTimeout(() => {
+        URL.revokeObjectURL(link.href);
+      }, 100);
+    },
+	
+    uploadDb(file) {
+      var uploadFile = file;
+      const reader = new FileReader();
+      if (uploadFile.name.includes(".json")) {
+        reader.onload = (res) => {
+          var newDb = JSON.parse(res.target.result);
+          window.localStorage.setItem("projectdata", JSON.stringify(newDb));
+          window.location.reload();
+          //console.log(this.db);
+        };
+        reader.onerror = (err) => console.log(err);
+        reader.readAsText(uploadFile);
+      } else {
+        alert("Niepoprawny format pliku!");
+      }
     },
 
 	delay: (func, time) => {setTimeout(func, time);}
