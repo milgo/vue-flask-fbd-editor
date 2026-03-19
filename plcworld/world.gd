@@ -8,7 +8,8 @@ static var game_count = 0
 #@onready var label: Label = get_node("/root/World/HUD/Label")
 @onready var messageCallback: JavaScriptObject
 @onready var logic = $Logic
-
+@onready var goingUpInd = $HUD/VBoxContainer/HBoxContainer/VBoxContainer2/GoingUp
+@onready var goingDownInd = $HUD/VBoxContainer/HBoxContainer/VBoxContainer2/GoingDown
 var window: JavaScriptObject 
 
 # Called when the node enters the scene tree for the first time.
@@ -66,11 +67,24 @@ func _post_request() -> void:
 	pass
 
 func _on_logic_variable_value_changed(memAddr: String, oldval: String, newval: String) -> void:
-	print("var " + memAddr + " changed from " + oldval + " to " + newval)
+	var newvalf = float(newval)
+	#print("var " + memAddr + " changed from " + oldval + " to " + newval)
 	#if memAddr == "%o1" and newval == "1":
 #		var new_ball = ball.instantiate()
 		#new_ball.set_position(creator.get_position())
 		#add_child(new_ball)
+	if memAddr == goingUpInd.get_meta("DO"):
+		if newvalf == 1.0:
+			goingUpInd.texture = load("res://elevator-project/going_up_green.png")
+		else:
+			goingUpInd.texture = load("res://elevator-project/going_up_gray.png")
+	
+	if memAddr == goingDownInd.get_meta("DO"):
+		if newvalf == 1.0:
+			goingDownInd.texture = load("res://elevator-project/going_down_green.png")
+		else:
+			goingDownInd.texture = load("res://elevator-project/going_down_gray.png")
+	
 
 func _on_level_limit_switch_area_entered(area: Area3D) -> void:
 	if area.get_meta_list().has("DI"):
