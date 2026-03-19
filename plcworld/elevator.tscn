@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://d15k53v2qmioc" path="res://world.gd" id="1_a1q2r"]
 [ext_resource type="Script" uid="uid://bjik0b8ki40d8" path="res://logic.gd" id="2_77yi3"]
-[ext_resource type="Script" uid="uid://b0nh4n3seep18" path="res://detection_area_3d.gd" id="3_hr1cl"]
 [ext_resource type="Texture2D" uid="uid://d0ichm4rnsh6y" path="res://elevator-project/going_up_gray.png" id="4_1a6eo"]
 [ext_resource type="Texture2D" uid="uid://bk2q5llfs8u5s" path="res://elevator-project/down_button_normal.png" id="4_nreao"]
 [ext_resource type="Texture2D" uid="uid://q7cd5xwvymt6" path="res://elevator-project/0_normal.png" id="4_y5ghj"]
@@ -24,6 +23,7 @@
 [ext_resource type="Script" uid="uid://caruk06r0k8pd" path="res://elevator.gd" id="22_i41m5"]
 [ext_resource type="Texture2D" uid="uid://d18wlfthkat0p" path="res://elevator-project/i_nromal.png" id="22_irklk"]
 [ext_resource type="Texture2D" uid="uid://b4quoyewoxdgy" path="res://elevator-project/i_pressed.png" id="23_pg1wk"]
+[ext_resource type="Script" uid="uid://b36ct5dp63muy" path="res://doors.gd" id="24_irklk"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_eta22"]
 
@@ -42,8 +42,6 @@ material = SubResource("StandardMaterial3D_77yi3")
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_80nbo"]
 data = PackedVector3Array(0.5, -0.5, 0, -0.5, -0.5, 0, 0.5, 0.5, 0, -0.5, -0.5, 0, -0.5, 0.5, 0, 0.5, 0.5, 0)
-
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_80nbo"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a1q2r"]
 albedo_color = Color(1, 0, 1, 1)
@@ -65,7 +63,11 @@ material = SubResource("StandardMaterial3D_hr1cl")
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_i41m5"]
 points = PackedVector3Array(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_irklk"]
+albedo_color = Color(0.25882354, 0.48235294, 1, 1)
+
 [sub_resource type="BoxMesh" id="BoxMesh_hr1cl"]
+material = SubResource("StandardMaterial3D_irklk")
 
 [node name="World" type="Node3D"]
 script = ExtResource("1_a1q2r")
@@ -108,17 +110,6 @@ shape = SubResource("ConcavePolygonShape3D_80nbo")
 
 [node name="Creator" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 21.3213, 0)
-
-[node name="Detector" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.28331, 0)
-
-[node name="LimitSwitch" type="Area3D" parent="Detector"]
-script = ExtResource("3_hr1cl")
-description = "krańcówka"
-memAddr = "%i1"
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Detector/LimitSwitch"]
-shape = SubResource("CylinderShape3D_80nbo")
 
 [node name="HUD" type="CanvasLayer" parent="."]
 
@@ -453,19 +444,19 @@ mesh = SubResource("BoxMesh_a1q2r")
 shape = SubResource("ConvexPolygonShape3D_i41m5")
 
 [node name="Doors" type="Node3D" parent="Elevator"]
-transform = Transform3D(-4.371139e-09, 0, 3, 0, 5, 0, -0.1, 0, -1.3113416e-07, 1.028, 2.5, -1.6)
+transform = Transform3D(-4.371139e-09, 0, 3, 0, 5, 0, -0.1, 0, -1.3113416e-07, 0, 2.5, -1.6)
+script = ExtResource("24_irklk")
+metadata/OPEN = "%o2"
+metadata/CLOSE = "%o3"
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Elevator/Doors"]
+[node name="DoorMesh" type="MeshInstance3D" parent="Elevator/Doors"]
+transform = Transform3D(1, 0, 0, 0, 1.0000002, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("BoxMesh_hr1cl")
 
 [connection signal="send_data" from="Logic" to="." method="_on_logic_send_data"]
 [connection signal="variable_value_changed" from="Logic" to="." method="_on_logic_variable_value_changed"]
 [connection signal="variable_value_changed" from="Logic" to="Elevator" method="_on_logic_variable_value_changed"]
-[connection signal="body_entered" from="Detector/LimitSwitch" to="Detector/LimitSwitch" method="_on_body_entered"]
-[connection signal="body_exited" from="Detector/LimitSwitch" to="Detector/LimitSwitch" method="_on_body_exited"]
-[connection signal="mouse_entered" from="Detector/LimitSwitch" to="Detector/LimitSwitch" method="_on_mouse_entered"]
-[connection signal="show_description" from="Detector/LimitSwitch" to="." method="_on_show_description"]
-[connection signal="state_changed" from="Detector/LimitSwitch" to="Logic" method="_on_digital_state_changed"]
+[connection signal="variable_value_changed" from="Logic" to="Elevator/Doors" method="_on_logic_variable_value_changed"]
 [connection signal="button_down" from="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level3/DownButton" to="." method="_on_button_down" binds= ["%i15"]]
 [connection signal="button_up" from="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level3/DownButton" to="." method="_on_button_up" binds= ["%i15"]]
 [connection signal="button_down" from="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level2/UpButton" to="." method="_on_button_down" binds= ["%i14"]]
