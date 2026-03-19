@@ -28,10 +28,10 @@ func _on_logic_variable_value_changed(memAddr: String, oldval: String, newval: S
 	pass # Replace with function body.
 
 func _process(delta: float) -> void:
-	if _goingUp == true and position.y <= 15.0:
+	if _goingUp == true and position.y <= 15.1:
 		position.y += _speed * delta
-		if position.y > 15.0:
-			position.y = 15.0
+		if position.y > 15.1:
+			position.y = 15.1
 					
 	if _goingDown == true and position.y >= 0.0:
 		position.y -= _speed * delta

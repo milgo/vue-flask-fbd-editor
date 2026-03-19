@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://c6f0vndfmkhl3"]
+[gd_scene load_steps=40 format=3 uid="uid://c6f0vndfmkhl3"]
 
 [ext_resource type="Script" uid="uid://d15k53v2qmioc" path="res://world.gd" id="1_a1q2r"]
 [ext_resource type="Script" uid="uid://bjik0b8ki40d8" path="res://logic.gd" id="2_77yi3"]
@@ -44,13 +44,6 @@ material = SubResource("StandardMaterial3D_77yi3")
 data = PackedVector3Array(0.5, -0.5, 0, -0.5, -0.5, 0, 0.5, 0.5, 0, -0.5, -0.5, 0, -0.5, 0.5, 0, 0.5, 0.5, 0)
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_80nbo"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e2o6t"]
-transparency = 1
-albedo_color = Color(0, 0, 1, 0.388235)
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_feb5d"]
-material = SubResource("StandardMaterial3D_e2o6t")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a1q2r"]
 albedo_color = Color(1, 0, 1, 1)
@@ -127,9 +120,6 @@ memAddr = "%i1"
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Detector/LimitSwitch"]
 shape = SubResource("CylinderShape3D_80nbo")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Detector"]
-mesh = SubResource("CylinderMesh_feb5d")
-
 [node name="HUD" type="CanvasLayer" parent="."]
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HUD"]
@@ -140,7 +130,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HUD/VBoxContainer"]
-custom_minimum_size = Vector2(0, 500)
+custom_minimum_size = Vector2(0, 650)
 layout_mode = 2
 size_flags_vertical = 8
 alignment = 2
@@ -163,7 +153,7 @@ texture = ExtResource("5_i41m5")
 metadata/DO = "%o3"
 
 [node name="MarginContainer2" type="MarginContainer" parent="HUD/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(230, 0)
+custom_minimum_size = Vector2(330, 0)
 layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HUD/VBoxContainer/HBoxContainer"]
@@ -181,7 +171,7 @@ bnt."
 horizontal_alignment = 1
 
 [node name="Level3" type="VBoxContainer" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 100)
+custom_minimum_size = Vector2(0, 110)
 layout_mode = 2
 alignment = 1
 
@@ -191,7 +181,7 @@ texture_normal = ExtResource("4_nreao")
 texture_pressed = ExtResource("5_xu5fp")
 
 [node name="Level2" type="VBoxContainer" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 100)
+custom_minimum_size = Vector2(0, 110)
 layout_mode = 2
 alignment = 1
 
@@ -206,7 +196,7 @@ texture_normal = ExtResource("4_nreao")
 texture_pressed = ExtResource("5_xu5fp")
 
 [node name="Level1" type="VBoxContainer" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 100)
+custom_minimum_size = Vector2(0, 110)
 layout_mode = 2
 alignment = 1
 
@@ -221,7 +211,7 @@ texture_normal = ExtResource("4_nreao")
 texture_pressed = ExtResource("5_xu5fp")
 
 [node name="Level0" type="VBoxContainer" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 100)
+custom_minimum_size = Vector2(0, 110)
 layout_mode = 2
 alignment = 1
 metadata/DI = "%i10"
@@ -232,7 +222,7 @@ texture_normal = ExtResource("5_ym41f")
 texture_pressed = ExtResource("7_xsk2a")
 
 [node name="MarginContainer" type="MarginContainer" parent="HUD/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(20, 0)
+custom_minimum_size = Vector2(15, 0)
 layout_mode = 2
 
 [node name="Label" type="Label" parent="HUD/VBoxContainer"]
@@ -281,6 +271,7 @@ texture_normal = ExtResource("22_irklk")
 texture_pressed = ExtResource("23_pg1wk")
 
 [node name="MemDesc" type="Label" parent="HUD"]
+visible = false
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -292,7 +283,7 @@ size_flags_horizontal = 0
 size_flags_vertical = 0
 theme_override_colors/font_color = Color(0, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 16
 text = "%i0 - level1 lim switch
 %i1 - level2 lim switch
 %i2 - level3 lim switch
@@ -420,7 +411,7 @@ transform = Transform3D(-2.1855695e-09, -0.99999994, 0, 0.05, -4.3711385e-08, 0,
 mesh = SubResource("QuadMesh_1ug6e")
 
 [node name="Level04" type="Node3D" parent="Shaft"]
-transform = Transform3D(3.9999998, 0, 0, 0, -1.7484554e-07, 4, 0, -3.9999998, -1.7484555e-07, 0, 20.04, 0)
+transform = Transform3D(3.9999998, 0, 0, 0, -1.7484554e-07, 4, 0, -3.9999998, -1.7484555e-07, 0, 20, 0)
 
 [node name="LevelLimitSwitch" type="Area3D" parent="Shaft/Level04"]
 transform = Transform3D(0.9999999, 0, 0, 0, 0.9999999, 3.5527137e-15, 0, -7.1054274e-15, 1, 0, 0, 0)
