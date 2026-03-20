@@ -66,9 +66,9 @@ func _post_request() -> void:
 	#$HTTPRequest.request(url, headers, HTTPClient.METHOD_POST, json)
 	pass
 
-func _on_logic_variable_value_changed(memAddr: String, oldval: String, newval: String) -> void:
+func _on_logic_variable_value_changed(memAddr: String, oldval: Variant, newval: Variant) -> void:
 	var newvalf = float(newval)
-	#print("var " + memAddr + " changed from " + oldval + " to " + newval)
+	print("var " + memAddr + " changed from " + str(oldval)+ " to " + str(newval))
 	#if memAddr == "%o1" and newval == "1":
 #		var new_ball = ball.instantiate()
 		#new_ball.set_position(creator.get_position())

@@ -8,21 +8,17 @@ func _ready() -> void:
 	_goingUp = false
 	_goingDown = false
 
-func _on_logic_variable_value_changed(memAddr: String, oldval: String, newval: String) -> void:
+func _on_logic_variable_value_changed(memAddr: String, oldval: Variant, newval: Variant) -> void:
 	var newvalf = float(newval)
 	if memAddr.to_lower() == get_meta("UP"):
 		if newvalf == 1.0:
 			_goingUp = true
-			_goingDown = false
 		if newvalf == 0.0:
 			_goingUp = false
-			_goingDown = false
 	if memAddr.to_lower() == get_meta("DOWN"):
 		if newvalf == 1.0:
-			_goingUp = false
 			_goingDown = true
 		if newvalf == 0.0:
-			_goingUp = false
 			_goingDown = false
 			
 	pass # Replace with function body.

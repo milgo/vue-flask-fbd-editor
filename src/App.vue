@@ -229,7 +229,7 @@
           }}
         </td>
 		<td v-if="monitorTaskStart[statusdata.monitor]">
-			{{variable.value}}
+			{{variable.monitorData}}
 		</td>
         <td align="center" v-if="enableEdit[statusdata.state]">
 		  <table>
@@ -475,24 +475,25 @@ const toggleForceVariable = (id) => {
   else {
 	  variable.forced = 0;
   }
-  postForceVariables();
+  postForceVariable(variable);
+
 };
 
 const toggleForceVariableValueBool = (id) => {
   var variable = variablesdata.value.filter((v) => v.id === id)[0];
-    console.log(variable.forcedValue)
+    //console.log(variable.forcedValue)
   if(variable.forcedValue === 1){
 	variable.forcedValue = 0; 
   }else{
     variable.forcedValue = 1;
   }
-  postForceVariables();
+  postForceVariable(variable)
 };
 
 const setForcedValueOfVariable = (id, val) => {
   var variable = variablesdata.value.filter((v) => v.id === id)[0];
   variable.forcedValue = val;
-  postForceVariables();
+  postForceVariable(variable);
 };
 
 /*const getStatusDataFromFlask = () => {
@@ -513,7 +514,7 @@ const clearMonitorValues = () => {
 }
 
 const clearVarForces = () => {
-	variablesdata.value.forEach((v) => {v.forced = 0});
+	variablesdata.value.forEach((v) => {v.forced = 0, v.forcedValue = 0});
 }
 
 const toggleMonitor = () => {
@@ -625,15 +626,10 @@ const putProjectData = () => {
 		.catch((err) => console.error(err));
 }*/
 
-const postForceVariables = () => {
-  /*const path = flaskURL+"/forcevariables";
-  axios.post(path, variablesdata.value)
-        .then((res) => {
-			statusdata.value = res.data.statusdata;
-        }).catch((err) => console.error(err));*/
-	
-	window.postMessage(JSON.stringify({reciver:"backend", command: "forcevariables", data: variablesdata.value}))
-}
+const postForceVariable = (v) => {
+  window.postMessage(JSON.stringify({
+	  reciver:"backend", command: "forcevariables", data: {name: v.name, forced: v.forced, forcedValue: v.forcedValue}
+  }))}
 
 onMounted(() => {
 
@@ -840,11 +836,11 @@ const inputDialog = (msg) => {
 };
 
 const receiveMessage = (event) => {
-	console.log("shit")
+
 	var msgJson = JSON.parse(event.data)
 	if(msgJson["reciver"] === 'frontend'){
-		console.log("reciving")
-		console.log(JSON.stringify(msgJson))
+
+		//console.log(JSON.stringify(msgJson))
 		if(msgJson["command"] === 'started'){
 			statusdata.value["state"] = 'running';
 			//putStatusData();
@@ -925,7 +921,7 @@ const isVarNameTypeValid = (rules, name, acceptableTypes) =>{
 }
 	
 const forceValueHandler = (varId, value) => {
-	console.log(varId + "=" + value);
+	//console.log(varId + "=" + value);
 	if(isVarNameTypeValid(varTypes, value, ['number']) === true) {
 		setForcedValueOfVariable(varId, value);
 	}else{

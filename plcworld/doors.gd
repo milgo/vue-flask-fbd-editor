@@ -10,7 +10,7 @@ func _ready() -> void:
 	_opening = false
 	_closing = false
 
-func _on_logic_variable_value_changed(memAddr: String, oldval: String, newval: String) -> void:
+func _on_logic_variable_value_changed(memAddr: String, oldval: Variant, newval: Variant) -> void:
 	var newvalf = float(newval)
 	if memAddr.to_lower() == get_meta("OPEN"):
 		if newvalf == 1.0:
