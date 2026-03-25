@@ -1,6 +1,6 @@
 <template>
-  <select @change="$emit('selected', $event.target.value)" id="fselect">
-    <option disabled="disabled" selected="selected">...</option>
+  <select @change="$emit('selected', $event.target.value)" class="button-orange">
+    <option disabled="disabled" selected="selected">+</option>
     <template v-for="definition in definitions">
       <template v-if="checkIfAnyBlockHasType(definition, outputType, alone)">
         <optgroup :label="definition.group">
