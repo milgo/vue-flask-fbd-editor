@@ -94,7 +94,7 @@
   <div v-for="(node, networkId) in projectdata.filter((n) => !n.parentInput)">
     <table>
       <tr>
-        <td align="left"><!-- Network: {{ networkId + 1 }} --></td>
+        <td align="left"> <!--Network: {{ networkId + 1 }} --></td>
         <td></td>
         <td></td>
       </tr>
@@ -147,14 +147,32 @@
           ></div>
         </td>
       </tr>
+	  <tr>
+	  	<div align="left" v-if="enableEdit[statusdata.state]">
+		<FunctionList
+		  @selected="
+			pushProjectAndVariablesToUndoStack();
+			addChild(Date.now(), networkId + 2, null, $event);
+			putProjectData();
+			forceFunctionListRerender();
+		  "
+		  :key="functionListKey"
+		  :outputType="['any']"
+		  :alone="true"
+		/>
+	  </div>
+	  </tr>
     </table>
+	  
+
+	
   </div>
 
-  <div align="left" v-if="enableEdit[statusdata.state]">
+  <!--<div align="left" v-if="enableEdit[statusdata.state]">
     <FunctionList
       @selected="
 	    pushProjectAndVariablesToUndoStack();
-        addChild(Date.now(), null, $event);
+        addChild(Date.now(), networkId + 1, null, $event);
 		putProjectData();
         forceFunctionListRerender();
       "
@@ -162,7 +180,7 @@
       :outputType="['any']"
       :alone="true"
     />
-  </div>
+  </div>-->
   </td>
   <td width="30%">
 
@@ -659,7 +677,7 @@ onUnmounted(() => {
 	window.removeEventListener('message', receiveMessage)
 });
 
-const addChild = (id, parentInput, blockJson) => {
+const addChild = (id, networkId, parentInput, blockJson) => {
   var parentId = null;
   var block = JSON.parse(blockJson);
   var inputs = [];
@@ -668,8 +686,9 @@ const addChild = (id, parentInput, blockJson) => {
     parentId = parentInput.id;
     parentInput.target = id;
   }
-
-  projectdata.value.push({
+  //projectdata.value.push
+  
+  projectdata.value.splice(networkId, 0,{
     parentInput: parentId,
     id: id,
     inputs: inputs,

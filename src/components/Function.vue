@@ -168,12 +168,11 @@
 			<div class="tooltip"><img src="../assets/warning.png"/>
 			  <span class="tooltiptext">Input not assigned</span>
 			</div>
-
             <template v-if="hasDynInputs(node) && enableEdit">
               <FunctionList
                 :outputType="node.dyn_inputs_type"
                 :alone="false"
-                @selected="pushProjectAndVariablesToUndoStack();addChild(Date.now(), inputNode, $event);putProjectData();"
+                @selected="pushProjectAndVariablesToUndoStack();addChild(Date.now(), networkId, inputNode, $event);putProjectData();"
               />
             </template>
             <template v-else>
@@ -181,7 +180,7 @@
 				v-if="enableEdit"
                 :outputType="node.inputs[index].type"
                 :alone="false"
-                @selected="pushProjectAndVariablesToUndoStack();addChild(Date.now(), inputNode, $event);putProjectData();"
+                @selected="pushProjectAndVariablesToUndoStack();addChild(Date.now(), networkId, inputNode, $event);putProjectData();"
               />
             </template>
           </template>
@@ -355,6 +354,7 @@
       <td></td>
     </tr>
   </table>
+  
 </template>
 <script setup>
 import definitions from "../assets/definitions.json";
