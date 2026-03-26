@@ -152,7 +152,7 @@
 		<FunctionList
 		  @selected="
 			pushProjectAndVariablesToUndoStack();
-			addChild(Date.now(), networkId + 2, null, $event);
+			addChild(Date.now(), projectdata.findIndex(item => item.id === node.id) + 1, null, $event);
 			putProjectData();
 			forceFunctionListRerender();
 		  "
