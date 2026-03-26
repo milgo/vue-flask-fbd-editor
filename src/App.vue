@@ -94,7 +94,7 @@
   <div v-for="(node, networkId) in projectdata.filter((n) => !n.parentInput)">
     <table>
       <tr>
-        <td align="left"> <!--Network: {{ networkId + 1 }} --></td>
+        <td align="left"> <!--Network: {{ networkId + 1 }} --> &nbsp</td>
         <td></td>
         <td></td>
       </tr>
@@ -163,7 +163,6 @@
 	  </div>
 	  </tr>
     </table>
-	
   </div>
 
  <div align="left" v-if="enableEdit[statusdata.state] && projectdata.length < 1">
@@ -181,7 +180,7 @@
   </div>
   </td>
   <td width="30%">
-
+	
   </td>
   </tr>
 </table>
