@@ -60,8 +60,8 @@ material = SubResource("StandardMaterial3D_hr1cl")
 
 [sub_resource type="BoxMesh" id="BoxMesh_a1q2r"]
 
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_i41m5"]
-points = PackedVector3Array(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5)
+[sub_resource type="SphereShape3D" id="SphereShape3D_irklk"]
+radius = 0.04
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_irklk"]
 albedo_color = Color(0.25882354, 0.48235294, 1, 1)
@@ -441,7 +441,8 @@ mesh = SubResource("BoxMesh_a1q2r")
 [node name="Area3D" type="Area3D" parent="Elevator/Cabin/MeshInstance3D"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Elevator/Cabin/MeshInstance3D/Area3D"]
-shape = SubResource("ConvexPolygonShape3D_i41m5")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("SphereShape3D_irklk")
 
 [node name="Doors" type="Node3D" parent="Elevator"]
 transform = Transform3D(-4.371139e-09, 0, 3, 0, 5, 0, -0.1, 0, -1.3113416e-07, 0, 2.5, -1.6)
