@@ -163,12 +163,10 @@
 	  </div>
 	  </tr>
     </table>
-	  
-
 	
   </div>
 
-  <!--<div align="left" v-if="enableEdit[statusdata.state]">
+ <div align="left" v-if="enableEdit[statusdata.state] && projectdata.length < 1">
     <FunctionList
       @selected="
 	    pushProjectAndVariablesToUndoStack();
@@ -180,7 +178,7 @@
       :outputType="['any']"
       :alone="true"
     />
-  </div>-->
+  </div>
   </td>
   <td width="30%">
 
@@ -284,6 +282,7 @@
   <select
 	v-if="enableEdit[statusdata.state]"
     v-model="selected"
+	class="button-gray"
     @change="
       varName = inputDialog('Enter variable name: ');
 	  if(varName){
