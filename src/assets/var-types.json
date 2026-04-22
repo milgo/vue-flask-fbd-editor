@@ -11,7 +11,7 @@
   },
   {
     "type": "marker",
-    "valid": "^%[Mm]\\d{1,2}$",
+    "valid": "^%[Mm]\\d{1,2}.?[01234567]?$",
 	"monitor": true
   },
   {

@@ -4,6 +4,7 @@ var _setupListing
 var _programListing
 
 var _mem: Dictionary
+var _mem_bytes: Dictionary
 var _prev_mem : Dictionary
 var _rlo: Dictionary
 var _running: bool
@@ -88,19 +89,69 @@ func execute(json):
 				variable_value_changed.emit(json["data"]["name"], prev, get_var_value(json["data"]["name"]))
 			print(JSON.stringify(json["data"]))
 				
+func get_mem_bytes(memoryAddr:String):
+	if memoryAddr.begins_with("%mb"):
+		pass
+	elif memoryAddr.begins_with("%mw"):
+		pass
+	elif memoryAddr.begins_with("%md"):
+		pass
+	elif memoryAddr.begins_with("%m"):
+		if memoryAddr.substr(2,1).is_valid_int():
+				if memoryAddr.contains("."):	
+					var maddr = memoryAddr.right(memoryAddr.length()-2)
+					var maddrs = maddr.split(".")
+					if not _mem_bytes.has(maddrs[0]):
+						_mem_bytes[maddrs[0]] = 0
+					var bitpos = int(maddrs[1])	
+					var bitval = _mem_bytes[maddrs[0]] >> bitpos & 0x01
+					print("bitval=" + bitval)				
+					return bitval
+	return -1
+							
 func get_var_value(memoryAddr:String):
 	if _mem[memoryAddr].has("forced") and _mem[memoryAddr].has("forcedValue"):
 		if _mem[memoryAddr]["forced"] == 1.0:
 			#_mem[memoryAddr]["value"] = _mem[memoryAddr]["forcedValue"]
+			print(memoryAddr + "=" +str(get_mem_bytes(memoryAddr)))
 			return _mem[memoryAddr]["forcedValue"]
+	
+	print(memoryAddr + "=" +str(get_mem_bytes(memoryAddr)))
 	return _mem[memoryAddr]["value"]
+	
+func set_mem_bytes(memoryAddr:String, value:Variant):
+	#print("set_mem_bytes " + memoryAddr)
+	if memoryAddr.begins_with("%mb"):
+		pass
+	elif memoryAddr.begins_with("%mw"):
+		pass
+	elif memoryAddr.begins_with("%md"):
+		pass
+	elif memoryAddr.begins_with("%m"):
+		#print("bit " + memoryAddr.substr(2,1))
+		if memoryAddr.substr(2,1).is_valid_int():
+			if memoryAddr.contains("."):				
+				var maddr = memoryAddr.right(memoryAddr.length()-2)
+				var maddrs = maddr.split(".")
+				var bitval = int(value) & 0x01				
+				var bitpos = int(maddrs[1])
+				var mask = 1 << bitpos
+				if not _mem_bytes.has(maddrs[0]):
+					_mem_bytes[maddrs[0]] = 0
+				var byteval = _mem_bytes[maddrs[0]]
+				byteval = ((byteval & ~mask) | bitval << bitpos)
+				_mem_bytes[maddrs[0]] = byteval
+				
+				#print(_mem_bytes[maddrs[0]])
 
 func set_var_value(memoryAddr:String, value:Variant):
 	if _mem[memoryAddr].has("forced"):
 		if _mem[memoryAddr]["forced"] == 0.0:	
 			_mem[memoryAddr]["value"] = value
+			set_mem_bytes(memoryAddr, value)
 	else:
 		_mem[memoryAddr]["value"] = value
+		set_mem_bytes(memoryAddr, value)
 
 func _on_digital_state_changed(memAddr: String, state: int) -> void:
 	_mem[memAddr]["value"] = state
@@ -112,7 +163,7 @@ func _process(_delta: float) -> void:
 		for key in _mem.keys():
 			var k:String = key
 			_prev_mem[k] = str(get_var_value(k))
-			
+				
 		for commandJson in _programListing:
 			var command: Dictionary = commandJson			
 			call(command["functionName"], command)
