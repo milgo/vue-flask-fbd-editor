@@ -1,7 +1,7 @@
 <template>
 
-<div>
- <table  class="stat_table">
+
+ <table class="stat_table" style="position:fixed;top:0px;left:0px;" border="1">
     <tr>
       <td>
         <button
@@ -34,6 +34,13 @@
 			<label for="monitor">Monitor</label>
 		</div>
       </td>
+	  <td v-if="enableEdit[statusdata.state]">
+		<button v-if="enableEdit[statusdata.state]" :disabled="projectundostack.length<=1"
+            @click="pushProjectAndVariablesToRedoStack(); popProjectAndVariablesFromUndoStack(); putProjectData();">UNDO</button>
+	  </td>
+	  <td v-if="enableEdit[statusdata.state]">
+		<button v-if="enableEdit[statusdata.state]" :disabled="projectredostack.length===0"
+            @click="pushProjectAndVariablesToUndoStack(); popProjectAndVariablesFromRedoStack(); putProjectData();">REDO</button></td>
       <td>
 		<div v-if="importExportButtonVisible[statusdata.state]">
 			<label for="file-upload" class="custom-file-upload">
@@ -49,20 +56,7 @@
       </td>
     </tr>
   </table>
-</div>
 
-<hr v-if="enableEdit[statusdata.state]" class="hr-normal">
-	<table>
-    <tr>
-		<td><button v-if="enableEdit[statusdata.state]" :disabled="projectundostack.length<=1"
-            @click="pushProjectAndVariablesToRedoStack(); popProjectAndVariablesFromUndoStack(); putProjectData();">UNDO</button>
-			<button v-if="enableEdit[statusdata.state]" :disabled="projectredostack.length===0"
-            @click="pushProjectAndVariablesToUndoStack(); popProjectAndVariablesFromRedoStack(); putProjectData();">REDO</button></td>
-	</tr>
-	</table>
-          
-		 
-<hr class="hr-normal">
 
 <!-- <div class="fixed mem_table" v-if="monitorTaskStart[statusdata.monitor]">
 	<table>
