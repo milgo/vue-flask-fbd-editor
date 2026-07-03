@@ -223,7 +223,7 @@
         "inputs": [
           {
             "name": "",
-            "type": ["byte", "word", "dword", "number"],
+            "type": ["bool", "byte", "word", "dword", "number"],
             "show_name": true
           }
         ],
@@ -511,7 +511,7 @@
         "input_only": false,
         "show_name": true,
         "output_type": "number",
-        "dyn_inputs_type": ["number"],
+        "dyn_inputs_type": ["bool", "number"],
         "dyn_inputs": true,
 		"mem_loc": " ",
 		"desc": "adding values"
@@ -522,7 +522,7 @@
         "input_only": false,
         "show_name": true,
         "output_type": "number",
-        "dyn_inputs_type": ["number"],
+        "dyn_inputs_type": ["bool","number"],
         "dyn_inputs": true,
 		"mem_loc": " ",
 		"desc": "substracting values"
@@ -533,7 +533,7 @@
         "input_only": false,
         "show_name": true,
         "output_type": "number",
-        "dyn_inputs_type": ["number"],
+        "dyn_inputs_type": ["bool","number"],
         "dyn_inputs": true,
 		"mem_loc": " ",
 		"desc": "multiplying values"
@@ -544,7 +544,7 @@
         "input_only": false,
         "show_name": true,
         "output_type": "number",
-        "dyn_inputs_type": ["number"],
+        "dyn_inputs_type": ["bool","number"],
         "dyn_inputs": true,
 		"mem_loc": " ",
 		"desc": "dividing values"

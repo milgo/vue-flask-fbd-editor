@@ -8,7 +8,6 @@ var _mem_bytes: Dictionary
 var _prev_mem : Dictionary
 var _rlo: Dictionary
 var _running: bool
-var _FalseTrue = ["False", "True"]
 
 signal send_data(data:String)
 signal variable_value_changed(memAddr:String, oldval:Variant, newval:Variant)
@@ -23,14 +22,14 @@ func _ready() -> void:
 
 func execute(json):
 	if(json["reciver"] == "backend"):
-		print(str("Logic command: ", json["command"]))
+		#print(str("Logic command: ", json["command"]))
 		
 		if(json["command"] == "start"):
 			_setupListing = json["data"]["setuplisting"]
 			_programListing = json["data"]["listing"]
 		
-			print(str(_setupListing))
-			print(str(_programListing))
+			#print(str(_setupListing))
+			#print(str(_programListing))
 			
 			var started_json_info: Dictionary
 			started_json_info["command"] = "started"
@@ -87,7 +86,7 @@ func execute(json):
 			_mem[json["data"]["name"]]["forcedValue"] = float(json["data"]["forcedValue"])
 			if prev != get_var_value(json["data"]["name"]):
 				variable_value_changed.emit(json["data"]["name"], prev, get_var_value(json["data"]["name"]))
-			print(JSON.stringify(json["data"]))
+			#print(JSON.stringify(json["data"]))
 				
 func get_mem_bytes(memoryAddr:String):
 	if memoryAddr.begins_with("%mb"):
@@ -105,7 +104,7 @@ func get_mem_bytes(memoryAddr:String):
 						_mem_bytes[maddrs[0]] = 0
 					var bitpos = int(maddrs[1])	
 					var bitval = _mem_bytes[maddrs[0]] >> bitpos & 0x01
-					print("bitval=" + bitval)				
+					#print("bitval=" + bitval)				
 					return bitval
 	return -1
 							
@@ -113,10 +112,10 @@ func get_var_value(memoryAddr:String):
 	if _mem[memoryAddr].has("forced") and _mem[memoryAddr].has("forcedValue"):
 		if _mem[memoryAddr]["forced"] == 1.0:
 			#_mem[memoryAddr]["value"] = _mem[memoryAddr]["forcedValue"]
-			print(memoryAddr + "=" +str(get_mem_bytes(memoryAddr)))
+			#print(memoryAddr + "=" +str(get_mem_bytes(memoryAddr)))
 			return _mem[memoryAddr]["forcedValue"]
 	
-	print(memoryAddr + "=" +str(get_mem_bytes(memoryAddr)))
+	#print(memoryAddr + "=" +str(get_mem_bytes(memoryAddr)))
 	return _mem[memoryAddr]["value"]
 	
 func set_mem_bytes(memoryAddr:String, value:Variant):
@@ -145,13 +144,16 @@ func set_mem_bytes(memoryAddr:String, value:Variant):
 				#print(_mem_bytes[maddrs[0]])
 
 func set_var_value(memoryAddr:String, value:Variant):
+	
 	if _mem[memoryAddr].has("forced"):
 		if _mem[memoryAddr]["forced"] == 0.0:	
 			_mem[memoryAddr]["value"] = value
-			set_mem_bytes(memoryAddr, value)
+			#set_mem_bytes(memoryAddr, value)
 	else:
+		#if(memoryAddr == "%i1"):
+		#	print("%i1="+value)
 		_mem[memoryAddr]["value"] = value
-		set_mem_bytes(memoryAddr, value)
+		#set_mem_bytes(memoryAddr, value)
 
 func _on_digital_state_changed(memAddr: String, state: int) -> void:
 	_mem[memAddr]["value"] = state
@@ -215,7 +217,7 @@ func before_DIN(_data: Dictionary):
 	
 func after_DIN(_data: Dictionary):
 	_rlo[_data["id"]] = _mem[_data["id"]]["value"] 
-	_mem[_data["memoryAddr"]]["monitorData"] = _FalseTrue[get_var_value(_data["memoryAddr"])]
+	#_mem[_data["memoryAddr"]]["monitorData"] = _FalseTrue[get_var_value(_data["memoryAddr"])]
 	
 #---------- AND ----------
 func before_AND(_data: Dictionary):
@@ -263,7 +265,7 @@ func after_ASSIGN(_data: Dictionary):
 	_rlo[_data["id"]] = _mem[_data["id"]]["value"]
 	#_mem[_data["memoryAddr"]]["value"]  = _mem[_data["id"]]["value"] 
 	set_var_value(_data["memoryAddr"], _mem[_data["id"]]["value"])
-	_mem[_data["memoryAddr"]]["monitorData"] = _FalseTrue[get_var_value(_data["memoryAddr"])]
+	_mem[_data["memoryAddr"]]["monitorData"] = get_var_value(_data["memoryAddr"])
 	
 #---------- SET ----------
 func before_S(_data: Dictionary):
@@ -277,7 +279,7 @@ func after_S_INPUT(_data: Dictionary):
 
 func after_S(_data: Dictionary):
 	_rlo[_data["id"]] = get_var_value(_data["memoryAddr"])
-	_mem[_data["memoryAddr"]]["monitorData"] = _FalseTrue[get_var_value(_data["memoryAddr"])]
+	_mem[_data["memoryAddr"]]["monitorData"] = get_var_value(_data["memoryAddr"])
 	
 #---------- RESET ----------
 func before_R(_data: Dictionary):
@@ -290,7 +292,7 @@ func after_R_INPUT(_data: Dictionary):
 
 func after_R(_data: Dictionary):
 	_rlo[_data["id"]] = get_var_value(_data["memoryAddr"])
-	_mem[_data["memoryAddr"]]["monitorData"] = _FalseTrue[get_var_value(_data["memoryAddr"])]
+	_mem[_data["memoryAddr"]]["monitorData"] = get_var_value(_data["memoryAddr"])
 #---------- SET/RESET ----------
 func before_SR(_data: Dictionary):
 	_mem[_data["id"]] = 0
@@ -307,7 +309,7 @@ func after_SR_INPUT(_data: Dictionary):
 
 func after_SR(_data: Dictionary):
 	_rlo[_data["id"]] = get_var_value(_data["memoryAddr"]) 
-	_mem[_data["memoryAddr"]]["monitorData"] = _FalseTrue[get_var_value(_data["memoryAddr"])]
+	_mem[_data["memoryAddr"]]["monitorData"] = get_var_value(_data["memoryAddr"])
 	
 #---------- RESET/SET ----------
 func before_RS(_data: Dictionary):
@@ -325,7 +327,7 @@ func after_RS_INPUT(_data: Dictionary):
 
 func after_RS(_data: Dictionary):
 	_rlo[_data["id"]] = get_var_value(_data["memoryAddr"])
-	_mem[_data["memoryAddr"]]["monitorData"] = _FalseTrue[get_var_value(_data["memoryAddr"])]
+	_mem[_data["memoryAddr"]]["monitorData"] = get_var_value(_data["memoryAddr"])
 #---------- FP ----------
 func before_FP(_data: Dictionary):
 	_mem[_data["id"]]["value"]  = 0
@@ -337,7 +339,7 @@ func after_FP_INPUT(_data: Dictionary):
 	set_var_value(_data["memoryAddr"], _rlo[_data["connNodeId"]])
 func after_FP(_data: Dictionary):
 	_rlo[_data["id"]] = _mem[_data["id"]]["value"] 
-	_mem[_data["memoryAddr"]]["monitorData"] = _FalseTrue[get_var_value(_data["memoryAddr"])]
+	_mem[_data["memoryAddr"]]["monitorData"] = get_var_value(_data["memoryAddr"])
 	
 #---------- FN ----------
 func before_FN(_data: Dictionary):
@@ -350,7 +352,7 @@ func after_FN_INPUT(_data: Dictionary):
 	set_var_value(_data["memoryAddr"], _rlo[_data["connNodeId"]])
 func after_FN(_data: Dictionary):
 	_rlo[_data["id"]] = _mem[_data["id"]]["value"] 
-	_mem[_data["memoryAddr"]]["monitorData"] = _FalseTrue[get_var_value(_data["memoryAddr"])]
+	_mem[_data["memoryAddr"]]["monitorData"] = get_var_value(_data["memoryAddr"])
 	
 #---------- MOVE ----------
 func before_MOVE(_data: Dictionary):

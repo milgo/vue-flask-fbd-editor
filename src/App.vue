@@ -615,6 +615,7 @@ const popProjectAndVariablesFromRedoStack = () => {
 }
 
 const putProjectData = () => {
+	variablesdata.value.forEach((v) => {v.monitorData = 0; v.value = 0;});
 	window.localStorage.setItem("projectdata", JSON.stringify({program: projectdata.value, variables: variablesdata.value}));
 	window.localStorage.setItem("compiled", "no");
 	statusdata.value["compiled"] = "no";
@@ -857,7 +858,7 @@ const receiveMessage = (event) => {
 	var msgJson = JSON.parse(event.data)
 	if(msgJson["reciver"] === 'frontend'){
 
-		//console.log(JSON.stringify(msgJson))
+		console.log(JSON.stringify(msgJson))
 		if(msgJson["command"] === 'started'){
 			statusdata.value["state"] = 'running';
 			//putStatusData();
@@ -887,7 +888,21 @@ const receiveMessage = (event) => {
 					if(v.name == memAddr){
 						if(msgJson.mem[v.name]){
 							v.value = msgJson.mem[v.name]["value"];
-							v.monitorData = msgJson.mem[v.name]["monitorData"];
+							var monitorVal = 0;
+							if(v.forced){
+								monitorVal = msgJson.mem[v.name]["forcedValue"];
+							}
+							else{
+								if(msgJson.mem[v.name]["monitorData"])
+									monitorVal = msgJson.mem[v.name]["monitorData"];
+								else
+									monitorVal = msgJson.mem[v.name]["value"];
+							}
+							if(['di', 'do', 'marker'].some((t) => v.type === t )){
+								v.monitorData = monitorVal === 1 ? 'True' : 'False';
+							}else{
+								v.monitorData = monitorVal;
+							}
 						}
 					}
 				});
