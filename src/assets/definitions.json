@@ -221,8 +221,13 @@
         "output_type": "bool",
         "dyn_inputs": false,
         "inputs": [
+		  {
+            "name": "EN",
+            "type": ["bool"],
+            "show_name": true
+          },
           {
-            "name": "",
+            "name": "IN",
             "type": ["bool", "byte", "word", "dword", "number"],
             "show_name": true
           }

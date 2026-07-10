@@ -351,7 +351,7 @@ func after_FN_INPUT(_data: Dictionary):
 	#_mem[_data["memoryAddr"]]["value"]  = _rlo[_data["connNodeId"]]
 	set_var_value(_data["memoryAddr"], _rlo[_data["connNodeId"]])
 func after_FN(_data: Dictionary):
-	_rlo[_data["id"]] = _mem[_data["id"]]["value"] 
+	_rlo[_data["id"]] = _mem[_data["id"]]["value"]
 	_mem[_data["memoryAddr"]]["monitorData"] = get_var_value(_data["memoryAddr"])
 	
 #---------- MOVE ----------
@@ -359,10 +359,14 @@ func before_MOVE(_data: Dictionary):
 	_mem[_data["id"]]["value"]  = 0
 	
 func after_MOVE_INPUT(_data: Dictionary):
-	#set_var_value(_data["memoryAddr"], ) _rlo[_data["connNodeId"]]
-	set_var_value(_data["memoryAddr"], _rlo[_data["connNodeId"]])
+	if _data["inputName"] == "EN":
+		_mem[_data["id"]]["enable"] = _rlo[_data["connNodeId"]]
+
+	if _data["inputName"] == "IN" and _mem[_data["id"]]["enable"] == 1:
+		set_var_value(_data["memoryAddr"], _rlo[_data["connNodeId"]])
+
 func after_MOVE(_data: Dictionary):
-	_rlo[_data["id"]] = get_var_value(_data["memoryAddr"])
+	_rlo[_data["id"]] = _mem[_data["id"]]["enable"]
 	_mem[_data["memoryAddr"]]["monitorData"] = get_var_value(_data["memoryAddr"])
 	
 #---------- SP ----------
