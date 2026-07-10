@@ -59,7 +59,7 @@ albedo_color = Color(0.47058824, 0.2, 0.5529412, 0.5019608)
 material = SubResource("StandardMaterial3D_hr1cl")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_irklk"]
-size = Vector3(1, 4.9, 1)
+size = Vector3(1, 0.1, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_a1q2r"]
 
@@ -436,6 +436,7 @@ metadata/DOWN = "%o1"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Elevator/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5158157, 0)
 shape = SubResource("BoxShape3D_irklk")
 
 [node name="Cabin" type="Node3D" parent="Elevator"]

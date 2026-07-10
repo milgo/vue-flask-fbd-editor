@@ -800,3 +800,17 @@ func after_DIV_INPUT(_data: Dictionary):
 func after_DIV(_data: Dictionary):
 	_rlo[_data["id"]] = _mem[_data["id"]]["value"]
 	_mem[_data["id"]]["value"] = 0
+	
+#---------- POW ----------
+func setup_POW(_data: Dictionary):
+	pass
+	
+func after_POW_INPUT(_data: Dictionary):
+	if _data["inputName"] == "IN":
+		_mem[_data["id"]]["in1"] = _rlo[_data["connNodeId"]]
+
+	if _data["inputName"] == "POW":
+		_mem[_data["id"]]["pow"] = _rlo[_data["connNodeId"]]
+
+func after_POW(_data: Dictionary):
+	_rlo[_data["id"]] = pow(int(_mem[_data["id"]]["in1"]), int(_mem[_data["id"]]["pow"])) 

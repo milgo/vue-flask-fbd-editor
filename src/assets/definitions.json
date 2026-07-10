@@ -223,7 +223,7 @@
         ],
         "mem_input": ["byte", "word", "dword"],
 		"mem_loc": "???",
-		"desc": "set n bit"
+		"desc": "reset n bit"
       },
 	  {
         "name": "GETB",
@@ -619,7 +619,28 @@
         "dyn_inputs": true,
 		"mem_loc": " ",
 		"desc": "dividing values"
+      },
+      {
+        "name": "POW",
+        "alias": "",
+        "input_only": false,
+        "output_type": "number",
+        "dyn_inputs": false,
+		"mem_loc": " ",
+        "inputs": [
+          {
+            "name": "IN",
+            "type": ["number"],
+			"show_name": true
+          },
+          {
+            "name": "POW",
+            "type": ["number"],
+			"show_name": true
+          }
+        ],
+		"desc": "number to power"
       }
-    ]
+	]
   }
 ]
