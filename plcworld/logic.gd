@@ -328,6 +328,66 @@ func after_RS_INPUT(_data: Dictionary):
 func after_RS(_data: Dictionary):
 	_rlo[_data["id"]] = get_var_value(_data["memoryAddr"])
 	_mem[_data["memoryAddr"]]["monitorData"] = get_var_value(_data["memoryAddr"])
+
+#---------- SETB ----------
+func before_SETB(_data: Dictionary):
+	_mem[_data["id"]]["value"]  = 0
+	
+func after_SETB_INPUT(_data: Dictionary):
+	if _data["inputName"] == "EN":
+		_mem[_data["id"]]["enable"] = _rlo[_data["connNodeId"]]
+
+	if _data["inputName"] == "N":
+		_mem[_data["id"]]["n"] = _rlo[_data["connNodeId"]]
+
+func after_SETB(_data: Dictionary):
+	_rlo[_data["id"]] = _mem[_data["id"]]["enable"]
+	if _mem[_data["id"]]["enable"] == 1:
+		var val:int = get_var_value(_data["memoryAddr"])
+		val = val | (1 << int(_mem[_data["id"]]["n"]))
+		set_var_value(_data["memoryAddr"], val)
+	_mem[_data["memoryAddr"]]["monitorData"] = get_var_value(_data["memoryAddr"])
+
+#---------- RESB ----------
+func before_RESB(_data: Dictionary):
+	_mem[_data["id"]]["value"]  = 0
+	
+func after_RESB_INPUT(_data: Dictionary):
+	if _data["inputName"] == "EN":
+		_mem[_data["id"]]["enable"] = _rlo[_data["connNodeId"]]
+
+	if _data["inputName"] == "N":
+		_mem[_data["id"]]["n"] = _rlo[_data["connNodeId"]]
+
+func after_RESB(_data: Dictionary):
+	_rlo[_data["id"]] = _mem[_data["id"]]["enable"]
+	if _mem[_data["id"]]["enable"] == 1:
+		var val:int = get_var_value(_data["memoryAddr"])
+		var mask:int = ~(1<<int(_mem[_data["id"]]["n"]))
+		val = val & mask
+		set_var_value(_data["memoryAddr"], val)
+	_mem[_data["memoryAddr"]]["monitorData"] = get_var_value(_data["memoryAddr"])
+
+#---------- GETB ----------
+func before_GETB(_data: Dictionary):
+	_mem[_data["id"]]["value"]  = 0
+	
+func after_GETB_INPUT(_data: Dictionary):
+	if _data["inputName"] == "EN":
+		_mem[_data["id"]]["enable"] = _rlo[_data["connNodeId"]]
+
+	if _data["inputName"] == "N":
+		_mem[_data["id"]]["n"] = _rlo[_data["connNodeId"]]
+
+func after_GETB(_data: Dictionary):
+	_rlo[_data["id"]] = _mem[_data["id"]]["enable"]
+	if _mem[_data["id"]]["enable"] == 1:
+		var val:int = get_var_value(_data["memoryAddr"])
+		var n:int = int(_mem[_data["id"]]["n"])
+		var res:int = (val >> n) & 0x1
+		_rlo[_data["id"]] = res
+	#_mem[_data["memoryAddr"]]["monitorData"] = get_var_value(_data["memoryAddr"])
+
 #---------- FP ----------
 func before_FP(_data: Dictionary):
 	_mem[_data["id"]]["value"]  = 0
@@ -368,7 +428,6 @@ func after_MOVE_INPUT(_data: Dictionary):
 func after_MOVE(_data: Dictionary):
 	_rlo[_data["id"]] = _mem[_data["id"]]["enable"]
 	_mem[_data["memoryAddr"]]["monitorData"] = get_var_value(_data["memoryAddr"])
-	
 #---------- SP ----------
 func setup_SP(_data: Dictionary):
 	_mem[_data["memoryAddr"]]["started"]  = 0

@@ -182,6 +182,72 @@
 		"desc": "reset/set memory bit"
       },
       {
+        "name": "SETB",
+        "alias": "",
+        "input_only": false,
+        "output_type": "bool",
+        "dyn_inputs": false,
+        "inputs": [
+          {
+            "name": "EN",
+            "type": ["bool"],
+			"show_name": true
+          },
+          {
+            "name": "N",
+            "type": ["number"],
+			"show_name": true
+          }
+        ],
+        "mem_input": ["byte", "word", "dword"],
+		"mem_loc": "???",
+		"desc": "set n bit"
+      },
+	  {
+        "name": "RESB",
+        "alias": "",
+        "input_only": false,
+        "output_type": "bool",
+        "dyn_inputs": false,
+        "inputs": [
+          {
+            "name": "EN",
+            "type": ["bool"],
+			"show_name": true
+          },
+          {
+            "name": "N",
+            "type": ["number"],
+			"show_name": true
+          }
+        ],
+        "mem_input": ["byte", "word", "dword"],
+		"mem_loc": "???",
+		"desc": "set n bit"
+      },
+	  {
+        "name": "GETB",
+        "alias": "",
+        "input_only": false,
+        "output_type": "bool",
+        "dyn_inputs": false,
+        "inputs": [
+          {
+            "name": "EN",
+            "type": ["bool"],
+			"show_name": true
+          },
+          {
+            "name": "N",
+            "type": ["number"],
+			"show_name": true
+          }
+        ],
+        "mem_input": ["byte", "word", "dword"],
+		"mem_loc": "???",
+		"desc": "get n bit"
+      },
+      {
         "name": "FP",
         "alias": "",
         "input_only": false,
