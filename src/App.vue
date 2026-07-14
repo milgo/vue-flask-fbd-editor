@@ -406,6 +406,15 @@ const buildListing = (data) => {
 	
   setuplisting.value = [];
   listing.value = [];
+  
+  variablesdata.value.forEach((v) => {
+	  setuplisting.value.push({
+        functionName: "setup_MEM",
+		memoryAddr: v.name,
+        data: v,
+      });
+  });
+  
   //setup listing
   data.forEach((element) => {
       setuplisting.value.push({
@@ -416,13 +425,7 @@ const buildListing = (data) => {
       });
   });
   
-  variablesdata.value.forEach((v) => {
-	  setuplisting.value.push({
-        functionName: "setup_MEM",
-		memoryAddr: v.name,
-        data: v,
-      });
-  });
+
   
   //program listing
   data.forEach((element) => {

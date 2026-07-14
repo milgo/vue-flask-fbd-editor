@@ -8,7 +8,7 @@
         "input_only": true,
         "output_type": "bool",
         "dyn_inputs": false,
-        "mem_input": ["marker", "di", "do"],
+        "mem_input": ["marker", "di", "do", "timer"],
 		"mem_loc": "???",
 		"desc": "digital input"
       },
@@ -234,7 +234,7 @@
         "inputs": [
           {
             "name": "EN",
-            "type": ["bool"],
+            "type": ["bool", "number"],
 			"show_name": true
           },
           {
@@ -289,7 +289,7 @@
         "inputs": [
 		  {
             "name": "EN",
-            "type": ["bool"],
+            "type": ["bool", "number"],
             "show_name": true
           },
           {

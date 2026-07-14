@@ -433,7 +433,7 @@ metadata/UP = "%o0"
 metadata/DOWN = "%o1"
 
 [node name="Area3D" type="Area3D" parent="Elevator"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4296057, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Elevator/Area3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5158157, 0)
