@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://c6f0vndfmkhl3"]
+[gd_scene load_steps=41 format=3 uid="uid://c6f0vndfmkhl3"]
 
 [ext_resource type="Script" uid="uid://d15k53v2qmioc" path="res://world.gd" id="1_a1q2r"]
 [ext_resource type="Script" uid="uid://bjik0b8ki40d8" path="res://logic.gd" id="2_77yi3"]
@@ -17,6 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://6es3d67ylbcc" path="res://elevator-project/open_normal.png" id="8_majop"]
 [ext_resource type="Texture2D" uid="uid://1uqxovo1fpw" path="res://elevator-project/close_normal.png" id="9_22c28"]
 [ext_resource type="Texture2D" uid="uid://ohkwg8ehxdfr" path="res://elevator-project/2_pressed.png" id="9_68702"]
+[ext_resource type="Script" uid="uid://e24nxv5dybls" path="res://elevator_buttons.gd" id="9_pg1wk"]
 [ext_resource type="Texture2D" uid="uid://bj0fn1x87077w" path="res://elevator-project/3_pressed.png" id="11_nreao"]
 [ext_resource type="Texture2D" uid="uid://clqsc00g76clm" path="res://elevator-project/open_pressed.png" id="13_ym41f"]
 [ext_resource type="Texture2D" uid="uid://cpmacyvcuch2n" path="res://elevator-project/close_pressed.png" id="15_xu5fp"]
@@ -223,26 +224,31 @@ text = "Elevator btn."
 [node name="ElevatorButtons" type="HBoxContainer" parent="HUD/VBoxContainer"]
 layout_mode = 2
 alignment = 1
+script = ExtResource("9_pg1wk")
 
 [node name="0" type="TextureButton" parent="HUD/VBoxContainer/ElevatorButtons"]
 layout_mode = 2
 texture_normal = ExtResource("4_y5ghj")
 texture_pressed = ExtResource("5_3iwpb")
+metadata/DO = "%o10"
 
 [node name="1" type="TextureButton" parent="HUD/VBoxContainer/ElevatorButtons"]
 layout_mode = 2
 texture_normal = ExtResource("5_hschd")
 texture_pressed = ExtResource("7_ytpvu")
+metadata/DO = "%o11"
 
 [node name="2" type="TextureButton" parent="HUD/VBoxContainer/ElevatorButtons"]
 layout_mode = 2
 texture_normal = ExtResource("6_3iwpb")
 texture_pressed = ExtResource("9_68702")
+metadata/DO = "%o12"
 
 [node name="3" type="TextureButton" parent="HUD/VBoxContainer/ElevatorButtons"]
 layout_mode = 2
 texture_normal = ExtResource("7_ee22d")
 texture_pressed = ExtResource("11_nreao")
+metadata/DO = "%o13"
 
 [node name="OpenDoors" type="TextureButton" parent="HUD/VBoxContainer/ElevatorButtons"]
 layout_mode = 2
@@ -262,7 +268,6 @@ texture_normal = ExtResource("22_irklk")
 texture_pressed = ExtResource("23_pg1wk")
 
 [node name="MemDesc" type="Label" parent="HUD"]
-visible = false
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -280,12 +285,12 @@ text = "%i0 - level1 lim switch
 %i2 - level3 lim switch
 %i3 - level4 lim switch
 
-%i4 - level 0 elev. butt.
-%i5 - level 1 elev. butt.
-%i6 - level 2 elev. butt.
-%i7 - level 3 elev. butt.
-%i8 - elev. open door
-%i9 - elev. close doors
+%i4 - level 0 elev. butt.     %o10 - level 0 butt. ind
+%i5 - level 1 elev. butt.     %o11 - level 1 butt. ind
+%i6 - level 2 elev. butt.     %o12 - level 2 butt. ind
+%i7 - level 3 elev. butt.     %o13 - level 3 butt. ind
+%i8 - elev. open door       %o14 - elev. open door ind
+%i9 - elev. close door       %o15 - elev. close door ind
 
 %i10 - call go up l0
 %i11 - call go down l1
@@ -298,8 +303,8 @@ text = "%i0 - level1 lim switch
 %o1 - elev. down
 %o2 - going up ind.
 %o3 - going down ind.
-%o2 - open elev. door
-%o3 - close elev. door"
+%o4 - open elev. door
+%o5 - close elev. door"
 
 [node name="Shaft" type="Node3D" parent="."]
 
@@ -448,8 +453,8 @@ mesh = SubResource("BoxMesh_a1q2r")
 [node name="Doors" type="Node3D" parent="Elevator"]
 transform = Transform3D(-4.371139e-09, 0, 3, 0, 5, 0, -0.1, 0, -1.3113416e-07, 0, 2.5, -1.6)
 script = ExtResource("24_irklk")
-metadata/OPEN = "%o2"
-metadata/CLOSE = "%o3"
+metadata/OPEN = "%o4"
+metadata/CLOSE = "%o5"
 
 [node name="DoorMesh" type="MeshInstance3D" parent="Elevator/Doors"]
 transform = Transform3D(1, 0, 0, 0, 1.0000002, 0, 0, 0, 1, 0, 0, 0)
@@ -457,6 +462,7 @@ mesh = SubResource("BoxMesh_hr1cl")
 
 [connection signal="send_data" from="Logic" to="." method="_on_logic_send_data"]
 [connection signal="variable_value_changed" from="Logic" to="." method="_on_logic_variable_value_changed"]
+[connection signal="variable_value_changed" from="Logic" to="HUD/VBoxContainer/ElevatorButtons" method="_on_logic_variable_value_changed"]
 [connection signal="variable_value_changed" from="Logic" to="Elevator" method="_on_logic_variable_value_changed"]
 [connection signal="variable_value_changed" from="Logic" to="Elevator/Doors" method="_on_logic_variable_value_changed"]
 [connection signal="button_down" from="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level3/DownButton" to="." method="_on_button_down" binds= ["%i15"]]

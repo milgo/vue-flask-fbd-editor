@@ -24,7 +24,7 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      inkscape:zoom="0.71370863"
-     inkscape:cx="419.63903"
+     inkscape:cx="420.3396"
      inkscape:cy="775.52656"
      inkscape:window-width="1280"
      inkscape:window-height="1377"
@@ -44,8 +44,8 @@
        id="rect1"
        width="30.407764"
        height="30.407764"
-       x="34.520809"
-       y="81"
+       x="61.212376"
+       y="80.62928"
        rx="5"
        ry="5"
        inkscape:export-filename="0.png"
@@ -56,8 +56,8 @@
        id="rect1-1"
        width="30.407764"
        height="30.407764"
-       x="34.520809"
-       y="113.89643"
+       x="61.212376"
+       y="113.52571"
        rx="5"
        ry="5"
        inkscape:export-filename="1.png"
@@ -68,8 +68,8 @@
        id="rect1-2"
        width="30.407764"
        height="30.407764"
-       x="34.520809"
-       y="149.49712"
+       x="61.212376"
+       y="149.1264"
        rx="5"
        ry="5"
        inkscape:export-filename="2.png"
@@ -80,8 +80,8 @@
        id="rect1-23"
        width="30.407764"
        height="30.407764"
-       x="34.520809"
-       y="186.10527"
+       x="61.212376"
+       y="185.73456"
        rx="5"
        ry="5"
        inkscape:export-filename="3.png"
@@ -92,8 +92,8 @@
        id="rect1-8"
        width="30.407764"
        height="30.407764"
-       x="34.520809"
-       y="220.14085"
+       x="61.212376"
+       y="219.77014"
        rx="5"
        ry="5"
        inkscape:export-filename="4.png"
@@ -143,14 +143,14 @@
        inkscape:export-ydpi="50.118778" />
     <path
        id="rect2-1-4"
-       style="fill:#008000;stroke-width:0.14"
+       style="fill:#00ff00;stroke-width:0.14"
        d="m 176.67971,184.64962 -16.25275,-16.25276 v -0.1111 h 32.50499 v 0.11162 z"
        inkscape:export-filename="goingdown_green.png"
        inkscape:export-xdpi="50.118778"
        inkscape:export-ydpi="50.118778" />
     <path
        id="rect2-8-9-0"
-       style="fill:#008000;stroke-width:0.14"
+       style="fill:#00ff00;stroke-width:0.14"
        d="m 175.68672,147.9974 -16.25275,16.25275 v 0.1111 h 32.50499 v -0.11162 z"
        inkscape:export-filename="goingup_green.png"
        inkscape:export-xdpi="50.118778"
@@ -158,21 +158,21 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:19.7556px;font-family:Calibri;-inkscape-font-specification:Calibri;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;stroke-width:0.14"
-       x="43.097691"
-       y="103.38554"
+       x="69.789253"
+       y="103.01482"
        id="text3"><tspan
          sodipodi:role="line"
          id="tspan3"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#ffffff;stroke-width:0.14"
-         x="43.097691"
-         y="103.38554">P</tspan></text>
+         x="69.789253"
+         y="103.01482">P</tspan></text>
     <rect
        style="fill:#808080;fill-opacity:1;stroke-width:0.14"
        id="rect1-89"
        width="30.407764"
        height="30.407764"
-       x="69.33429"
-       y="81.439346"
+       x="96.025856"
+       y="81.068626"
        rx="5"
        ry="5"
        inkscape:export-filename="0_pressed.png"
@@ -183,8 +183,8 @@
        id="rect1-89-2"
        width="30.407764"
        height="30.407764"
-       x="34.520809"
-       y="45.204063"
+       x="61.212376"
+       y="44.833347"
        rx="5"
        ry="5"
        inkscape:export-filename="close_normal.png"
@@ -195,8 +195,8 @@
        id="rect1-89-4"
        width="30.407764"
        height="30.407764"
-       x="34.520809"
-       y="11.281107"
+       x="61.212376"
+       y="10.910391"
        rx="5"
        ry="5"
        inkscape:export-filename="open_normal.png"
@@ -205,14 +205,14 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:19.7556px;font-family:Calibri;-inkscape-font-specification:Calibri;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;stroke-width:0.14"
-       x="77.911179"
-       y="103.82488"
+       x="104.60275"
+       y="103.45416"
        id="text3-2"><tspan
          sodipodi:role="line"
          id="tspan3-7"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#ffffff;stroke-width:0.14"
-         x="77.911179"
-         y="103.82488">P</tspan></text>
+         x="104.60275"
+         y="103.45416">P</tspan></text>
     <rect
        style="fill:#808080;fill-opacity:1;stroke-width:0.14"
        id="rect1-89-8"
@@ -262,54 +262,54 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:19.7556px;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;stroke-width:0.14"
-       x="43.155567"
-       y="136.30609"
+       x="69.84713"
+       y="135.93538"
        id="text4"><tspan
          sodipodi:role="line"
          id="tspan4"
          style="fill:#ffffff;stroke-width:0.14"
-         x="43.155567"
-         y="136.30609">1</tspan></text>
+         x="69.84713"
+         y="135.93538">1</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:19.7556px;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;stroke-width:0.14"
-       x="43.30991"
-       y="172.03218"
+       x="70.001472"
+       y="171.66147"
        id="text5"><tspan
          sodipodi:role="line"
          id="tspan5"
          style="fill:#ffffff;stroke-width:0.14"
-         x="43.30991"
-         y="172.03218">2</tspan></text>
+         x="70.001472"
+         y="171.66147">2</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:19.7556px;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;stroke-width:0.14"
-       x="43.382256"
-       y="208.49081"
+       x="70.073822"
+       y="208.1201"
        id="text6"><tspan
          sodipodi:role="line"
          id="tspan6"
          style="fill:#ffffff;stroke-width:0.14"
-         x="43.382256"
-         y="208.49081">3</tspan></text>
+         x="70.073822"
+         y="208.1201">3</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:19.7556px;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;stroke-width:0.14"
-       x="43.551067"
-       y="242.5264"
+       x="70.24263"
+       y="242.15569"
        id="text7"><tspan
          sodipodi:role="line"
          id="tspan7"
          style="fill:#ffffff;stroke-width:0.14"
-         x="43.551067"
-         y="242.5264">4</tspan></text>
+         x="70.24263"
+         y="242.15569">4</tspan></text>
     <rect
        style="fill:#808080;fill-opacity:1;stroke-width:0.14"
        id="rect1-1-1"
        width="30.407764"
        height="30.407764"
-       x="69.33429"
-       y="115.48848"
+       x="96.025856"
+       y="115.11776"
        rx="5"
        ry="5"
        inkscape:export-filename="1_pressed.png"
@@ -320,8 +320,8 @@
        id="rect1-2-2"
        width="30.407764"
        height="30.407764"
-       x="69.33429"
-       y="151.08916"
+       x="96.025856"
+       y="150.71844"
        rx="5"
        ry="5"
        inkscape:export-filename="2_pressed.png"
@@ -332,8 +332,8 @@
        id="rect1-23-3"
        width="30.407764"
        height="30.407764"
-       x="69.33429"
-       y="187.69731"
+       x="96.025856"
+       y="187.3266"
        rx="5"
        ry="5"
        inkscape:export-filename="3_pressed.png"
@@ -344,8 +344,8 @@
        id="rect1-8-3"
        width="30.407764"
        height="30.407764"
-       x="69.33429"
-       y="221.73289"
+       x="96.025856"
+       y="221.36218"
        rx="5"
        ry="5"
        inkscape:export-filename="4_pressed.png"
@@ -354,50 +354,50 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:19.7556px;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;stroke-width:0.14"
-       x="77.969055"
-       y="137.89813"
+       x="104.66062"
+       y="137.52742"
        id="text4-4"><tspan
          sodipodi:role="line"
          id="tspan4-1"
          style="fill:#ffffff;stroke-width:0.14"
-         x="77.969055"
-         y="137.89813">1</tspan></text>
+         x="104.66062"
+         y="137.52742">1</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:19.7556px;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;stroke-width:0.14"
-       x="78.12339"
-       y="173.62422"
+       x="104.81496"
+       y="173.25351"
        id="text5-1"><tspan
          sodipodi:role="line"
          id="tspan5-3"
          style="fill:#ffffff;stroke-width:0.14"
-         x="78.12339"
-         y="173.62422">2</tspan></text>
+         x="104.81496"
+         y="173.25351">2</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:19.7556px;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;stroke-width:0.14"
-       x="78.19574"
-       y="210.08286"
+       x="104.88731"
+       y="209.71214"
        id="text6-8"><tspan
          sodipodi:role="line"
          id="tspan6-7"
          style="fill:#ffffff;stroke-width:0.14"
-         x="78.19574"
-         y="210.08286">3</tspan></text>
+         x="104.88731"
+         y="209.71214">3</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:19.7556px;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;stroke-width:0.14"
-       x="78.364548"
-       y="244.11844"
+       x="105.05611"
+       y="243.74773"
        id="text7-4"><tspan
          sodipodi:role="line"
          id="tspan7-2"
          style="fill:#ffffff;stroke-width:0.14"
-         x="78.364548"
-         y="244.11844">4</tspan></text>
+         x="105.05611"
+         y="243.74773">4</tspan></text>
     <g
        id="g14"
-       transform="translate(-2.3977296,-0.18258933)">
+       transform="translate(24.293835,-0.5533055)">
       <path
          id="rect2-9"
          style="fill:#ffffff;stroke-width:0.0647702"
@@ -412,8 +412,8 @@
        id="rect1-89-4-0"
        width="30.407764"
        height="30.407764"
-       x="69.33429"
-       y="9.8901901"
+       x="96.025856"
+       y="9.519474"
        rx="5"
        ry="5"
        inkscape:export-filename="open_pressed.png"
@@ -421,7 +421,7 @@
        inkscape:export-ydpi="50.118778" />
     <g
        id="g14-6"
-       transform="translate(32.415755,-1.5735062)">
+       transform="translate(59.10732,-1.9442224)">
       <path
          id="rect2-9-6"
          style="fill:#ffffff;stroke-width:0.0647702"
@@ -433,7 +433,7 @@
     </g>
     <g
        id="g15"
-       transform="translate(-0.44977061,0.04877513)">
+       transform="translate(26.241794,-0.32194104)">
       <path
          id="rect2-9-8"
          style="fill:#ffffff;stroke-width:0.0647702"
@@ -448,8 +448,8 @@
        id="rect1-89-2-3"
        width="30.407764"
        height="30.407764"
-       x="69.33429"
-       y="45.596703"
+       x="96.025856"
+       y="45.225986"
        rx="5"
        ry="5"
        inkscape:export-filename="close_pressed.png"
@@ -457,13 +457,176 @@
        inkscape:export-ydpi="50.118778" />
     <g
        id="g15-7"
-       transform="translate(34.363714,0.44141341)">
+       transform="translate(61.055279,0.07069724)">
       <path
          id="rect2-9-8-8"
          style="fill:#ffffff;stroke-width:0.0647702"
          d="m 49.495344,60.359056 -7.574523,7.464383 h -0.05178 V 52.894902 h 0.05201 z" />
       <path
          id="rect2-8-0-9-8"
+         style="fill:#ffffff;stroke-width:0.0647702"
+         d="m 50.853585,60.359056 7.574528,7.464383 h 0.05177 V 52.894902 h -0.05202 z" />
+    </g>
+    <rect
+       style="fill:#aa0000;fill-opacity:1;stroke-width:0.14"
+       id="rect1-89-82"
+       width="30.407764"
+       height="30.407764"
+       x="2.2329965"
+       y="80.866287"
+       rx="5"
+       ry="5"
+       inkscape:export-filename="0_pressed.png"
+       inkscape:export-xdpi="50.118778"
+       inkscape:export-ydpi="50.118778" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:19.7556px;font-family:Calibri;-inkscape-font-specification:Calibri;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;stroke-width:0.14"
+       x="10.809885"
+       y="103.25182"
+       id="text3-2-4"><tspan
+         sodipodi:role="line"
+         id="tspan3-7-5"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#ffffff;stroke-width:0.14"
+         x="10.809885"
+         y="103.25182">P</tspan></text>
+    <rect
+       style="fill:#aa0000;fill-opacity:1;stroke-width:0.14"
+       id="rect1-1-1-5"
+       width="30.407764"
+       height="30.407764"
+       x="2.2329965"
+       y="114.91542"
+       rx="5"
+       ry="5"
+       inkscape:export-filename="1_pressed.png"
+       inkscape:export-xdpi="50.118778"
+       inkscape:export-ydpi="50.118778" />
+    <rect
+       style="fill:#aa0000;fill-opacity:1;stroke-width:0.14"
+       id="rect1-2-2-1"
+       width="30.407764"
+       height="30.407764"
+       x="2.2329965"
+       y="150.5161"
+       rx="5"
+       ry="5"
+       inkscape:export-filename="2_pressed.png"
+       inkscape:export-xdpi="50.118778"
+       inkscape:export-ydpi="50.118778" />
+    <rect
+       style="fill:#aa0000;fill-opacity:1;stroke-width:0.14"
+       id="rect1-23-3-7"
+       width="30.407764"
+       height="30.407764"
+       x="2.2329965"
+       y="187.12425"
+       rx="5"
+       ry="5"
+       inkscape:export-filename="3_pressed.png"
+       inkscape:export-xdpi="50.118778"
+       inkscape:export-ydpi="50.118778" />
+    <rect
+       style="fill:#aa0000;fill-opacity:1;stroke-width:0.14"
+       id="rect1-8-3-1"
+       width="30.407764"
+       height="30.407764"
+       x="2.2329965"
+       y="221.15982"
+       rx="5"
+       ry="5"
+       inkscape:export-filename="4_pressed.png"
+       inkscape:export-xdpi="50.118778"
+       inkscape:export-ydpi="50.118778" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:19.7556px;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;stroke-width:0.14"
+       x="10.867762"
+       y="137.32507"
+       id="text4-4-1"><tspan
+         sodipodi:role="line"
+         id="tspan4-1-5"
+         style="fill:#ffffff;stroke-width:0.14"
+         x="10.867762"
+         y="137.32507">1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:19.7556px;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;stroke-width:0.14"
+       x="11.022089"
+       y="173.05116"
+       id="text5-1-2"><tspan
+         sodipodi:role="line"
+         id="tspan5-3-7"
+         style="fill:#ffffff;stroke-width:0.14"
+         x="11.022089"
+         y="173.05116">2</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:19.7556px;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;stroke-width:0.14"
+       x="11.094446"
+       y="209.5098"
+       id="text6-8-6"><tspan
+         sodipodi:role="line"
+         id="tspan6-7-1"
+         style="fill:#ffffff;stroke-width:0.14"
+         x="11.094446"
+         y="209.5098">3</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:19.7556px;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;stroke-width:0.14"
+       x="11.263254"
+       y="243.54538"
+       id="text7-4-4"><tspan
+         sodipodi:role="line"
+         id="tspan7-2-2"
+         style="fill:#ffffff;stroke-width:0.14"
+         x="11.263254"
+         y="243.54538">4</tspan></text>
+    <rect
+       style="fill:#aa0000;fill-opacity:1;stroke-width:0.14"
+       id="rect1-89-4-0-3"
+       width="30.407764"
+       height="30.407764"
+       x="2.2329965"
+       y="9.3171329"
+       rx="5"
+       ry="5"
+       inkscape:export-filename="open_pressed.png"
+       inkscape:export-xdpi="50.118778"
+       inkscape:export-ydpi="50.118778" />
+    <g
+       id="g14-6-2"
+       transform="translate(-34.685547,-2.1465657)">
+      <path
+         id="rect2-9-6-2"
+         style="fill:#ffffff;stroke-width:0.0647702"
+         d="M 60.703723,26.667464 53.1292,34.131847 H 53.07742 V 19.20331 h 0.05201 z" />
+      <path
+         id="rect2-8-0-1-1"
+         style="fill:#ffffff;stroke-width:0.0647702"
+         d="m 43.541119,26.667464 7.574528,7.464383 h 0.05177 V 19.20331 h -0.05202 z" />
+    </g>
+    <rect
+       style="fill:#aa0000;fill-opacity:1;stroke-width:0.14"
+       id="rect1-89-2-3-6"
+       width="30.407764"
+       height="30.407764"
+       x="2.2329965"
+       y="45.023647"
+       rx="5"
+       ry="5"
+       inkscape:export-filename="close_pressed.png"
+       inkscape:export-xdpi="50.118778"
+       inkscape:export-ydpi="50.118778" />
+    <g
+       id="g15-7-8"
+       transform="translate(-32.737587,-0.13164669)">
+      <path
+         id="rect2-9-8-8-5"
+         style="fill:#ffffff;stroke-width:0.0647702"
+         d="m 49.495344,60.359056 -7.574523,7.464383 h -0.05178 V 52.894902 h 0.05201 z" />
+      <path
+         id="rect2-8-0-9-8-7"
          style="fill:#ffffff;stroke-width:0.0647702"
          d="m 50.853585,60.359056 7.574528,7.464383 h 0.05177 V 52.894902 h -0.05202 z" />
     </g>

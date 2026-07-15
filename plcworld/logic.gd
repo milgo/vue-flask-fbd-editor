@@ -440,7 +440,7 @@ func before_SP(_data: Dictionary):
 		if _mem[_data["memoryAddr"]]["stopped"] == 0:
 			_mem[_data["memoryAddr"]]["elapsedTime"] = Time.get_ticks_msec() - _mem[_data["memoryAddr"]]["startTime"]
 			set_var_value(_data["memoryAddr"], _mem[_data["memoryAddr"]]["elapsedTime"]) #!			
-		if _mem[_data["memoryAddr"]]["elapsedTime"] < _mem[_data["memoryAddr"]]["duration"]:
+		if _mem[_data["memoryAddr"]]["elapsedTime"] <= _mem[_data["memoryAddr"]]["duration"]:
 			set_var_value(_data["memoryAddr"], 1)
 		else:
 			set_var_value(_data["memoryAddr"], 0)
@@ -483,7 +483,7 @@ func before_SE(_data: Dictionary):
 		if _mem[_data["memoryAddr"]]["stopped"] == 0:
 			_mem[_data["memoryAddr"]]["elapsedTime"] = Time.get_ticks_msec() - _mem[_data["memoryAddr"]]["startTime"]
 			set_var_value(_data["memoryAddr"], _mem[_data["memoryAddr"]]["elapsedTime"]) #!
-		if _mem[_data["memoryAddr"]]["elapsedTime"] < _mem[_data["memoryAddr"]]["duration"]:
+		if _mem[_data["memoryAddr"]]["elapsedTime"] <= _mem[_data["memoryAddr"]]["duration"]:
 			set_var_value(_data["memoryAddr"], 1)
 		else:
 			set_var_value(_data["memoryAddr"], 0)
@@ -518,7 +518,7 @@ func before_SD(_data: Dictionary):
 		if _mem[_data["memoryAddr"]]["stopped"] == 0:
 			_mem[_data["memoryAddr"]]["elapsedTime"] = Time.get_ticks_msec() - _mem[_data["memoryAddr"]]["startTime"]
 			set_var_value(_data["memoryAddr"], _mem[_data["memoryAddr"]]["elapsedTime"]) #!
-		if _mem[_data["memoryAddr"]]["elapsedTime"] < _mem[_data["memoryAddr"]]["duration"]:
+		if _mem[_data["memoryAddr"]]["elapsedTime"] <= _mem[_data["memoryAddr"]]["duration"]:
 			set_var_value(_data["memoryAddr"], 0)
 		else:
 			set_var_value(_data["memoryAddr"], 1)
@@ -554,7 +554,7 @@ func before_SS(_data: Dictionary):
 		if _mem[_data["memoryAddr"]]["stopped"] == 0:
 			_mem[_data["memoryAddr"]]["elapsedTime"] = Time.get_ticks_msec() - _mem[_data["memoryAddr"]]["startTime"]
 			set_var_value(_data["memoryAddr"], _mem[_data["memoryAddr"]]["elapsedTime"]) 
-		if _mem[_data["memoryAddr"]]["elapsedTime"] < _mem[_data["memoryAddr"]]["duration"]:
+		if _mem[_data["memoryAddr"]]["elapsedTime"] <= _mem[_data["memoryAddr"]]["duration"]:
 			set_var_value(_data["memoryAddr"], 0)
 		else:
 			set_var_value(_data["memoryAddr"], 1)
@@ -592,7 +592,7 @@ func before_SF(_data: Dictionary):
 		if _mem[_data["memoryAddr"]]["stopped"] == 0:
 			_mem[_data["memoryAddr"]]["elapsedTime"] = Time.get_ticks_msec() - _mem[_data["memoryAddr"]]["startTime"]
 			set_var_value(_data["memoryAddr"], _mem[_data["memoryAddr"]]["elapsedTime"]) 
-		if _mem[_data["memoryAddr"]]["elapsedTime"] < _mem[_data["memoryAddr"]]["duration"]:
+		if _mem[_data["memoryAddr"]]["elapsedTime"] <= _mem[_data["memoryAddr"]]["duration"]:
 			set_var_value(_data["memoryAddr"], 0)
 		else:
 			set_var_value(_data["memoryAddr"], 1)
