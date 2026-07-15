@@ -54,6 +54,11 @@
 			<button @click="downloadDb()">Export</button>
 			</div>
       </td>
+      <td>
+			<div v-if="importExportButtonVisible[statusdata.state]">
+			<button @click="clearDb()">Clear</button>
+			</div>
+      </td>	  
     </tr>
   </table>
 
@@ -81,6 +86,7 @@
 	
   </table>
 </div> -->
+<br/>
 <br/>
   <table width="100%">
   <tr>
@@ -179,10 +185,12 @@
   </tr>
 </table>
 
+
 <hr class="hr-normal">
 
-  <br />
 
+  <br />
+  
   <table class="mem_table" width="65%">
     <tr>
       <th>Address</th>
@@ -1016,6 +1024,16 @@ export default {
         today.getHours() + "" + today.getMinutes() + "" + today.getSeconds();
       const dateTime = date + "" + time;
       return dateTime;
+    },
+	
+	clearDb(timestamp, db) {
+	  const isConfirmed = window.confirm("Delete project?");
+	  
+	  if(isConfirmed){
+		window.localStorage.setItem("projectdata", JSON.stringify({"program":[], "variables":[]}));
+		window.location.reload();
+	  }else{
+	  }
     },
 	
 	downloadDb(timestamp, db) {
