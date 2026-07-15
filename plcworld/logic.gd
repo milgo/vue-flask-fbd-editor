@@ -9,6 +9,7 @@ var _prev_mem : Dictionary
 var _rlo: Dictionary
 var _running: bool
 
+signal start_logic()
 signal send_data(data:String)
 signal variable_value_changed(memAddr:String, oldval:Variant, newval:Variant)
 
@@ -51,6 +52,7 @@ func execute(json):
 					
 				call(setup["functionName"], setup)				
 			
+			start_logic.emit()
 			_running = true
 			
 		if(json["command"] == "monitorOn"):	

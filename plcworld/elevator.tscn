@@ -433,6 +433,7 @@ transform = Transform3D(-2.1855695e-09, -0.99999994, 0, 0.05, -4.3711385e-08, 0,
 mesh = SubResource("QuadMesh_1ug6e")
 
 [node name="Elevator" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.037667513, 0)
 script = ExtResource("22_i41m5")
 metadata/UP = "%o0"
 metadata/DOWN = "%o1"
@@ -461,6 +462,7 @@ transform = Transform3D(1, 0, 0, 0, 1.0000002, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("BoxMesh_hr1cl")
 
 [connection signal="send_data" from="Logic" to="." method="_on_logic_send_data"]
+[connection signal="start_logic" from="Logic" to="." method="_on_logic_start_logic"]
 [connection signal="variable_value_changed" from="Logic" to="." method="_on_logic_variable_value_changed"]
 [connection signal="variable_value_changed" from="Logic" to="HUD/VBoxContainer/ElevatorButtons" method="_on_logic_variable_value_changed"]
 [connection signal="variable_value_changed" from="Logic" to="Elevator" method="_on_logic_variable_value_changed"]

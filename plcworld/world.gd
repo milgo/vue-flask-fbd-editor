@@ -114,3 +114,11 @@ func _on_info_button_button_down() -> void:
 func _on_info_button_button_up() -> void:
 	$HUD/MemDesc.visible = false
 	pass # Replace with function body.
+
+func _on_logic_start_logic() -> void:
+	print("reentering collisions")
+	for child in find_children("*", "Area3D", true, true):
+		print(child.get_rid())
+		child.monitoring = false
+		await get_tree().physics_frame
+		child.monitoring = true
