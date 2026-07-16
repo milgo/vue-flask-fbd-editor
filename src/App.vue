@@ -765,7 +765,17 @@ const addInput = (nodeId, inputDef, idOffset = 0) => {
 
 const connectNodeToInput = (nodeId, inputId) => {
   //alert(nodeId + ", " + inputId);
-  projectdata.value.forEach((node) => {
+  var index_from = -1;
+  var index_to = -1;
+  
+  projectdata.value.forEach((node, index) => {
+	if(node.id === nodeId){
+		index_from = index;
+		return;
+	}
+  });
+  
+  projectdata.value.forEach((node, index) => {
     if (node.id === nodeId) node.parentInput = inputId;
     if (node.inputs) {
       node.inputs.forEach((input) => {
@@ -773,10 +783,15 @@ const connectNodeToInput = (nodeId, inputId) => {
           input.target = nodeId;
           //input.type = node.output_type;
           //alert("input.id=" + input.id + "?=" + inputId);
+		  index_to = index;
         }
       });
     }
   });
+  
+  if(index_from > 0 && index_to > 0)
+	array_move(projectdata.value, index_from, index_to);
+  
   putProjectData();
 };
 
@@ -797,8 +812,8 @@ const array_move = (arr, old_index, new_index) => {
 const disconnectNodeFromInput = (nodeId, inputId) => {
   //alert(nodeId + ", " + inputId);
   var isInputOnly = false;
-  var index_from = -1;
-  var index_to = -1;
+  //var index_from = -1;
+  //var index_to = -1;
   projectdata.value.forEach((node, index) => {
     if (node.id === nodeId) {
       node.parentInput = null;
@@ -806,21 +821,21 @@ const disconnectNodeFromInput = (nodeId, inputId) => {
       if (node.input_only === true) {
         deleteChild(node.id);
 	  }else{
-		  index_from = index;
+		 // index_from = index;
 	  }
     }
     if (node.inputs) {
       node.inputs.forEach((input) => {
         if (input.id === inputId) {
-		  index_to = index;
+		  //index_to = index;
           input.target = -1;
         }
       });
     }
   });
   //console.log("index_from: " + index_from + ", index_to: " + index_to);
-  if(index_from > 0 && index_to > 0)
-	array_move(projectdata.value, index_from, index_to);
+  //if(index_from > 0 && index_to > 0)
+//	array_move(projectdata.value, index_from, index_to);
   putProjectData();
 };
 
@@ -846,7 +861,7 @@ const deleteInput = (inputId) => {
 const deleteChild = (id) => {
 	
   var inputsOfDeletedNode = getInputsById(id, projectdata.value);
-  projectdata.value.forEach((node) => {
+  projectdata.value.forEach((node, index) => {
 	  
 	if(inputsOfDeletedNode){
 		inputsOfDeletedNode.forEach((input) => {
