@@ -92,14 +92,15 @@
   <tr>
   <td width="70%">
   <div v-for="(node, networkId) in projectdata.filter((n) => !n.parentInput)">
-    <table>
+    <table border="0">
       <tr>
-        <td align="left"> <!--Network: {{ networkId + 1 }} --> &nbsp</td>
+        <td align="left"> <!--Network: {{ networkId + 1 }} --><div v-if="enableEdit[statusdata.state]"><img src="./assets/arrow-up.png" onclick="confirm('ok?')"/><img src="./assets/arrow-down.png"/></div></td>
         <td></td>
         <td></td>
       </tr>
       <tr>
         <td>
+		
           <Function
             :id="node.id"
             :networkId="networkId + 1"
@@ -659,6 +660,7 @@ onMounted(() => {
   getProjectData();
 
   //buildListing(projectdata.value);
+  rootNodesIndexArray(projectdata.value);
   
   setTimeout(() => pushProjectAndVariablesToUndoStack(), 100);
   window.addEventListener('message', receiveMessage)	
@@ -1019,6 +1021,22 @@ const isProgramDataReadyToCompile = (data, types) => {
 		data.some((n) => (n.inputs.some((i) => i.target === -1)));
 
 	return !res;
+}
+
+
+const rootNodesIndexArray = (data) => {
+	
+	var indexArray = []
+	
+	data.filter((rn) => !rn.parentInput).forEach((n) => {
+		data.forEach((t, index) => {
+			if(n.id === t.id)
+				indexArray.push({ id: n.id, index: index});
+		});
+	})
+
+	console.log(indexArray);
+	
 }
 
 provide("addChild", addChild);
