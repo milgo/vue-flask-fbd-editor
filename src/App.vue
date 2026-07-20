@@ -1,6 +1,5 @@
 <template>
 
-
  <table class="stat_table" style="position:fixed;top:0px;left:0px;" border="1">
     <tr>
       <td>
@@ -94,9 +93,11 @@
   <div v-for="(node, networkId) in projectdata.filter((n) => !n.parentInput)">
     <table border="0">
       <tr>
-        <td align="left"> <!--Network: {{ networkId + 1 }} --><div v-if="enableEdit[statusdata.state]"><img src="./assets/arrow-up.png" onclick="confirm('ok?')"/><img src="./assets/arrow-down.png"/></div></td>
+        <td align="left"></td>
         <td></td>
         <td></td>
+		<td>&nbsp</td>
+		<td></td>
       </tr>
       <tr>
         <td>
@@ -147,8 +148,11 @@
             v-click-outside="diselectInterConnection"
           ></div>
         </td>
+		<td></td>
+		<td valign="top"><table align="right"><tr><td>
+		<div v-if="enableEdit[statusdata.state] && networkId>0"><img src="./assets/arrow-up.png" @click="pushProjectAndVariablesToUndoStack();arrayMoveUp(projectdata, networkId);putProjectData();"/></div></td></tr><tr><td>&nbsp</td></tr><tr><td><div v-if="enableEdit[statusdata.state] && networkId<rootNodesIndexArray.length-1"><img src="./assets/arrow-down.png" @click="pushProjectAndVariablesToUndoStack();arrayMoveDown(projectdata, networkId);putProjectData();"></div></td></tr></table></td>
       </tr>
-	  <tr>
+	  <tr><td>
 	  	<div align="left" v-if="enableEdit[statusdata.state]">
 		<FunctionList
 		  @selected="
@@ -162,6 +166,11 @@
 		  :alone="true"
 		/>
 	  </div>
+	  </td>
+	  <td></td>
+	  <td></td>
+	  <td></td>
+	  <td></td>
 	  </tr>
     </table>
   </div>
@@ -342,6 +351,7 @@ const compiledata = ref([]);
 const setuplisting = ref([]);
 const listing = ref([]);
 const variablesdata = ref([]);
+const rootNodesIndexArray = ref([]);
 const flaskURL = "http://localhost:5000"
 //const flaskURL = "https://vue-flask-fbd-editor-6aim.onrender.com"
 //const varTypes = ref(variableTypes);
@@ -660,10 +670,9 @@ onMounted(() => {
   getProjectData();
 
   //buildListing(projectdata.value);
-  rootNodesIndexArray(projectdata.value);
   
   setTimeout(() => pushProjectAndVariablesToUndoStack(), 100);
-  window.addEventListener('message', receiveMessage)	
+  window.addEventListener('message', receiveMessage);
   
   /*monitorInterval = setInterval(() => {
 	if(monitorTaskStart[statusdata.value.monitor]){
@@ -673,6 +682,7 @@ onMounted(() => {
   }, 500);*/
   
   //getStatusDataFromFlask();
+   getRootNodesIndexArray(projectdata.value, rootNodesIndexArray);
 })
 
 onUpdated(() => {
@@ -739,12 +749,6 @@ const addChild = (id, networkId, parentInput, blockJson) => {
   putProjectData();
 };
 
-const cloneNode = (node) => {
-	var cn = JSON.parse(JSON.stringify(node));
-	cn.id = Date.now()
-	return cn;
-};
-
 const addInput = (nodeId, inputDef, idOffset = 0) => {
   // var inputJson = JSON.parse(input /*? input : '{"name":"", "type":"none"}'*/);
   let found = projectdata.value.filter((item) => item.id === nodeId);
@@ -792,12 +796,12 @@ const connectNodeToInput = (nodeId, inputId) => {
   });
   
   if(index_from > 0 && index_to > 0)
-	array_move(projectdata.value, index_from, index_to);
+	arrayMove(projectdata.value, index_from, index_to);
   
   putProjectData();
 };
 
-const array_move = (arr, old_index, new_index) => {
+const arrayMove = (arr, old_index, new_index) => {
 	if(new_index >= arr.length) {
 		var k = new_index - arr.length + 1;
 		while(k--){
@@ -806,6 +810,21 @@ const array_move = (arr, old_index, new_index) => {
 	}
 	arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
 	return arr;
+}
+
+const arrayMoveUp = (arr, index) => {
+	
+	if (index > 0){
+		arrayMove(arr, rootNodesIndexArray.value[index].index, rootNodesIndexArray.value[index - 1].index);
+	}
+}
+
+const arrayMoveDown = (arr, index) => {
+	
+	if (index + 1 < rootNodesIndexArray.value.length){
+		arrayMove(arr, rootNodesIndexArray.value[index].index, rootNodesIndexArray.value[index + 1].index);
+	}
+	
 }
 
 //returns [2,1,3]
@@ -1024,19 +1043,16 @@ const isProgramDataReadyToCompile = (data, types) => {
 }
 
 
-const rootNodesIndexArray = (data) => {
-	
-	var indexArray = []
+const getRootNodesIndexArray = (data, indexArray) => {
 	
 	data.filter((rn) => !rn.parentInput).forEach((n) => {
 		data.forEach((t, index) => {
 			if(n.id === t.id)
-				indexArray.push({ id: n.id, index: index});
+				indexArray.value.push({ id: n.id, index: index});
 		});
 	})
 
-	console.log(indexArray);
-	
+	//console.log(indexArray.value);
 }
 
 provide("addChild", addChild);
@@ -1051,6 +1067,8 @@ provide("connectNodeToInput", connectNodeToInput);
 provide("checkIfVariableExists", checkIfVariableExists);
 provide("pushProjectAndVariablesToUndoStack", pushProjectAndVariablesToUndoStack);
 provide("putProjectData", putProjectData);
+provide("arrayMove", arrayMove);
+
 </script>
 <script>
 export default {
