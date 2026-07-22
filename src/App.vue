@@ -670,6 +670,7 @@ onMounted(() => {
   getProjectData();
 
   //buildListing(projectdata.value);
+  statusdata.value["compiled"] = "no";
   
   setTimeout(() => pushProjectAndVariablesToUndoStack(), 100);
   window.addEventListener('message', receiveMessage);
@@ -686,6 +687,7 @@ onMounted(() => {
 })
 
 onUpdated(() => {
+	//getRootNodesIndexArray(projectdata.value, rootNodesIndexArray);
 });
 
 onUnmounted(() => {
@@ -745,7 +747,8 @@ const addChild = (id, networkId, parentInput, blockJson) => {
       }
     });
   });
-
+  
+  getRootNodesIndexArray(projectdata.value, rootNodesIndexArray);
   putProjectData();
 };
 
@@ -766,6 +769,8 @@ const addInput = (nodeId, inputDef, idOffset = 0) => {
       value: 0,
     });
   });
+  
+  getRootNodesIndexArray(projectdata.value, rootNodesIndexArray);
   putProjectData();
 };
 
@@ -798,6 +803,7 @@ const connectNodeToInput = (nodeId, inputId) => {
   if(index_from > 0 && index_to > 0)
 	arrayMove(projectdata.value, index_from, index_to);
   
+  getRootNodesIndexArray(projectdata.value, rootNodesIndexArray);
   putProjectData();
 };
 
@@ -857,6 +863,7 @@ const disconnectNodeFromInput = (nodeId, inputId) => {
   //console.log("index_from: " + index_from + ", index_to: " + index_to);
   //if(index_from > 0 && index_to > 0)
 //	array_move(projectdata.value, index_from, index_to);
+  getRootNodesIndexArray(projectdata.value, rootNodesIndexArray);
   putProjectData();
 };
 
@@ -876,7 +883,7 @@ const deleteInput = (inputId) => {
     //delete input
     n.inputs = n.inputs.filter((input) => input.id !== inputId);
   });
-  
+  getRootNodesIndexArray(projectdata.value, rootNodesIndexArray);
   putProjectData();
 };
 const deleteChild = (id) => {
@@ -901,6 +908,7 @@ const deleteChild = (id) => {
 
   //delete child
   projectdata.value = projectdata.value.filter((node) => node.id !== id);
+  getRootNodesIndexArray(projectdata.value, rootNodesIndexArray);
   putProjectData();
 };
 const getInputsById = (id, projectdata) => {
@@ -1045,6 +1053,7 @@ const isProgramDataReadyToCompile = (data, types) => {
 
 const getRootNodesIndexArray = (data, indexArray) => {
 	
+	indexArray.value = [];
 	data.filter((rn) => !rn.parentInput).forEach((n) => {
 		data.forEach((t, index) => {
 			if(n.id === t.id)

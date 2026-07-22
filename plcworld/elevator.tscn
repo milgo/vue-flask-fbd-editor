@@ -1,10 +1,11 @@
-[gd_scene load_steps=41 format=3 uid="uid://c6f0vndfmkhl3"]
+[gd_scene load_steps=42 format=3 uid="uid://c6f0vndfmkhl3"]
 
 [ext_resource type="Script" uid="uid://d15k53v2qmioc" path="res://world.gd" id="1_a1q2r"]
 [ext_resource type="Script" uid="uid://bjik0b8ki40d8" path="res://logic.gd" id="2_77yi3"]
 [ext_resource type="Texture2D" uid="uid://d0ichm4rnsh6y" path="res://elevator-project/going_up_gray.png" id="4_1a6eo"]
 [ext_resource type="Texture2D" uid="uid://bk2q5llfs8u5s" path="res://elevator-project/down_button_normal.png" id="4_nreao"]
 [ext_resource type="Texture2D" uid="uid://q7cd5xwvymt6" path="res://elevator-project/0_normal.png" id="4_y5ghj"]
+[ext_resource type="Script" uid="uid://cwylnyytot7gt" path="res://ExternalLvLButtons.gd" id="5_1vr0y"]
 [ext_resource type="Texture2D" uid="uid://crpudlmvn6fh2" path="res://elevator-project/0_pressed.png" id="5_3iwpb"]
 [ext_resource type="Texture2D" uid="uid://3b0svgildqs5" path="res://elevator-project/1_normal.png" id="5_hschd"]
 [ext_resource type="Texture2D" uid="uid://b4q4vqtxsecx2" path="res://elevator-project/going_down_gray.png" id="5_i41m5"]
@@ -148,70 +149,76 @@ metadata/DO = "%o3"
 custom_minimum_size = Vector2(330, 0)
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HUD/VBoxContainer/HBoxContainer"]
+[node name="ExternalLvlButtons" type="VBoxContainer" parent="HUD/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 alignment = 1
+script = ExtResource("5_1vr0y")
 
-[node name="VBoxContainer5" type="VBoxContainer" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="VBoxContainer5" type="VBoxContainer" parent="HUD/VBoxContainer/HBoxContainer/ExternalLvlButtons"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer5"]
+[node name="Label" type="Label" parent="HUD/VBoxContainer/HBoxContainer/ExternalLvlButtons/VBoxContainer5"]
 layout_mode = 2
 text = "Level
 bnt."
 horizontal_alignment = 1
 
-[node name="Level3" type="VBoxContainer" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="Level3" type="VBoxContainer" parent="HUD/VBoxContainer/HBoxContainer/ExternalLvlButtons"]
 custom_minimum_size = Vector2(0, 110)
 layout_mode = 2
 alignment = 1
 
-[node name="DownButton" type="TextureButton" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level3"]
+[node name="DownButton" type="TextureButton" parent="HUD/VBoxContainer/HBoxContainer/ExternalLvlButtons/Level3"]
 layout_mode = 2
 texture_normal = ExtResource("4_nreao")
 texture_pressed = ExtResource("5_xu5fp")
+metadata/DO = "%o21"
 
-[node name="Level2" type="VBoxContainer" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="Level2" type="VBoxContainer" parent="HUD/VBoxContainer/HBoxContainer/ExternalLvlButtons"]
 custom_minimum_size = Vector2(0, 110)
 layout_mode = 2
 alignment = 1
 
-[node name="UpButton" type="TextureButton" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level2"]
+[node name="UpButton" type="TextureButton" parent="HUD/VBoxContainer/HBoxContainer/ExternalLvlButtons/Level2"]
 layout_mode = 2
 texture_normal = ExtResource("5_ym41f")
 texture_pressed = ExtResource("7_xsk2a")
+metadata/DO = "%o20"
 
-[node name="DownButton" type="TextureButton" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level2"]
+[node name="DownButton" type="TextureButton" parent="HUD/VBoxContainer/HBoxContainer/ExternalLvlButtons/Level2"]
 layout_mode = 2
 texture_normal = ExtResource("4_nreao")
 texture_pressed = ExtResource("5_xu5fp")
+metadata/DO = "%o19"
 
-[node name="Level1" type="VBoxContainer" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="Level1" type="VBoxContainer" parent="HUD/VBoxContainer/HBoxContainer/ExternalLvlButtons"]
 custom_minimum_size = Vector2(0, 110)
 layout_mode = 2
 alignment = 1
 
-[node name="UpButton" type="TextureButton" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level1"]
+[node name="UpButton" type="TextureButton" parent="HUD/VBoxContainer/HBoxContainer/ExternalLvlButtons/Level1"]
 layout_mode = 2
 texture_normal = ExtResource("5_ym41f")
 texture_pressed = ExtResource("7_xsk2a")
+metadata/DO = "%o18"
 
-[node name="DownButton" type="TextureButton" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level1"]
+[node name="DownButton" type="TextureButton" parent="HUD/VBoxContainer/HBoxContainer/ExternalLvlButtons/Level1"]
 layout_mode = 2
 texture_normal = ExtResource("4_nreao")
 texture_pressed = ExtResource("5_xu5fp")
+metadata/DO = "%o17"
 
-[node name="Level0" type="VBoxContainer" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="Level0" type="VBoxContainer" parent="HUD/VBoxContainer/HBoxContainer/ExternalLvlButtons"]
 custom_minimum_size = Vector2(0, 110)
 layout_mode = 2
 alignment = 1
-metadata/DI = "%i10"
 
-[node name="UpButton" type="TextureButton" parent="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level0"]
+[node name="UpButton" type="TextureButton" parent="HUD/VBoxContainer/HBoxContainer/ExternalLvlButtons/Level0"]
 layout_mode = 2
 texture_normal = ExtResource("5_ym41f")
 texture_pressed = ExtResource("7_xsk2a")
+metadata/DO = "%o16"
 
 [node name="MarginContainer" type="MarginContainer" parent="HUD/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(15, 0)
@@ -254,11 +261,13 @@ metadata/DO = "%o13"
 layout_mode = 2
 texture_normal = ExtResource("8_majop")
 texture_pressed = ExtResource("13_ym41f")
+metadata/Do = ""
 
 [node name="CloseDoors" type="TextureButton" parent="HUD/VBoxContainer/ElevatorButtons"]
 layout_mode = 2
 texture_normal = ExtResource("9_22c28")
 texture_pressed = ExtResource("15_xu5fp")
+metadata/DO = ""
 
 [node name="TextureButton" type="TextureButton" parent="HUD"]
 offset_right = 400.0
@@ -292,12 +301,12 @@ text = "%i0 - level1 lim switch
 %i8 - elev. open door       %o14 - elev. open door ind
 %i9 - elev. close door       %o15 - elev. close door ind
 
-%i10 - call go up l0
-%i11 - call go down l1
-%i12 - call go up l1
-%i13 - call go down l2
-%i14 - call go up l2
-%i15 - call go down l3
+%i10 - call go up l0            %o16 - call go up l0 ind.
+%i11 - call go down l1      %o17 - call go down l1 ind.
+%i12 - call go up l1            %o18 - call go up l1 ind.
+%i13 - call go down l2       %o19 - call go down l2 ind.
+%i14 - call go up l2             %o20 - call go up l2 ind.
+%i15 - call go down l3       %o21 - call go down l3 ind.
 
 %o0 - elev. up
 %o1 - elev. down
@@ -464,21 +473,22 @@ mesh = SubResource("BoxMesh_hr1cl")
 [connection signal="send_data" from="Logic" to="." method="_on_logic_send_data"]
 [connection signal="start_logic" from="Logic" to="." method="_on_logic_start_logic"]
 [connection signal="variable_value_changed" from="Logic" to="." method="_on_logic_variable_value_changed"]
+[connection signal="variable_value_changed" from="Logic" to="HUD/VBoxContainer/HBoxContainer/ExternalLvlButtons" method="_on_logic_variable_value_changed"]
 [connection signal="variable_value_changed" from="Logic" to="HUD/VBoxContainer/ElevatorButtons" method="_on_logic_variable_value_changed"]
 [connection signal="variable_value_changed" from="Logic" to="Elevator" method="_on_logic_variable_value_changed"]
 [connection signal="variable_value_changed" from="Logic" to="Elevator/Doors" method="_on_logic_variable_value_changed"]
-[connection signal="button_down" from="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level3/DownButton" to="." method="_on_button_down" binds= ["%i15"]]
-[connection signal="button_up" from="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level3/DownButton" to="." method="_on_button_up" binds= ["%i15"]]
-[connection signal="button_down" from="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level2/UpButton" to="." method="_on_button_down" binds= ["%i14"]]
-[connection signal="button_up" from="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level2/UpButton" to="." method="_on_button_up" binds= ["%i14"]]
-[connection signal="button_down" from="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level2/DownButton" to="." method="_on_button_down" binds= ["%i13"]]
-[connection signal="button_up" from="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level2/DownButton" to="." method="_on_button_up" binds= ["%i13"]]
-[connection signal="button_down" from="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level1/UpButton" to="." method="_on_button_down" binds= ["%i12"]]
-[connection signal="button_up" from="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level1/UpButton" to="." method="_on_button_up" binds= ["%i12"]]
-[connection signal="button_down" from="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level1/DownButton" to="." method="_on_button_down" binds= ["%i11"]]
-[connection signal="button_up" from="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level1/DownButton" to="." method="_on_button_up" binds= ["%i11"]]
-[connection signal="button_down" from="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level0/UpButton" to="." method="_on_button_down" binds= ["%i10"]]
-[connection signal="button_up" from="HUD/VBoxContainer/HBoxContainer/VBoxContainer/Level0/UpButton" to="." method="_on_button_up" binds= ["%i10"]]
+[connection signal="button_down" from="HUD/VBoxContainer/HBoxContainer/ExternalLvlButtons/Level3/DownButton" to="." method="_on_button_down" binds= ["%i15"]]
+[connection signal="button_up" from="HUD/VBoxContainer/HBoxContainer/ExternalLvlButtons/Level3/DownButton" to="." method="_on_button_up" binds= ["%i15"]]
+[connection signal="button_down" from="HUD/VBoxContainer/HBoxContainer/ExternalLvlButtons/Level2/UpButton" to="." method="_on_button_down" binds= ["%i14"]]
+[connection signal="button_up" from="HUD/VBoxContainer/HBoxContainer/ExternalLvlButtons/Level2/UpButton" to="." method="_on_button_up" binds= ["%i14"]]
+[connection signal="button_down" from="HUD/VBoxContainer/HBoxContainer/ExternalLvlButtons/Level2/DownButton" to="." method="_on_button_down" binds= ["%i13"]]
+[connection signal="button_up" from="HUD/VBoxContainer/HBoxContainer/ExternalLvlButtons/Level2/DownButton" to="." method="_on_button_up" binds= ["%i13"]]
+[connection signal="button_down" from="HUD/VBoxContainer/HBoxContainer/ExternalLvlButtons/Level1/UpButton" to="." method="_on_button_down" binds= ["%i12"]]
+[connection signal="button_up" from="HUD/VBoxContainer/HBoxContainer/ExternalLvlButtons/Level1/UpButton" to="." method="_on_button_up" binds= ["%i12"]]
+[connection signal="button_down" from="HUD/VBoxContainer/HBoxContainer/ExternalLvlButtons/Level1/DownButton" to="." method="_on_button_down" binds= ["%i11"]]
+[connection signal="button_up" from="HUD/VBoxContainer/HBoxContainer/ExternalLvlButtons/Level1/DownButton" to="." method="_on_button_up" binds= ["%i11"]]
+[connection signal="button_down" from="HUD/VBoxContainer/HBoxContainer/ExternalLvlButtons/Level0/UpButton" to="." method="_on_button_down" binds= ["%i10"]]
+[connection signal="button_up" from="HUD/VBoxContainer/HBoxContainer/ExternalLvlButtons/Level0/UpButton" to="." method="_on_button_up" binds= ["%i10"]]
 [connection signal="button_down" from="HUD/VBoxContainer/ElevatorButtons/0" to="." method="_on_button_down" binds= ["%i4"]]
 [connection signal="button_up" from="HUD/VBoxContainer/ElevatorButtons/0" to="." method="_on_button_up" binds= ["%i4"]]
 [connection signal="button_down" from="HUD/VBoxContainer/ElevatorButtons/1" to="." method="_on_button_down" binds= ["%i5"]]
