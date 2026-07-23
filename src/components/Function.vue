@@ -1,7 +1,7 @@
 <template>
-
+  
   <div v-set="(node.networkId = networkId)"></div>
-  <table width="100%">
+  <table width="100%" border="0">
     <tr>
       <td></td>
       <td></td>
@@ -21,6 +21,9 @@
                 <b :class="node.value ? 'fbd-header-green' : 'fbd-header'">
                   {{ node.block }}
                 </b>
+				<!--<div v-for="(n, index) in projectdata">
+				<div v-if="n.id===node.id">{{index}}</div>
+				</div>-->{{rootIndex}}
               </td>
               <td
                 :class="node.value ? 'fbd-header-green' : 'fbd-header'"
@@ -121,6 +124,7 @@
           <Function
             :id="inputNode.target"
             :networkId="networkId"
+			:rootIndex="rootIndex"
             :parentId="inputNode.id"
             :projectdata="projectdata"
 			:enableEdit="enableEdit"
@@ -156,7 +160,7 @@
               class="button button-red"
               @click="
 			    pushProjectAndVariablesToUndoStack();
-                connectNodeToInput(interConnectionDetails.nodeId, inputNode.id);
+                connectNodeToInput(interConnectionDetails.nodeId, inputNode.id, rootIndex);
 				putProjectData();
               "
             >
@@ -226,7 +230,7 @@
                 <button				  
                   @click="
 				    pushProjectAndVariablesToUndoStack();
-                    disconnectNodeFromInput(inputNode.target, inputNode.id);
+                    disconnectNodeFromInput(inputNode.target, inputNode.id, rootIndex);
 					putProjectData();
                     inputNode.conn_mouse_hover = false;
                   "
@@ -388,6 +392,7 @@ export default {
   props: [
     "id",
     "networkId",
+	"rootIndex",
     "parentId",
     "projectdata",
 	"enableEdit",

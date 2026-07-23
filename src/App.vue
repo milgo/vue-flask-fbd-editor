@@ -105,6 +105,7 @@
           <Function
             :id="node.id"
             :networkId="networkId + 1"
+			:rootIndex="projectdata.indexOf(node)"
             :projectdata="projectdata"
 			:enableEdit="enableEdit[statusdata.state]"
 			:isInMonitorMode="monitorTaskStart[statusdata.monitor]"
@@ -774,10 +775,10 @@ const addInput = (nodeId, inputDef, idOffset = 0) => {
   putProjectData();
 };
 
-const connectNodeToInput = (nodeId, inputId) => {
+const connectNodeToInput = (nodeId, inputId, rootIndex) => {
   //alert(nodeId + ", " + inputId);
   var index_from = -1;
-  var index_to = -1;
+  var index_to = rootIndex;
   
   projectdata.value.forEach((node, index) => {
 	if(node.id === nodeId){
@@ -794,7 +795,7 @@ const connectNodeToInput = (nodeId, inputId) => {
           input.target = nodeId;
           //input.type = node.output_type;
           //alert("input.id=" + input.id + "?=" + inputId);
-		  index_to = index;
+		  //index_to = index;
         }
       });
     }
@@ -836,11 +837,11 @@ const arrayMoveDown = (arr, index) => {
 //returns [2,1,3]
 //console.log(array_move([1,2,3],0,1)
 
-const disconnectNodeFromInput = (nodeId, inputId) => {
+const disconnectNodeFromInput = (nodeId, inputId, rootIndex) => {
   //alert(nodeId + ", " + inputId);
   var isInputOnly = false;
   var index_from = -1;
-  var index_to = -1;
+  var index_to = rootIndex;
   projectdata.value.forEach((node, index) => {
     if (node.id === nodeId) {
       node.parentInput = null;
@@ -854,7 +855,7 @@ const disconnectNodeFromInput = (nodeId, inputId) => {
     if (node.inputs) {
       node.inputs.forEach((input) => {
         if (input.id === inputId) {
-		  index_to = index;
+		  //index_to = index;
           input.target = -1;
         }
       });
