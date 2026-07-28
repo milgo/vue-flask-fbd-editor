@@ -23,7 +23,7 @@
                 </b>
 				<!--<div v-for="(n, index) in projectdata">
 				<div v-if="n.id===node.id">{{index}}</div>
-				</div>-->{{rootIndex}}
+				</div>{{rootIndex}}-->
               </td>
               <td
                 :class="node.value ? 'fbd-header-green' : 'fbd-header'"

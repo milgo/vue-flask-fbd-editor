@@ -340,6 +340,7 @@ import Function from "./components/Function.vue";
 import FunctionList from "./components/FunctionList.vue";
 import FunctionListing from "./components/FunctionListing.vue";
 import VarInput from "./components/VarInput.vue";
+import exampleProject from "./assets/example-project.json";
 import { ref, provide, onMounted, onUpdated, onUnmounted } from "vue";
 
 const statusdata = ref([]);
@@ -600,8 +601,9 @@ const getProjectData = () => {
 	
 	if(!window.localStorage.getItem("projectdata"))
 	{	
-		window.localStorage.setItem("projectdata", "{\"program\": [], \"variables\": []}");
+		window.localStorage.setItem("projectdata", JSON.stringify(exampleProject));	
 		window.localStorage.setItem("compiled", "no");
+
 	}
 	
 	var storedprojectdata = JSON.parse(window.localStorage.getItem("projectdata"));
