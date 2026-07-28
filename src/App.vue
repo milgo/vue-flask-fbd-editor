@@ -57,7 +57,12 @@
 			<div v-if="importExportButtonVisible[statusdata.state]">
 			<button @click="clearDb()">Clear</button>
 			</div>
-      </td>	  
+      </td>
+	  <td>
+			<div v-if="importExportButtonVisible[statusdata.state]">
+			<button @click="loadExample()">Get Answer</button>
+			</div>
+      </td>	 
     </tr>
   </table>
 
@@ -1128,7 +1133,15 @@ export default {
 	  }else{
 	  }
     },
-	
+	loadExample(timestamp, db) {
+	  const isConfirmed = window.confirm("Load this example logic?");
+	  
+	  if(isConfirmed){
+		window.localStorage.setItem("projectdata", JSON.stringify(exampleProject));
+		window.location.reload();
+	  }else{
+	  }
+    },
 	downloadDb(timestamp, db) {
       const text = window.localStorage.getItem('projectdata'); // Get the content from the textarea
       // Create a new Blob object with the text content
