@@ -357,6 +357,7 @@ const variablesredostack = ref([]);
 const compiledata = ref([]);
 const setuplisting = ref([]);
 const listing = ref([]);
+const listingSTL = ref([]);
 const variablesdata = ref([]);
 const rootNodesIndexArray = ref([]);
 const flaskURL = "http://localhost:5000"
@@ -465,6 +466,38 @@ const buildListing = (data) => {
   console.log(compiledata.value);
 
 };
+
+const recursiveLoopBasedOnInputsSTL = (data, element, inputId) => {
+	if (element) {
+		Array.prototype.forEach.call(element.inputs, (input) => {
+			var nestedElement = data.filter((e) => e.id === input.target)[0];
+			if(nestedElement.input_only === true){
+				if(nestedElement.output_type === "number")
+					listingSTL.value.push("L " + nestedElement.mem_loc);
+				if(nestedElement.output_type === "bool")
+					listingSTL.value.push("A " + nestedElement.mem_loc);
+			}
+			else{
+				recursiveLoopBasedOnInputsSTL(data, nestedElement, input.id);
+			}
+		});
+	}
+	var entry = element.block;
+	if(element.mem_loc !== "???")
+		entry = entry + " " +element.mem_loc
+	listingSTL.value.push(entry);
+};
+
+const buildListingSTL = (data) => {
+	listingSTL.value = []
+	  //program listing
+	data.forEach((element) => {
+		if (element.parentInput === null) {
+		  //listing.value.push({ function: "CANCEL_RLO" });
+		  recursiveLoopBasedOnInputsSTL(data, element, null, undefined);
+		}
+	});
+}
 
 const checkIfVariableExists = (name) => {
   return variablesdata.value.filter((v) => v.name === name)[0];
@@ -1025,6 +1058,7 @@ const monitorOff = () => {
 
 const compile = () => {
 	buildListing(projectdata.value);
+	//buildListingSTL(projectdata.value);
 	statusdata.value["compiled"] = "yes";
 	window.localStorage.setItem("compiled", "yes");
 }
